@@ -1,13 +1,20 @@
 import { gql } from "apollo-server-micro";
 export const typeDefs = gql`
   type Query {
-    Users: Person
-  }
-  type Person {
-    id: String!
-    firstName: String
+    Employers: Employer
   }
   type Mutation {
-      addUser: 
+    addEmployer: Employer
+  }
+  type Employer {
+    id: ID!
+    discordTag: String!
+    profilePic: String!
+    ownsDao: String!
+  }
+  type JobSeeker {
+    id: ID!
+    discordTag: String!
+    profilePic: String!
   }
 `;

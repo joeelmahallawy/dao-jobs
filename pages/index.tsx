@@ -7,8 +7,6 @@ import Router from "next/router";
 const IndexPage = () => {
   return (
     <>
-      {/* hit the endpoint to get the validated user through discord */}
-      {/* consider using useAsyncFn from 'React-use' for state initilization */}
       <Button
         onClick={async () => {
           const res = await fetch("/api/discordAuth", {
@@ -23,7 +21,15 @@ const IndexPage = () => {
       >
         Click to send data
       </Button>
-
+      <Button
+        onClick={async () => {
+          const res = await fetch("/api/graphql");
+          const data = await res.json();
+          console.log(data);
+        }}
+      >
+        Hit the endpoint
+      </Button>
       <Link href="https://discord.com/api/oauth2/authorize?client_id=924466427895889941&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2F&response_type=code&scope=identify">
         Nice
       </Link>

@@ -13,7 +13,10 @@ const handler = async (_req: NextApiRequest, _res: NextApiResponse) => {
       );
       req.append("grant_type", "authorization_code");
       req.append("code", code);
-      req.append("redirect_uri", "http://localhost:3000/");
+      req.append(
+        "redirect_uri",
+        process.env.NEXT_PUBLIC_DISCORD_CLIENT_REDIRECT
+      );
 
       const res = await fetch("https://discord.com/api/oauth2/token", {
         method: "POST",
