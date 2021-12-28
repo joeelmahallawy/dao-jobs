@@ -4,8 +4,8 @@ const handler = async (_req: NextApiRequest, _res: NextApiResponse) => {
   try {
     if (_req.method == "POST") {
       const { code } = JSON.parse(_req.body);
-
       const req = new URLSearchParams();
+
       req.append("client_id", process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID);
       req.append(
         "client_secret",
@@ -18,6 +18,7 @@ const handler = async (_req: NextApiRequest, _res: NextApiResponse) => {
         process.env.NEXT_PUBLIC_DISCORD_CLIENT_REDIRECT
       );
 
+      // to received
       const res = await fetch("https://discord.com/api/oauth2/token", {
         method: "POST",
         headers: {
@@ -35,7 +36,10 @@ const handler = async (_req: NextApiRequest, _res: NextApiResponse) => {
           },
         }
       );
+      if (!ajaxRes.ok)
+        throw new Error("Could not get user data with access token");
       const { user } = await ajaxRes.json();
+
       _res.json(user);
     }
   } catch (err) {

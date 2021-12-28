@@ -1,22 +1,6 @@
-import {
-  Box,
-  Center,
-  Divider,
-  Flex,
-  Heading,
-  Image,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Center, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
 import React from "react";
 import { theme } from "../../../utils/theme";
-import backgroundImage from "../../../attachments/how-it-works-bg.png";
-import {
-  faArrowAltCircleRight,
-  faArrowRight,
-  faLongArrowAltRight,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import List from "./list";
 
 const AboutUs = () => {
