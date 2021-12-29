@@ -1,10 +1,4 @@
 import prisma from '../lib/prisma'
-import { MongoClient } from 'mongodb'
-import {
-    GraphQLRequestContext,
-    GraphQLSchemaContext,
-} from 'apollo-server-types'
-import { uptime } from 'process'
 export const resolvers = {
     Query: {
         Employers: async () =>
@@ -17,10 +11,10 @@ export const resolvers = {
             }),
     },
     Mutation: {
-        addEmployer: async (_, { data }) =>
-            await prisma.employers.create({ data }),
-        addDao: async (_, { data }) => await prisma.daos.create({ data }),
+        addEmployer: async (_, { input }) =>
+            await prisma.employers.create({ data: { ...input } }),
+        addDao: async (_, { input }) =>
+            // await prisma.daos.create({ data: { ...input } }),
+            input,
     },
 }
-
-// yeah true haha

@@ -372,10 +372,8 @@ const EmployerForm = ({ user }) => {
 
                     const mutation = gql`
                         mutation addDao($data: Dao!) {
-                            Dao {
-                                title
-                                releaseDate
-                            }
+                            title
+                            releaseDate
                         }
                     `
                     request('http://localhost:3000/api/graphql', mutation).then(

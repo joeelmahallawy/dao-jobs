@@ -3,9 +3,9 @@ export const typeDefs = gql`
     type Query {
         Employers: Employer
     }
-    type Mutation {
-        addEmployer(data: Employer!): Employer
-        addDao(data: Dao!): Dao
+    input Mutation {
+        addEmployer(data:Employer): Employer
+        addDao(data:Dao): Dao
     }
     type Dao {
         id: ID!
