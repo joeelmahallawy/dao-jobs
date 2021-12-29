@@ -1,50 +1,26 @@
-import { Box, Button, Center, Flex, Heading } from "@chakra-ui/react";
-import { NextPageContext } from "next";
+import { Box, Button, Center, Flex, Heading } from '@chakra-ui/react'
+import React, { useEffect, useState } from 'react'
+import Registration from '../components/registration'
+import DiscordOauth2 from 'discord-oauth2'
+import { useRouter } from 'next/router'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { useGlobalUser, userData } from '../recoil'
+import getSessionTokens from '../helpers/getSessionTokens'
 
-import React, { useState } from "react";
+const RegistrationPage = () => {
+    const [user, setUser] = useRecoilState(userData)
+    const router = useRouter()
+    useEffect(() => {
+        // check if tokens doesn't exist in local storage, otherwise use code in URL to get tokens
+        if (!localStorage.getItem('tokens')) getSessionTokens(router, setUser)
+    }, [router.query.code])
 
-import Registration from "../components/registration";
+    //
+    return (
+        <Box>
+            <Registration user={user} />
+        </Box>
+    )
+}
 
-const RegistrationPage = ({ user }) => {
-  return (
-    <Box>
-      <Registration user={user} />
-    </Box>
-  );
-};
-export const getServerSideProps = async (ctx: NextPageContext) => {
-  // Get user access token with auth code
-  if (!ctx.query.code) {
-    return {
-      redirect: {
-        destination:
-          "https://discord.com/api/oauth2/authorize?client_id=924466427895889941&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fregistration&response_type=code&scope=identify",
-        permanent: false,
-      },
-    };
-  }
-  // Get user data with access token
-  const response = await fetch("http://localhost:3000/api/discordAuth", {
-    method: "POST",
-    body: JSON.stringify({
-      code: ctx.query.code,
-    }),
-  });
-  const user = await response.json();
-  // check if access token works, if not, reauthenticate
-  if ("err" in user)
-    return {
-      redirect: {
-        destination: "http://localhost:3000/registration",
-        permanent: true,
-      },
-    };
-  // return user data
-  return {
-    props: {
-      user,
-    },
-  };
-};
-
-export default RegistrationPage;
+export default RegistrationPage

@@ -23,3 +23,14 @@ model JobSeekers {
   discordTag String 
   profilePic String
 }
+
+model Daos {
+  id String @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  daoName String
+  serverExists String
+  discordLink String
+  discordPopulation String
+  twitterUrl String
+  goalOfDao String
+  briefDescription String
+}
