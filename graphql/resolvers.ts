@@ -12,9 +12,8 @@ export const resolvers = {
     },
     Mutation: {
         addEmployer: async (_, { input }) =>
-            await prisma.employers.create({ data: { ...input } }),
-        addDao: async (_, { input }) =>
-            // await prisma.daos.create({ data: { ...input } }),
-            input,
+            await prisma.employers.create({ data: { ...input } }), // console.log
+        addDao: async (_, { daoData }) =>
+            await prisma.dAOs.create({ data: { ...daoData } }),
     },
 }

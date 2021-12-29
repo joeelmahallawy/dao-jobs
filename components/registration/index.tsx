@@ -72,7 +72,8 @@ const Registration = ({ user }) => {
                             if (selectedUser == 'seeker')
                                 router.push('/seekerMain')
                             if (selectedUser == 'employer') setShowForm(true)
-                        }}
+                        }} // okay so you there? okay so it will return "invalid token" same error as when you enter a invalid token
+                        //
                         ml="auto"
                         p={['1rem', '1.25rem', '1.5rem', '1.75rem', '2rem']}
                         fontSize={[

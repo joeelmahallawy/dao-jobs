@@ -3,28 +3,48 @@ export const typeDefs = gql`
     type Query {
         Employers: Employer
     }
-    input Mutation {
-        addEmployer(data:Employer): Employer
-        addDao(data:Dao): Dao
+    type Mutation {
+        addEmployer(employerData: EmployerInput!): Employer!
+        addDao(daoData: DaoInput!): Dao!
     }
-    type Dao {
-        id: ID!
-        name: String!
-        serverExists: String!
+
+    input DaoInput {
+        nameOfDao: String!
+        discordServerExists: String!
         discordLink: String!
         discordPopulation: String!
         twitterUrl: String!
-        goalOfDao: String!
+        daoGoals: String!
+        briefDescription: String!
+    }
+    type Dao {
+        _id: ID!
+        nameOfDao: String!
+        discordServerExists: String!
+        discordLink: String!
+        discordPopulation: String!
+        daoProfilePic: String
+        twitterUrl: String!
+        daoGoals: String!
         briefDescription: String!
     }
     type Employer {
-        id: ID!
+        _id: ID!
+        discordTag: String!
+        profilePic: String!
+        ownsDao: String!
+    }
+    input EmployerInput {
         discordTag: String!
         profilePic: String!
         ownsDao: String!
     }
     type JobSeeker {
-        id: ID!
+        _id: ID!
+        discordTag: String!
+        profilePic: String!
+    }
+    input JobSeekerInput {
         discordTag: String!
         profilePic: String!
     }

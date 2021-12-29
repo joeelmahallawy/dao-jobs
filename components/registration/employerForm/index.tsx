@@ -11,10 +11,12 @@ import {
     Stack,
     Textarea,
     Text,
+    Image,
     Flex,
+    useToast,
 } from '@chakra-ui/react'
 import { Field, Formik, Form } from 'formik'
-import React from 'react'
+import React, { useState } from 'react'
 import { request, gql } from 'graphql-request'
 import Fade from 'react-reveal/Fade'
 import { theme } from '../../../utils/theme'
@@ -27,8 +29,10 @@ type InitialValues = {
     twitterUrl: string
     daoGoals: string
     briefDescription: string
+    daoProfilePic: string
 }
 const EmployerForm = ({ user }) => {
+    const toast = useToast()
     const initValues: InitialValues = {
         nameOfDao: '',
         discordServerExists: '',
@@ -37,6 +41,7 @@ const EmployerForm = ({ user }) => {
         twitterUrl: '',
         daoGoals: '',
         briefDescription: '',
+        daoProfilePic: '',
     }
 
     const [step, setStep] = React.useState<number>(1)
@@ -50,7 +55,7 @@ const EmployerForm = ({ user }) => {
                         placeholder="Ex. Olympus DAO"
                         outline="1px solid gray"
                         _focus={{ bg: 'white' }}
-                        name="nameOfDao"
+                        name="nameOfDao" //aight cool yup ok
                         type="text"
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -205,26 +210,54 @@ const EmployerForm = ({ user }) => {
     }
 
     const Step5 = ({ handleChange, handleBlur, value, errors, touched }) => {
+        const [dp, setdp] = useState({
+            file: '',
+            imagePreviewUrl:
+                'https://github.com/OlgaKoplik/CodePen/blob/master/profile.jpg?raw=true',
+            active: 'edit',
+        })
+        function photoUpload(event, setProfilePic) {
+            event.preventDefault()
+            const reader = new FileReader()
+            const file = event.target.files[0]
+            reader.onloadend = () => {
+                setProfilePic({
+                    file,
+                    imagePreviewUrl: reader.result,
+                })
+            }
+            reader.readAsDataURL(file)
+        }
+
         return (
             <Fade bottom big>
-                <FormControl isRequired>
-                    <FormLabel mt="1.5rem">
-                        Please enter Twitter URL and 'N/A' otherwise
-                    </FormLabel>
-                    <Input
-                        outline="1px solid gray"
-                        _focus={{ bg: 'white' }}
-                        placeholder="Ex. https://twitter.com/OlympusDAO"
-                        type="text"
-                        name="twitterUrl"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={value}
-                    />
-                    {!touched.twitterUrl && (
-                        <Text color="red">{errors.twitterUrl}</Text>
-                    )}
-                </FormControl>
+                <Flex flexDir="column" mt={10} textAlign="center">
+                    <label htmlFor="photo-upload">
+                        <FormLabel fontSize="1.5rem" textAlign="left">
+                            Profile pic
+                        </FormLabel>
+                        <Image
+                            _hover={{ cursor: 'pointer', opacity: '0.85' }}
+                            fit="cover"
+                            borderRadius="50%"
+                            w="10rem"
+                            h="10rem"
+                            m="0 auto"
+                            src={dp.imagePreviewUrl}
+                        />
+                        <input
+                            style={{ display: 'none' }}
+                            name="daoProfilePic"
+                            id="photo-upload"
+                            type="file"
+                            onChange={(e) => {
+                                handleChange(e)
+                                photoUpload(e, setdp)
+                            }}
+                        />
+                    </label>
+                </Flex>
+
                 <Flex mt="1rem" justifyContent="space-between">
                     <Button
                         mt="1rem"
@@ -234,9 +267,8 @@ const EmployerForm = ({ user }) => {
                     >
                         Back
                     </Button>
-                    {console.log(touched)}
+
                     <Button
-                        // isDisabled={!touched.twitterUrl}
                         mt="1rem"
                         colorScheme="linkedin"
                         type="button"
@@ -260,6 +292,50 @@ const EmployerForm = ({ user }) => {
             <Fade bottom big>
                 <FormControl isRequired>
                     <FormLabel mt="1.5rem">
+                        Please enter Twitter URL and 'N/A' otherwise
+                    </FormLabel>
+                    <Input
+                        outline="1px solid gray"
+                        _focus={{ bg: 'white' }}
+                        placeholder="Ex. https://twitter.com/OlympusDAO"
+                        type="text"
+                        name="twitterUrl"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={value}
+                    />
+
+                    {touched.twitterUrl && (
+                        <Text color="red">{errors.twitterUrl}</Text>
+                    )}
+                </FormControl>
+                <Flex mt="1rem" justifyContent="space-between">
+                    <Button
+                        mt="1rem"
+                        colorScheme="gray"
+                        type="button"
+                        onClick={() => setStep(5)}
+                    >
+                        Back
+                    </Button>
+
+                    <Button
+                        mt="1rem"
+                        colorScheme="linkedin"
+                        type="button"
+                        onClick={() => setStep(7)}
+                    >
+                        Next
+                    </Button>
+                </Flex>
+            </Fade>
+        )
+    }
+    const Step7 = ({ handleChange, handleBlur, value, errors }: any) => {
+        return (
+            <Fade bottom big>
+                <FormControl isRequired>
+                    <FormLabel mt="1.5rem">
                         What is the goal of your DAO?
                     </FormLabel>
 
@@ -278,7 +354,7 @@ const EmployerForm = ({ user }) => {
                         mt="1rem"
                         colorScheme="gray"
                         type="button"
-                        onClick={() => setStep(5)}
+                        onClick={() => setStep(6)}
                     >
                         Back
                     </Button>
@@ -287,7 +363,7 @@ const EmployerForm = ({ user }) => {
                         // isDisabled={!touched.daoGoals}
                         colorScheme="linkedin"
                         type="button"
-                        onClick={() => setStep(7)}
+                        onClick={() => setStep(8)}
                     >
                         Next
                     </Button>
@@ -296,7 +372,7 @@ const EmployerForm = ({ user }) => {
         )
     }
 
-    const Step7 = ({
+    const Step8 = ({
         touched,
         handleChange,
         handleBlur,
@@ -325,7 +401,7 @@ const EmployerForm = ({ user }) => {
                         mt="1rem"
                         colorScheme="gray"
                         type="button"
-                        onClick={() => setStep(6)}
+                        onClick={() => setStep(7)}
                     >
                         Back
                     </Button>
@@ -357,9 +433,12 @@ const EmployerForm = ({ user }) => {
             <Formik
                 initialValues={initValues}
                 validate={(values) => {
+                    console.log(values)
                     const errors = {}
                     Object.entries(values).forEach((val) => {
-                        if (!values[val[0]]) errors[val[0]] = 'Required'
+                        if (val[0] != 'daoProfilePic') {
+                            if (!values[val[0]]) errors[val[0]] = 'Required'
+                        }
                     })
                     if (
                         !/^(ftp|http|https):\/\/[^ "]+$/.test(values.twitterUrl)
@@ -367,18 +446,37 @@ const EmployerForm = ({ user }) => {
                         errors['twitterUrl'] = 'Invalid URL'
                     return errors
                 }}
-                onSubmit={(values, { setSubmitting }) => {
-                    console.log('OHYA BABY WE GOT IT WORKING') // Bob!! You build it !! wohoo
+                onSubmit={async (values, { setSubmitting }) => {
+                    console.log('OHYA BABY WE GOT IT WORKING')
 
                     const mutation = gql`
-                        mutation addDao($data: Dao!) {
-                            title
-                            releaseDate
+                        mutation createDao($data: DaoInput!) {
+                            addDao(daoData: $data) {
+                                nameOfDao
+                            }
                         }
                     `
-                    request('http://localhost:3000/api/graphql', mutation).then(
-                        ({ Employers }) => console.log(Employers),
+                    const variables = {
+                        data: values,
+                    }
+                    const { addDao } = await request(
+                        'http://localhost:3000/api/graphql',
+                        mutation,
+                        variables,
                     )
+                    if (addDao)
+                        return toast({
+                            containerStyle: {
+                                fontFamily: 'Arial',
+                                padding: '1rem',
+                            },
+                            title: 'DAO registered.',
+                            description:
+                                'You have successfully registered your DAO!',
+                            status: 'success',
+                            duration: 3000,
+                            isClosable: true,
+                        })
                 }}
             >
                 {({
@@ -393,6 +491,7 @@ const EmployerForm = ({ user }) => {
                 }) => (
                     <Form
                         onSubmit={(e) => {
+                            console.log(errors)
                             // if there are errors
                             if (Object.keys(errors).length !== 0)
                                 alert('Please fill out all required fields!')
@@ -414,7 +513,7 @@ const EmployerForm = ({ user }) => {
                                 handleChange={handleChange}
                                 handleBlur={handleBlur}
                                 value={values.discordServerExists}
-                                setFieldValue={setFieldValue}
+                                setFieldValue={setFieldValue} // i will go take a shower nwo so brb check discord btw
                                 touched={touched}
                             />
                         )}
@@ -441,7 +540,7 @@ const EmployerForm = ({ user }) => {
                             <Step5
                                 handleChange={handleChange}
                                 handleBlur={handleBlur}
-                                value={values.twitterUrl}
+                                value={values.daoProfilePic}
                                 touched={touched}
                                 errors={errors}
                             />
@@ -451,13 +550,22 @@ const EmployerForm = ({ user }) => {
                             <Step6
                                 handleChange={handleChange}
                                 handleBlur={handleBlur}
-                                value={values.daoGoals}
+                                value={values.twitterUrl}
+                                errors={errors}
                                 touched={touched}
                             />
                         )}
 
                         {step === 7 && (
                             <Step7
+                                handleChange={handleChange}
+                                handleBlur={handleBlur}
+                                value={values.daoGoals}
+                                touched={touched}
+                            />
+                        )}
+                        {step === 8 && (
+                            <Step8
                                 handleChange={handleChange}
                                 handleBlur={handleBlur}
                                 value={values.briefDescription}

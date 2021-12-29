@@ -3,7 +3,7 @@ import { atom, selector } from 'recoil'
 
 const userData = atom({
     key: 'userData',
-    default: {},
+    default: null,
 })
 // const getUserData = selector({
 //     key: 'getUserData',
