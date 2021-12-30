@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { theme } from '../../utils/theme'
 import DiscordOauth2 from 'discord-oauth2'
-import { userData } from '../../recoil'
+import { userData } from '../../lib/recoil'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 const LogoutButton = () => {

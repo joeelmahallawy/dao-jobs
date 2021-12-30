@@ -1,6 +1,6 @@
 import { Heading } from '@chakra-ui/react'
 import { useRecoilState } from 'recoil'
-import { userData } from '../recoil'
+import { userData } from '../lib/recoil'
 
 const EmployerMainPage = () => {
     const [user, setUser] = useRecoilState(userData)

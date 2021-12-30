@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from 'react'
-import { userData } from '../recoil'
+import { userData } from '../lib/recoil'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 interface Props {

@@ -2,7 +2,7 @@ import { Button, Heading } from '@chakra-ui/react'
 import React, { useEffect } from 'react'
 import { request, gql } from 'graphql-request'
 import { useRecoilState } from 'recoil'
-import { userData } from '../recoil'
+import { userData } from '../lib/recoil'
 import DiscordOauth2 from 'discord-oauth2'
 import ProtectedRoute from '../components/protected-route'
 

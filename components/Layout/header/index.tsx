@@ -4,7 +4,7 @@ import { theme } from '../../../utils/theme'
 import SignUpButton from '../../reusables/signUpButton'
 import LogoutButton from '../../reusables/logoutButton'
 import Logo from './logo'
-import { userData } from '../../../recoil'
+import { userData } from '../../../lib/recoil'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 // yuss true

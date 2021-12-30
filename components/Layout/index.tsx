@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { userData } from '../../recoil'
+import { userData } from '../../lib/recoil'
 import Footer from './footer'
 import Header from './header'
 import { useRecoilState, useRecoilValue } from 'recoil'
