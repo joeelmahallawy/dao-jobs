@@ -29,7 +29,6 @@ type InitialValues = {
     twitterUrl: string
     daoGoals: string
     briefDescription: string
-    daoProfilePic: string
 }
 const EmployerForm = ({ user }) => {
     const toast = useToast()
@@ -41,10 +40,13 @@ const EmployerForm = ({ user }) => {
         twitterUrl: '',
         daoGoals: '',
         briefDescription: '',
-        daoProfilePic: '',
     }
 
     const [step, setStep] = React.useState<number>(1)
+
+    // yusss
+    // i think it will be an object yuhh lmao
+    const [selectedFile, setSelectedFile] = useState<any>() // so lets keep any for now
 
     const Step1 = ({ handleChange, touched, handleBlur, value }: any) => {
         return (
@@ -209,55 +211,34 @@ const EmployerForm = ({ user }) => {
         )
     }
 
-    const Step5 = ({ handleChange, handleBlur, value, errors, touched }) => {
-        const [dp, setdp] = useState({
-            file: '',
-            imagePreviewUrl:
-                'https://github.com/OlgaKoplik/CodePen/blob/master/profile.jpg?raw=true',
-            active: 'edit',
-        })
-        function photoUpload(event, setProfilePic) {
-            event.preventDefault()
-            const reader = new FileReader()
-            const file = event.target.files[0]
-            reader.onloadend = () => {
-                setProfilePic({
-                    file,
-                    imagePreviewUrl: reader.result,
-                })
-            }
-            reader.readAsDataURL(file)
-        }
-
+    const Step5 = ({
+        handleChange,
+        touched,
+        handleBlur,
+        value,
+        errors,
+    }: any) => {
         return (
             <Fade bottom big>
-                <Flex flexDir="column" mt={10} textAlign="center">
-                    <label htmlFor="photo-upload">
-                        <FormLabel fontSize="1.5rem" textAlign="left">
-                            Profile pic
-                        </FormLabel>
-                        <Image
-                            _hover={{ cursor: 'pointer', opacity: '0.85' }}
-                            fit="cover"
-                            borderRadius="50%"
-                            w="10rem"
-                            h="10rem"
-                            m="0 auto"
-                            src={dp.imagePreviewUrl}
-                        />
-                        <input
-                            style={{ display: 'none' }}
-                            name="daoProfilePic"
-                            id="photo-upload"
-                            type="file"
-                            onChange={(e) => {
-                                handleChange(e)
-                                photoUpload(e, setdp)
-                            }}
-                        />
-                    </label>
-                </Flex>
+                <FormControl isRequired>
+                    <FormLabel mt="1.5rem">
+                        Please enter Twitter URL and 'N/A' otherwise
+                    </FormLabel>
+                    <Input
+                        outline="1px solid gray"
+                        _focus={{ bg: 'white' }}
+                        placeholder="Ex. https://twitter.com/OlympusDAO"
+                        type="text"
+                        name="twitterUrl" // lmaooo dww
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={value}
+                    />
 
+                    {touched.twitterUrl && (
+                        <Text color="red">{errors.twitterUrl}</Text>
+                    )}
+                </FormControl>
                 <Flex mt="1rem" justifyContent="space-between">
                     <Button
                         mt="1rem"
@@ -280,58 +261,7 @@ const EmployerForm = ({ user }) => {
             </Fade>
         )
     }
-
-    const Step6 = ({
-        handleChange,
-        touched,
-        handleBlur,
-        value,
-        errors,
-    }: any) => {
-        return (
-            <Fade bottom big>
-                <FormControl isRequired>
-                    <FormLabel mt="1.5rem">
-                        Please enter Twitter URL and 'N/A' otherwise
-                    </FormLabel>
-                    <Input
-                        outline="1px solid gray"
-                        _focus={{ bg: 'white' }}
-                        placeholder="Ex. https://twitter.com/OlympusDAO"
-                        type="text"
-                        name="twitterUrl"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={value}
-                    />
-
-                    {touched.twitterUrl && (
-                        <Text color="red">{errors.twitterUrl}</Text>
-                    )}
-                </FormControl>
-                <Flex mt="1rem" justifyContent="space-between">
-                    <Button
-                        mt="1rem"
-                        colorScheme="gray"
-                        type="button"
-                        onClick={() => setStep(5)}
-                    >
-                        Back
-                    </Button>
-
-                    <Button
-                        mt="1rem"
-                        colorScheme="linkedin"
-                        type="button"
-                        onClick={() => setStep(7)}
-                    >
-                        Next
-                    </Button>
-                </Flex>
-            </Fade>
-        )
-    }
-    const Step7 = ({ handleChange, handleBlur, value, errors }: any) => {
+    const Step6 = ({ handleChange, handleBlur, value, errors }: any) => {
         return (
             <Fade bottom big>
                 <FormControl isRequired>
@@ -354,7 +284,7 @@ const EmployerForm = ({ user }) => {
                         mt="1rem"
                         colorScheme="gray"
                         type="button"
-                        onClick={() => setStep(6)}
+                        onClick={() => setStep(5)}
                     >
                         Back
                     </Button>
@@ -363,7 +293,7 @@ const EmployerForm = ({ user }) => {
                         // isDisabled={!touched.daoGoals}
                         colorScheme="linkedin"
                         type="button"
-                        onClick={() => setStep(8)}
+                        onClick={() => setStep(7)}
                     >
                         Next
                     </Button>
@@ -372,7 +302,7 @@ const EmployerForm = ({ user }) => {
         )
     }
 
-    const Step8 = ({
+    const Step7 = ({
         touched,
         handleChange,
         handleBlur,
@@ -401,7 +331,7 @@ const EmployerForm = ({ user }) => {
                         mt="1rem"
                         colorScheme="gray"
                         type="button"
-                        onClick={() => setStep(7)}
+                        onClick={() => setStep(6)}
                     >
                         Back
                     </Button>
@@ -436,9 +366,7 @@ const EmployerForm = ({ user }) => {
                     console.log(values)
                     const errors = {}
                     Object.entries(values).forEach((val) => {
-                        if (val[0] != 'daoProfilePic') {
-                            if (!values[val[0]]) errors[val[0]] = 'Required'
-                        }
+                        if (!values[val[0]]) errors[val[0]] = 'Required'
                     })
                     if (
                         !/^(ftp|http|https):\/\/[^ "]+$/.test(values.twitterUrl)
@@ -448,6 +376,20 @@ const EmployerForm = ({ user }) => {
                 }}
                 onSubmit={async (values, { setSubmitting }) => {
                     console.log('OHYA BABY WE GOT IT WORKING')
+
+                    const formData = new FormData()
+                    formData.append('image', selectedFile)
+
+                    // ohhhhhhh i knowww
+
+                    const response = await fetch('/api/storeImages', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                        body: formData,
+                    })
+                    // ohhhh
 
                     const mutation = gql`
                         mutation createDao($data: DaoInput!) {
@@ -464,6 +406,7 @@ const EmployerForm = ({ user }) => {
                         mutation,
                         variables,
                     )
+
                     if (addDao)
                         return toast({
                             containerStyle: {
@@ -498,6 +441,7 @@ const EmployerForm = ({ user }) => {
 
                             handleSubmit(e)
                         }}
+                        encType="multipart/form-data"
                     >
                         {step === 1 && (
                             <Step1
@@ -513,7 +457,7 @@ const EmployerForm = ({ user }) => {
                                 handleChange={handleChange}
                                 handleBlur={handleBlur}
                                 value={values.discordServerExists}
-                                setFieldValue={setFieldValue} // i will go take a shower nwo so brb check discord btw
+                                setFieldValue={setFieldValue}
                                 touched={touched}
                             />
                         )}
@@ -540,7 +484,7 @@ const EmployerForm = ({ user }) => {
                             <Step5
                                 handleChange={handleChange}
                                 handleBlur={handleBlur}
-                                value={values.daoProfilePic}
+                                value={values.twitterUrl}
                                 touched={touched}
                                 errors={errors}
                             />
@@ -550,7 +494,7 @@ const EmployerForm = ({ user }) => {
                             <Step6
                                 handleChange={handleChange}
                                 handleBlur={handleBlur}
-                                value={values.twitterUrl}
+                                value={values.daoGoals}
                                 errors={errors}
                                 touched={touched}
                             />
@@ -558,14 +502,6 @@ const EmployerForm = ({ user }) => {
 
                         {step === 7 && (
                             <Step7
-                                handleChange={handleChange}
-                                handleBlur={handleBlur}
-                                value={values.daoGoals}
-                                touched={touched}
-                            />
-                        )}
-                        {step === 8 && (
-                            <Step8
                                 handleChange={handleChange}
                                 handleBlur={handleBlur}
                                 value={values.briefDescription}

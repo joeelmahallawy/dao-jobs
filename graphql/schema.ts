@@ -23,7 +23,6 @@ export const typeDefs = gql`
         discordServerExists: String!
         discordLink: String!
         discordPopulation: String!
-        daoProfilePic: String
         twitterUrl: String!
         daoGoals: String!
         briefDescription: String!

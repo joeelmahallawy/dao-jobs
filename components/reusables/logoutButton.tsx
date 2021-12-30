@@ -21,7 +21,7 @@ const LogoutButton = () => {
                 fontSize={['1rem', '1.25rem', '1.5rem', '1.75rem', '2rem']}
                 colorScheme="linkedin"
                 onClick={() => {
-                    // localStorage.removeItem('tokens')
+                    localStorage.removeItem('tokens')
                     setUser(null)
                 }}
             >
