@@ -7,16 +7,27 @@ import { useRecoilState } from 'recoil'
 import EmployerMainPage from './employerMain'
 import EmployerForm from '../components/registration/employerForm'
 
-const RegistrationPage = ({
-    user: {
-        user: { user_metadata: user },
-    },
-}) => {
+const RegistrationPage = (props) => {
+    const user = Object.keys(props).length > 0 && props.user.user.user_metadata
     console.log(user)
+    // if (!user) {
+    //     return <Heading>Not logged in</Heading>
+    // }
     return (
-        <Center>
-            <Registration user={user} />
-        </Center>
+        // <Button
+        //     onClick={async () => {
+        //         await supabase.auth.signIn(
+        //             {
+        //                 provider: 'discord',
+        //             },
+        //             {
+        //                 scopes: 'identify',
+        //                 redirectTo: '/registration',
+        //             },
+        //         )
+        //     }}
+        // >
+        <Registration user={user} />
     )
 }
 
