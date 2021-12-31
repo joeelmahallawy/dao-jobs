@@ -23,5 +23,5 @@ const userData = atom({
 //         return user
 //     },
 // })
-const useGlobalUser = createGlobalState<object>({})
-export { userData, useGlobalUser }
+
+export { userData }

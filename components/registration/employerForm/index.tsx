@@ -375,22 +375,6 @@ const EmployerForm = ({ user }) => {
                     return errors
                 }}
                 onSubmit={async (values, { setSubmitting }) => {
-                    console.log('OHYA BABY WE GOT IT WORKING')
-
-                    const formData = new FormData()
-                    formData.append('image', selectedFile)
-
-                    // ohhhhhhh i knowww
-
-                    const response = await fetch('/api/storeImages', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                        },
-                        body: formData,
-                    })
-                    // ohhhh
-
                     const mutation = gql`
                         mutation createDao($data: DaoInput!) {
                             addDao(daoData: $data) {
@@ -398,6 +382,7 @@ const EmployerForm = ({ user }) => {
                             }
                         }
                     `
+
                     const variables = {
                         data: values,
                     }
@@ -434,7 +419,6 @@ const EmployerForm = ({ user }) => {
                 }) => (
                     <Form
                         onSubmit={(e) => {
-                            console.log(errors)
                             // if there are errors
                             if (Object.keys(errors).length !== 0)
                                 alert('Please fill out all required fields!')

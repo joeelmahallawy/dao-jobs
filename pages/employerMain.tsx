@@ -4,7 +4,6 @@ import { userData } from '../lib/recoil'
 
 const EmployerMainPage = () => {
     const [user, setUser] = useRecoilState(userData)
-    console.log(user)
     return user ? (
         <Heading>the beginning of employers main page</Heading>
     ) : (

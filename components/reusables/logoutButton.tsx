@@ -9,7 +9,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 
 const LogoutButton = () => {
     const [user, setUser] = useRecoilState(userData)
-    console.log(user)
+
     return (
         <Link href="http://localhost:3000">
             <Button

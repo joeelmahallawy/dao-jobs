@@ -11,10 +11,6 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 const Header = () => {
     const [user, setUser] = useRecoilState(userData)
 
-    React.useEffect(() => {
-        console.log(user)
-    })
-
     return (
         <Center
             id="navbar"

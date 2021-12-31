@@ -3,29 +3,28 @@
 
 generator client {
   provider = "prisma-client-js"
-  previewFeatures=["mongoDb"]
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Employers {
-  id String @id @default(dbgenerated()) @map("_id") @db.ObjectId
-  discordTag String 
+  id String @id @default(uuid())
+  discordTag String
   ownsDao String
   profilePic String
 }
 
 model JobSeekers {
-  id String @id @default(dbgenerated()) @map("_id") @db.ObjectId
-  discordTag String 
+  id String @id @default(uuid())
+  discordTag String
   profilePic String
 }
 
-model DAOs {
-  id String @id @default(dbgenerated()) @map("_id") @db.ObjectId
+model Daos {
+  id String @id @default(uuid()) 
   nameOfDao String
   discordServerExists String
   discordLink String

@@ -17,8 +17,9 @@ export const typeDefs = gql`
         daoGoals: String!
         briefDescription: String!
     }
+
     type Dao {
-        _id: ID!
+        id: ID!
         nameOfDao: String!
         discordServerExists: String!
         discordLink: String!
@@ -27,22 +28,26 @@ export const typeDefs = gql`
         daoGoals: String!
         briefDescription: String!
     }
+
     type Employer {
-        _id: ID!
+        id: ID!
         discordTag: String!
         profilePic: String!
         ownsDao: String!
     }
+
     input EmployerInput {
         discordTag: String!
         profilePic: String!
         ownsDao: String!
     }
+
     type JobSeeker {
-        _id: ID!
+        id: ID!
         discordTag: String!
         profilePic: String!
     }
+
     input JobSeekerInput {
         discordTag: String!
         profilePic: String!
