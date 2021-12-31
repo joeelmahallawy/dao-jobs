@@ -10,21 +10,31 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Employers {
-  id String @id @default(uuid())
-  discordTag String
-  ownsDao String
-  profilePic String
+model Employer {
+  id Int @id 
+  discordUsername String
+  ownsDao Dao?
+  profilePicURL String
+}
+// model User {
+//   id      Int      @id @default(autoincrement())
+//   profile Profile?
+// }
+// model Profile {
+//   id     Int  @id @default(autoincrement())
+//   user   User @relation(fields: [userId], references: [id])
+//   userId Int
+// }
+model JobSeeker {
+  id Int @id
+  discordUsername String
+  profilePicURL String
 }
 
-model JobSeekers {
-  id String @id @default(uuid())
-  discordTag String
-  profilePic String
-}
-
-model Daos {
-  id String @id @default(uuid()) 
+model Dao {
+  id Int @id @default(autoincrement())
+  EmployerId Int
+  OwnedBy Employer @relation(fields: [EmployerId], references: [id])
   nameOfDao String
   discordServerExists String
   discordLink String

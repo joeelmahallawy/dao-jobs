@@ -7,11 +7,13 @@ import { useRecoilState } from 'recoil'
 import EmployerMainPage from './employerMain'
 import EmployerForm from '../components/registration/employerForm'
 
-const RegistrationPage = (props) => {
-    const user = Object.keys(props).length > 0 && props.user.user.user_metadata
-    console.log(user)
-    // if (!user) {
-    //     return <Heading>Not logged in</Heading>
+const RegistrationPage = ({ user }) => {
+    // const user = Object.keys(props).length > 0 && props.user
+    if (!user) {
+        return <Heading>Not logged in</Heading>
+    }
+
+    // if (!user) {e
     // }
     return (
         // <Button
@@ -33,11 +35,12 @@ const RegistrationPage = (props) => {
 
 export const getServerSideProps = async ({ req }) => {
     const user = await supabase.auth.api.getUserByCookie(req)
+
     if (!user.user)
         return {
             props: {},
             // redirect: { destination: '/seekerMain' },
         }
-    else return { props: { user } }
+    else return { props: { user: user.user.user_metadata } }
 }
 export default RegistrationPage

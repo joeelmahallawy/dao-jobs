@@ -20,6 +20,7 @@ import React, { useState } from 'react'
 import { request, gql } from 'graphql-request'
 import Fade from 'react-reveal/Fade'
 import { theme } from '../../../utils/theme'
+import { useRouter } from 'next/router'
 
 type InitialValues = {
     nameOfDao: string
@@ -31,6 +32,9 @@ type InitialValues = {
     briefDescription: string
 }
 const EmployerForm = ({ user }) => {
+    console.log('user', user)
+    const router = useRouter()
+    const [navigateToEmployerPage, setNavigateToEmployerPage] = useState(false)
     const toast = useToast()
     const initValues: InitialValues = {
         nameOfDao: '',
@@ -43,6 +47,10 @@ const EmployerForm = ({ user }) => {
     }
 
     const [step, setStep] = React.useState<number>(1)
+
+    if (navigateToEmployerPage) {
+        router.push('/employerMain')
+    }
 
     // yusss
     // i think it will be an object yuhh lmao
@@ -375,24 +383,46 @@ const EmployerForm = ({ user }) => {
                     return errors
                 }}
                 onSubmit={async (values, { setSubmitting }) => {
-                    const mutation = gql`
-                        mutation createDao($data: DaoInput!) {
-                            addDao(daoData: $data) {
+                    const mutationDao = gql`
+                        mutation createDao($DAODATA: DaoInput!) {
+                            addDao(daoData: $DAODATA) {
                                 nameOfDao
                             }
                         }
                     `
-
-                    const variables = {
-                        data: values,
+                    const mutationEmployer = gql`
+                        query createEmployer($EMPLOYERDATA: EmployerInput!) {
+                            addEmployer(employerData: $EMPLOYERDATA) {
+                                id
+                            }
+                        }
+                    `
+                    const daoMutationVariables = {
+                        DAODATA: values,
+                    }
+                    const employerMutationVariables = {
+                        EMPLOYERDATA: {
+                            profilePicURL: user.avatar_url,
+                            discordUsername: user.full_name,
+                            id: user.sub,
+                        },
                     }
                     const { addDao } = await request(
                         'http://localhost:3000/api/graphql',
-                        mutation,
-                        variables,
+                        mutationDao,
+                        daoMutationVariables,
                     )
 
-                    if (addDao)
+                    const { addEmployer } = await request(
+                        'http://localhost:3000/api/graphql',
+                        mutationEmployer,
+                        employerMutationVariables,
+                    )
+
+                    if (addDao && addEmployer) {
+                        setTimeout(() => {
+                            setNavigateToEmployerPage(true)
+                        }, 2000)
                         return toast({
                             containerStyle: {
                                 fontFamily: 'Arial',
@@ -405,6 +435,7 @@ const EmployerForm = ({ user }) => {
                             duration: 3000,
                             isClosable: true,
                         })
+                    }
                 }}
             >
                 {({

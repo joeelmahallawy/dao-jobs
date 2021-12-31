@@ -31,25 +31,26 @@ export const typeDefs = gql`
 
     type Employer {
         id: ID!
-        discordTag: String!
-        profilePic: String!
-        ownsDao: String!
+        discordUsername: String!
+        profilePicURL: String!
+        # ownsDao: String!
     }
 
     input EmployerInput {
-        discordTag: String!
-        profilePic: String!
-        ownsDao: String!
+        id: ID!
+        discordUsername: String!
+        profilePicURL: String!
+        # ownsDao: String!
     }
 
     type JobSeeker {
         id: ID!
         discordTag: String!
-        profilePic: String!
+        profilePicURL: String!
     }
 
     input JobSeekerInput {
         discordTag: String!
-        profilePic: String!
+        profilePicURL: String!
     }
 `
