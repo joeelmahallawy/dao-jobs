@@ -126,7 +126,6 @@ const EmployerMainPage = ({
                                             }}
                                             borderRadius="50%"
                                             border="5px solid #00acee"
-                                            // bg="gray.6   00"
                                             fontSize="2rem"
                                             p="1rem"
                                         >
