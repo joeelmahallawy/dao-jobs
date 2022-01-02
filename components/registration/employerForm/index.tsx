@@ -24,7 +24,7 @@ import { useRouter } from 'next/router'
 
 type InitialValues = {
     nameOfDao: string
-    discordServerExists: string
+    discordServerExists: boolean
     discordLink: string
     discordPopulation: string
     twitterUrl: string
@@ -38,7 +38,7 @@ const EmployerForm = ({ user }) => {
     const toast = useToast()
     const initValues: InitialValues = {
         nameOfDao: '',
-        discordServerExists: '',
+        discordServerExists: undefined,
         discordLink: '',
         discordPopulation: '',
         twitterUrl: '',
@@ -103,13 +103,18 @@ const EmployerForm = ({ user }) => {
                     </FormLabel>
                     <RadioGroup
                         value={value}
-                        onChange={(event: string) => {
-                            setFieldValue('discordServerExists', event)
+                        onChange={(event) => {
+                            // console.log(typeof Boolean(event))
+                            if (event == 'true')
+                                setFieldValue('discordServerExists', true)
+                            else setFieldValue('discordServerExists', false)
                         }}
                     >
                         <Stack spacing={5} direction="row">
-                            <Radio value="yes">Yes</Radio>
-                            <Radio value="no">No</Radio>
+                            {/* @ts-expect-error */}
+                            <Radio value={true}>Yes</Radio>
+                            {/* @ts-expect-error */}
+                            <Radio value={false}>No</Radio>
                         </Stack>
                     </RadioGroup>
                 </FormControl>
@@ -374,7 +379,8 @@ const EmployerForm = ({ user }) => {
                     console.log(values)
                     const errors = {}
                     Object.entries(values).forEach((val) => {
-                        if (!values[val[0]]) errors[val[0]] = 'Required'
+                        if (values[val[0]] == '' || values[val[0]] == undefined)
+                            errors[val[0]] = 'Required'
                     })
                     if (
                         !/^(ftp|http|https):\/\/[^ "]+$/.test(values.twitterUrl)
@@ -384,21 +390,25 @@ const EmployerForm = ({ user }) => {
                 }}
                 onSubmit={async (values, { setSubmitting }) => {
                     const mutationDao = gql`
-                        mutation createDao($DAODATA: DaoInput!) {
-                            addDao(daoData: $DAODATA) {
-                                nameOfDao
+                        mutation createDao(
+                            $DAODATA: DaoInput!
+                            $EMPLOYERID: String!
+                        ) {
+                            addDao(daoData: $DAODATA, employerID: $EMPLOYERID) {
+                                twitterUrl
                             }
                         }
                     `
                     const mutationEmployer = gql`
-                        query createEmployer($EMPLOYERDATA: EmployerInput!) {
+                        mutation createEmployer($EMPLOYERDATA: EmployerInput!) {
                             addEmployer(employerData: $EMPLOYERDATA) {
                                 id
                             }
                         }
                     `
                     const daoMutationVariables = {
-                        DAODATA: values,
+                        EMPLOYERID: user.sub,
+                        DAODATA: { ...values },
                     }
                     const employerMutationVariables = {
                         EMPLOYERDATA: {
@@ -407,35 +417,42 @@ const EmployerForm = ({ user }) => {
                             id: user.sub,
                         },
                     }
-                    const { addDao } = await request(
-                        'http://localhost:3000/api/graphql',
-                        mutationDao,
-                        daoMutationVariables,
-                    )
 
-                    const { addEmployer } = await request(
+                    const addEmployer = await request(
                         'http://localhost:3000/api/graphql',
                         mutationEmployer,
                         employerMutationVariables,
                     )
-
-                    if (addDao && addEmployer) {
-                        setTimeout(() => {
-                            setNavigateToEmployerPage(true)
-                        }, 2000)
-                        return toast({
-                            containerStyle: {
-                                fontFamily: 'Arial',
-                                padding: '1rem',
-                            },
-                            title: 'DAO registered.',
-                            description:
-                                'You have successfully registered your DAO!',
-                            status: 'success',
-                            duration: 3000,
-                            isClosable: true,
+                        .then(async () => {
+                            const addDao = await request(
+                                'http://localhost:3000/api/graphql',
+                                mutationDao,
+                                daoMutationVariables,
+                            )
+                            if (!addDao)
+                                throw new Error('Could not post DAO data')
                         })
-                    }
+                        .then(() => {
+                            setTimeout(() => {
+                                setNavigateToEmployerPage(true)
+                            }, 2000)
+                            return toast({
+                                containerStyle: {
+                                    fontFamily: 'Arial',
+                                    padding: '1rem',
+                                },
+                                title: 'DAO registered.',
+                                description:
+                                    'You have successfully registered your DAO!',
+                                status: 'success',
+                                duration: 3000,
+                                isClosable: true,
+                            })
+                            // }
+                        })
+                        .catch((err) => {
+                            alert(err.message)
+                        })
                 }}
             >
                 {({
@@ -466,7 +483,7 @@ const EmployerForm = ({ user }) => {
                                 touched={touched}
                             />
                         )}
-
+                        {console.log(values)}
                         {step === 2 && (
                             <Step2
                                 handleChange={handleChange}
@@ -514,7 +531,7 @@ const EmployerForm = ({ user }) => {
                                 touched={touched}
                             />
                         )}
-
+                        {console.log('errorss:', errors)}
                         {step === 7 && (
                             <Step7
                                 handleChange={handleChange}

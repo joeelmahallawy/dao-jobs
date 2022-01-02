@@ -8,6 +8,7 @@ import EmployerMainPage from './employerMain'
 import EmployerForm from '../components/registration/employerForm'
 
 const RegistrationPage = ({ user }) => {
+    console.log(user)
     // const user = Object.keys(props).length > 0 && props.user
     if (!user) {
         return <Heading>Not logged in</Heading>

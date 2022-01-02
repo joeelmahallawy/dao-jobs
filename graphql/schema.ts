@@ -1,16 +1,17 @@
 import { gql } from 'apollo-server-micro'
 export const typeDefs = gql`
     type Query {
-        Employers: Employer
+        Employer: Employer
+        Dao(employerID: String!): Dao
     }
     type Mutation {
-        addEmployer(employerData: EmployerInput!): Employer!
-        addDao(daoData: DaoInput!): Dao!
+        addEmployer(employerData: EmployerInput!): Employer
+        addDao(daoData: DaoInput!, employerID: String!): Dao
     }
 
     input DaoInput {
         nameOfDao: String!
-        discordServerExists: String!
+        discordServerExists: Boolean!
         discordLink: String!
         discordPopulation: String!
         twitterUrl: String!
@@ -20,8 +21,9 @@ export const typeDefs = gql`
 
     type Dao {
         id: ID!
+        employerID: String!
         nameOfDao: String!
-        discordServerExists: String!
+        discordServerExists: Boolean!
         discordLink: String!
         discordPopulation: String!
         twitterUrl: String!

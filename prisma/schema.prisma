@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Employer {
-  id Int @id 
+  id String @id 
   discordUsername String
   ownsDao Dao?
   profilePicURL String
@@ -26,17 +26,17 @@ model Employer {
 //   userId Int
 // }
 model JobSeeker {
-  id Int @id
+  id String @id
   discordUsername String
   profilePicURL String
 }
 
 model Dao {
-  id Int @id @default(autoincrement())
-  EmployerId Int
-  OwnedBy Employer @relation(fields: [EmployerId], references: [id])
+  id Int @id @default(autoincrement())  
+  employerId String
+  ownedBy Employer  @relation(fields: [employerId], references: [id])
   nameOfDao String
-  discordServerExists String
+  discordServerExists Boolean
   discordLink String
   discordPopulation String
   twitterUrl String
