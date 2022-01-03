@@ -21,6 +21,8 @@ import { request, gql } from 'graphql-request'
 import Fade from 'react-reveal/Fade'
 import { theme } from '../../../utils/theme'
 import { useRouter } from 'next/router'
+import { supabase } from '../../../lib/supabase'
+import addDaoAndEmployer from '../../../helpers/graphql/mutations/addDaoAndEmployer'
 
 type InitialValues = {
     nameOfDao: string
@@ -31,8 +33,7 @@ type InitialValues = {
     daoGoals: string
     briefDescription: string
 }
-const EmployerForm = ({ user }) => {
-    console.log('user', user)
+const EmployerForm = ({ user: { user_metadata: user } }) => {
     const router = useRouter()
     const [navigateToEmployerPage, setNavigateToEmployerPage] = useState(false)
     const toast = useToast()
@@ -104,7 +105,6 @@ const EmployerForm = ({ user }) => {
                     <RadioGroup
                         value={value}
                         onChange={(event) => {
-                            // console.log(typeof Boolean(event))
                             if (event == 'true')
                                 setFieldValue('discordServerExists', true)
                             else setFieldValue('discordServerExists', false)
@@ -223,8 +223,86 @@ const EmployerForm = ({ user }) => {
             </Fade>
         )
     }
+    const Step5 = ({ handleChange, touched, handleBlur, value }: any) => {
+        const [dp, setdp] = useState({
+            file: '',
+            imagePreviewUrl:
+                'https://github.com/OlgaKoplik/CodePen/blob/master/profile.jpg?raw=true',
+            active: 'edit',
+        })
+        function photoUpload(event, setProfilePic) {
+            event.preventDefault()
+            const reader = new FileReader()
+            const file = event.target.files[0]
+            reader.onloadend = () => {
+                setProfilePic({
+                    file,
+                    imagePreviewUrl: reader.result,
+                })
+            }
+            reader.readAsDataURL(file)
+        }
 
-    const Step5 = ({
+        return (
+            <Fade bottom big>
+                <FormControl isRequired>
+                    <Flex flexDir="column" mt={10} textAlign="center">
+                        <label>
+                            <FormLabel textAlign="left">
+                                Discord server picture
+                            </FormLabel>
+                            <Image
+                                _hover={{ cursor: 'pointer', opacity: '0.85' }}
+                                fit="cover"
+                                borderRadius="50%"
+                                w="10rem"
+                                h="10rem"
+                                m="0 auto"
+                                src={dp.imagePreviewUrl}
+                            />
+                            <input
+                                style={{ display: 'none' }}
+                                type="file"
+                                onChange={(e) => {
+                                    handleChange(e)
+                                    photoUpload(e, setdp)
+                                }}
+                            />
+                        </label>
+                    </Flex>
+                </FormControl>
+                <Flex mt="1rem" justifyContent="space-between">
+                    <Button
+                        mt="1rem"
+                        colorScheme="gray"
+                        type="button"
+                        onClick={() => setStep(4)}
+                    >
+                        Back
+                    </Button>
+                    <Button
+                        mt="1rem"
+                        colorScheme="linkedin"
+                        type="button"
+                        onClick={async () => {
+                            await supabase.storage
+                                .from('dao-images')
+                                .upload(`daos/${user.sub}.png`, dp.file, {
+                                    cacheControl: '3600',
+                                    upsert: false,
+                                    contentType: 'image/png',
+                                })
+                            setStep(6)
+                        }}
+                    >
+                        Next
+                    </Button>
+                </Flex>
+            </Fade>
+        )
+    }
+
+    const Step6 = ({
         handleChange,
         touched,
         handleBlur,
@@ -257,7 +335,7 @@ const EmployerForm = ({ user }) => {
                         mt="1rem"
                         colorScheme="gray"
                         type="button"
-                        onClick={() => setStep(4)}
+                        onClick={() => setStep(5)}
                     >
                         Back
                     </Button>
@@ -266,7 +344,7 @@ const EmployerForm = ({ user }) => {
                         mt="1rem"
                         colorScheme="linkedin"
                         type="button"
-                        onClick={() => setStep(6)}
+                        onClick={() => setStep(7)}
                     >
                         Next
                     </Button>
@@ -274,7 +352,7 @@ const EmployerForm = ({ user }) => {
             </Fade>
         )
     }
-    const Step6 = ({ handleChange, handleBlur, value, errors }: any) => {
+    const Step7 = ({ handleChange, handleBlur, value, errors }: any) => {
         return (
             <Fade bottom big>
                 <FormControl isRequired>
@@ -297,16 +375,15 @@ const EmployerForm = ({ user }) => {
                         mt="1rem"
                         colorScheme="gray"
                         type="button"
-                        onClick={() => setStep(5)}
+                        onClick={() => setStep(6)}
                     >
                         Back
                     </Button>
                     <Button
                         mt="1rem"
-                        // isDisabled={!touched.daoGoals}
                         colorScheme="linkedin"
                         type="button"
-                        onClick={() => setStep(7)}
+                        onClick={() => setStep(8)}
                     >
                         Next
                     </Button>
@@ -315,7 +392,7 @@ const EmployerForm = ({ user }) => {
         )
     }
 
-    const Step7 = ({
+    const Step8 = ({
         touched,
         handleChange,
         handleBlur,
@@ -344,7 +421,7 @@ const EmployerForm = ({ user }) => {
                         mt="1rem"
                         colorScheme="gray"
                         type="button"
-                        onClick={() => setStep(6)}
+                        onClick={() => setStep(7)}
                     >
                         Back
                     </Button>
@@ -376,7 +453,6 @@ const EmployerForm = ({ user }) => {
             <Formik
                 initialValues={initValues}
                 validate={(values) => {
-                    console.log(values)
                     const errors = {}
                     Object.entries(values).forEach((val) => {
                         if (values[val[0]] == '' || values[val[0]] == undefined)
@@ -389,70 +465,12 @@ const EmployerForm = ({ user }) => {
                     return errors
                 }}
                 onSubmit={async (values, { setSubmitting }) => {
-                    const mutationDao = gql`
-                        mutation createDao(
-                            $DAODATA: DaoInput!
-                            $EMPLOYERID: String!
-                        ) {
-                            addDao(daoData: $DAODATA, employerID: $EMPLOYERID) {
-                                twitterUrl
-                            }
-                        }
-                    `
-                    const mutationEmployer = gql`
-                        mutation createEmployer($EMPLOYERDATA: EmployerInput!) {
-                            addEmployer(employerData: $EMPLOYERDATA) {
-                                id
-                            }
-                        }
-                    `
-                    const daoMutationVariables = {
-                        EMPLOYERID: user.sub,
-                        DAODATA: { ...values },
-                    }
-                    const employerMutationVariables = {
-                        EMPLOYERDATA: {
-                            profilePicURL: user.avatar_url,
-                            discordUsername: user.full_name,
-                            id: user.sub,
-                        },
-                    }
-
-                    const addEmployer = await request(
-                        'http://localhost:3000/api/graphql',
-                        mutationEmployer,
-                        employerMutationVariables,
+                    addDaoAndEmployer(
+                        user,
+                        values,
+                        setNavigateToEmployerPage,
+                        toast,
                     )
-                        .then(async () => {
-                            const addDao = await request(
-                                'http://localhost:3000/api/graphql',
-                                mutationDao,
-                                daoMutationVariables,
-                            )
-                            if (!addDao)
-                                throw new Error('Could not post DAO data')
-                        })
-                        .then(() => {
-                            setTimeout(() => {
-                                setNavigateToEmployerPage(true)
-                            }, 2000)
-                            return toast({
-                                containerStyle: {
-                                    fontFamily: 'Arial',
-                                    padding: '1rem',
-                                },
-                                title: 'DAO registered.',
-                                description:
-                                    'You have successfully registered your DAO!',
-                                status: 'success',
-                                duration: 3000,
-                                isClosable: true,
-                            })
-                            // }
-                        })
-                        .catch((err) => {
-                            alert(err.message)
-                        })
                 }}
             >
                 {({
@@ -515,10 +533,10 @@ const EmployerForm = ({ user }) => {
                         {step === 5 && (
                             <Step5
                                 handleChange={handleChange}
-                                handleBlur={handleBlur}
-                                value={values.twitterUrl}
-                                touched={touched}
-                                errors={errors}
+                                // handleBlur={handleBlur}
+                                // value={values.twitterUrl}
+                                // touched={touched}
+                                // errors={errors}
                             />
                         )}
 
@@ -526,14 +544,22 @@ const EmployerForm = ({ user }) => {
                             <Step6
                                 handleChange={handleChange}
                                 handleBlur={handleBlur}
-                                value={values.daoGoals}
+                                value={values.twitterUrl}
                                 errors={errors}
                                 touched={touched}
                             />
                         )}
-                        {console.log('errorss:', errors)}
+
                         {step === 7 && (
                             <Step7
+                                handleChange={handleChange}
+                                handleBlur={handleBlur}
+                                value={values.daoGoals}
+                                touched={touched}
+                            />
+                        )}
+                        {step === 8 && (
+                            <Step8
                                 handleChange={handleChange}
                                 handleBlur={handleBlur}
                                 value={values.briefDescription}

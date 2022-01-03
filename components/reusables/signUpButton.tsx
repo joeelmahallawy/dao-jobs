@@ -48,6 +48,9 @@ const SignUpButton = () => {
                             redirectTo: 'http://localhost:3000/registration',
                         },
                     )
+                    // await supabase.auth.signOut()
+                    // const data = await supabase.auth.session()
+                    // console.log(data)
                 }}
             >
                 Signup / Login

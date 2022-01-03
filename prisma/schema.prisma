@@ -16,15 +16,7 @@ model Employer {
   ownsDao Dao?
   profilePicURL String
 }
-// model User {
-//   id      Int      @id @default(autoincrement())
-//   profile Profile?
-// }
-// model Profile {
-//   id     Int  @id @default(autoincrement())
-//   user   User @relation(fields: [userId], references: [id])
-//   userId Int
-// }
+
 model JobSeeker {
   id String @id
   discordUsername String
@@ -42,4 +34,21 @@ model Dao {
   twitterUrl String
   daoGoals String
   briefDescription String
+  hasJob JobPosting[]
+}
+
+model JobPosting {
+  id Int @id @default(autoincrement())
+  daoId Int 
+  workFor Dao @relation(fields: [daoId], references: [id])
+  jobTitle String
+  jobDescription String
+  tokenExists Boolean
+  tokenSymbol String
+  tokenPrice Float
+  tokenAddress String
+  currencyOfCompensation String
+  approximateSalary String
+  salaryNegotiable Boolean
+  discordContact String
 }

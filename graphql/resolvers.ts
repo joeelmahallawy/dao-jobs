@@ -7,15 +7,13 @@ export const resolvers = {
                     employerId: employerID,
                 },
             }),
-        // Employers: async () =>
-        //     await prisma.employer.create({
-        //         data: {
-        //             id
-        //             discordTag: 'MoreThanYourAverageJoe',
-        //             ownsDao: 'Anura',
-        //             profilePic: '23214123',
-        //         },
-        //     }),
+        getJobsForCurrentDao: async (_, { daoID }) =>
+            await prisma.jobPosting.findMany(),
+        // await prisma.jobPosting.findFirst({
+        //     where: {
+        //         daoId: +daoID,
+        //     },
+        // }),
     },
     Mutation: {
         addEmployer: async (_, { employerData }) =>
@@ -24,36 +22,26 @@ export const resolvers = {
             await prisma.dao.create({
                 data: {
                     ...daoData,
-                    // briefDescription: 'a',
-                    // daoGoals: 'a',
-                    // discordLink: 'b',
-                    // // id: '',
-                    // discordPopulation: 'c',
-                    // discordServerExists: 's',
-                    // nameOfDao: 'd',
-                    // twitterUrl: 'f',
-                    // id: 'ohya',
-                    // employerId: '12',
                     ownedBy: {
                         connect: {
                             id: employerID,
                         },
-
-                        // create: {
-                        //     discordUsername: '',
-                        //     profilePicURL: '',
-                        //     id: '12312321312312',
-                        // },
                     },
-
-                    // briefDescription:''
-                    // ...daoData,
-                    // ownedBy: {
-                    //     connect: {
-                    //         id: employerID,
-                    //     },
-                    // },
                 },
             }),
+        addJobPosting: async (_, { jobPostData }) => {
+            const { id, ...rest } = jobPostData
+            const mutation = await prisma.jobPosting.create({
+                data: {
+                    ...rest,
+                    workFor: {
+                        connect: {
+                            id,
+                        },
+                    },
+                },
+            })
+            return mutation
+        },
     },
 }

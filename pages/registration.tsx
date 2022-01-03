@@ -8,40 +8,42 @@ import EmployerMainPage from './employerMain'
 import EmployerForm from '../components/registration/employerForm'
 
 const RegistrationPage = ({ user }) => {
-    console.log(user)
-    // const user = Object.keys(props).length > 0 && props.user
-    if (!user) {
-        return <Heading>Not logged in</Heading>
-    }
+    const [userData, setUserData] = useState(user)
+    console.log('user', user)
+    console.log('useRDATA', userData)
 
-    // if (!user) {e
-    // }
-    return (
-        // <Button
-        //     onClick={async () => {
-        //         await supabase.auth.signIn(
-        //             {
-        //                 provider: 'discord',
-        //             },
-        //             {
-        //                 scopes: 'identify',
-        //                 redirectTo: '/registration',
-        //             },
-        //         )
-        //     }}
-        // >
-        <Registration user={user} />
-    )
+    useEffect(() => {
+        if (!userData) {
+            ;(async function () {
+                const data = await supabase.auth.user()
+                setUserData(data)
+            })()
+        }
+    })
+    return <Registration user={userData} />
 }
 
 export const getServerSideProps = async ({ req }) => {
-    const user = await supabase.auth.api.getUserByCookie(req)
+    const response = await supabase.auth.api
+        .getUserByCookie(req)
+        .then((user) => {
+            if (!user) {
+                return { props: { user: null } }
+            }
 
-    if (!user.user)
-        return {
-            props: {},
-            // redirect: { destination: '/seekerMain' },
-        }
-    else return { props: { user: user.user.user_metadata } }
+            return {
+                props: {
+                    user: user.user,
+                },
+            }
+        })
+        .catch((err) => {
+            return {
+                props: {
+                    err: err.message,
+                },
+            }
+        })
+    return response
 }
 export default RegistrationPage
