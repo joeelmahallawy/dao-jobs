@@ -12,7 +12,6 @@ const EmployerPage = ({
     user: any
     userDao: { Dao: Dao; daoServerImageURL: string }
 }) => {
-    console.log(Dao)
     return user && Dao ? (
         <EmployerMainPage
             Dao={Dao}

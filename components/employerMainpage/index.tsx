@@ -11,24 +11,30 @@ import {
 import { theme } from '../../utils/theme'
 import React, { useEffect, useState } from 'react'
 import { FaDiscord, FaTwitter } from 'react-icons/fa'
-import JobPostingModal from './jobPostingModa'
-import { gql } from 'apollo-server-micro'
+import AddJobPostingModal from './createJobPostingModal'
 import { Dao, JobPostingValues } from '../../utils/types'
 import request from 'graphql-request'
 import getJobsForDao from '../../helpers/graphql/queries/getJobsForDao'
+import JobPostingModal from './jobPostingModal'
+import getEmployerForCurrentJob from '../../helpers/graphql/queries/getEmployerFromJob'
 
 const EmployerMainPage = ({ user, Dao, daoServerImageURL }) => {
     const [jobs, setJobs] = useState([])
+    const [employer, setEmployer] = useState()
     useEffect(() => {
+        // get all jobs for current dao
         getJobsForDao(Dao)
             .then((val) => setJobs(val))
             .catch((err) => console.error(err.message))
+
+        // get employer that posted all the jobs
+        getEmployerForCurrentJob(Dao.id, setEmployer)
     }, [])
-    console.log('these are all the jobs baby', jobs)
+
     return (
         <Center flexDir="column">
             <Box
-                w={['90%', '80%', '70%', '60%', '50%']}
+                w={['90%', '80%', '70%', '70%', '70%', '60%']}
                 borderRadius={10}
                 bg="#d6dfe9"
                 flexDir="column"
@@ -154,7 +160,7 @@ const EmployerMainPage = ({ user, Dao, daoServerImageURL }) => {
                             </Flex>
                         </Center>
                     </Flex>
-                    <Box p={[1, 3, 5, 7, 10]}>
+                    <Box p={[1, 3, 5, 7, 9]}>
                         <Heading
                             fontSize={[
                                 '1.25rem',
@@ -174,17 +180,17 @@ const EmployerMainPage = ({ user, Dao, daoServerImageURL }) => {
                             fontFamily="Arial"
                             fontSize={[
                                 '1rem',
-                                '1.2rem',
+                                '1rem',
                                 '1.4rem',
-                                '1.65rem',
-                                '1.75rem',
+                                '1.5rem',
+                                '1.5rem',
                             ]}
-                            mt={[1, 3, 5, 7, 10]}
+                            mt={[1, 2, 3, 5, 7]}
                         >
                             {Dao.briefDescription}
                         </Text>
                     </Box>
-                    <Box p={[1, 3, 5, 7, 10]}>
+                    <Box p={[1, 3, 5, 7, 9]}>
                         <Heading
                             fontSize={[
                                 '1.25rem',
@@ -204,10 +210,10 @@ const EmployerMainPage = ({ user, Dao, daoServerImageURL }) => {
                             fontFamily="Arial"
                             fontSize={[
                                 '1rem',
-                                '1.2rem',
+                                '1rem',
                                 '1.4rem',
-                                '1.65rem',
-                                '1.75rem',
+                                '1.5rem',
+                                '1.5rem',
                             ]}
                             mt={[1, 3, 5, 7, 10]}
                         >
@@ -216,33 +222,11 @@ const EmployerMainPage = ({ user, Dao, daoServerImageURL }) => {
                     </Box>
                 </Box>
             </Box>
-            {/* approximateSalary: "20 ADA per project"
-currencyOfCompensation: "ADA"
-daoId: 4
-discordContact: "MoreThanYourAverageJoe#3911"
-id: "7"
-jobDescription: "contributor to society"
-jobTitle: "Solidity dev"
-salaryNegotiable: true
-tokenAddress: ""
-tokenExists: false
-tokenPrice: 0.1
-tokenSymbol: "" */}
-            {jobs.map((job: JobPostingValues, i) => (
-                <Flex
-                    w={['90%', '80%', '70%', '60%', '50%']}
-                    key={i}
-                    p={5}
-                    bg="gray.200"
-                    mt={10}
-                    justifyContent="space-between"
-                >
-                    <Heading fontSize="2rem">{job.jobTitle}</Heading>
-                    <Button>Check out job</Button>
-                </Flex>
+            {jobs.map((job, i) => (
+                <JobPostingModal key={i} job={job} employer={employer} />
             ))}
             here is where the jibs go
-            <JobPostingModal dao={Dao} />
+            <AddJobPostingModal dao={Dao} />
         </Center>
     )
 }

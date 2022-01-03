@@ -32,7 +32,7 @@ import React, { useState } from 'react'
 import addJobPosting from '../../../helpers/graphql/mutations/addJobPosting'
 import { JobPostingInputValues } from '../../../utils/types'
 
-const JobPostingModal = ({ dao }) => {
+const AddJobPostingModal = ({ dao }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const initialRef = React.useRef()
     const inputInitialValues = {
@@ -64,7 +64,7 @@ const JobPostingModal = ({ dao }) => {
                 mt="2rem"
                 _hover={{ bg: 'gray.400', cursor: 'pointer' }}
                 p={10}
-                w={['90%', '80%', '70%', '60%', '50%']}
+                w={['90%', '80%', '70%', '70%', '70%', '60%']}
             >
                 <Heading fontFamily="Arial ">Add new position</Heading>
             </Center>
@@ -295,4 +295,4 @@ const JobPostingModal = ({ dao }) => {
         </>
     )
 }
-export default JobPostingModal
+export default AddJobPostingModal

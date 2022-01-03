@@ -9,8 +9,6 @@ import EmployerForm from '../components/registration/employerForm'
 
 const RegistrationPage = ({ user }) => {
     const [userData, setUserData] = useState(user)
-    console.log('user', user)
-    console.log('useRDATA', userData)
 
     useEffect(() => {
         if (!userData) {

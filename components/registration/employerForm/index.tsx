@@ -14,6 +14,8 @@ import {
     Image,
     Flex,
     useToast,
+    NumberInput,
+    NumberInputField,
 } from '@chakra-ui/react'
 import { Field, Formik, Form } from 'formik'
 import React, { useState } from 'react'
@@ -28,12 +30,12 @@ type InitialValues = {
     nameOfDao: string
     discordServerExists: boolean
     discordLink: string
-    discordPopulation: string
+    discordPopulation: number
     twitterUrl: string
     daoGoals: string
     briefDescription: string
 }
-const EmployerForm = ({ user: { user_metadata: user } }) => {
+const EmployerForm = ({ user }) => {
     const router = useRouter()
     const [navigateToEmployerPage, setNavigateToEmployerPage] = useState(false)
     const toast = useToast()
@@ -41,12 +43,12 @@ const EmployerForm = ({ user: { user_metadata: user } }) => {
         nameOfDao: '',
         discordServerExists: undefined,
         discordLink: '',
-        discordPopulation: '',
+        discordPopulation: 0,
         twitterUrl: '',
         daoGoals: '',
         briefDescription: '',
     }
-
+    console.log('current user', user)
     const [step, setStep] = React.useState<number>(1)
 
     if (navigateToEmployerPage) {
@@ -190,16 +192,25 @@ const EmployerForm = ({ user: { user_metadata: user } }) => {
                         Please enter approximate number of members in the
                         discord server and 'N/A' otherwise
                     </FormLabel>
-                    <Input
-                        outline="1px solid gray"
-                        _focus={{ bg: 'white' }}
-                        placeholder="Ex. 1000"
-                        type="text"
-                        name="discordPopulation"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={value}
-                    />
+                    <NumberInput
+                        min={0}
+                        keepWithinRange={false}
+                        clampValueOnBlur={false}
+                    >
+                        <NumberInputField
+                            outline="1px solid gray"
+                            _focus={{ bg: 'white' }}
+                            placeholder="Ex. 1000"
+                            name="discordPopulation"
+                            onChange={(e) => {
+                                handleChange(e)
+                            }}
+                            onBlur={handleBlur}
+                            value={value}
+                        />
+                    </NumberInput>
+                    {/* <Input
+                    /> */}
                 </FormControl>
                 <Flex mt="1rem" justifyContent="space-between">
                     <Button
@@ -501,7 +512,7 @@ const EmployerForm = ({ user: { user_metadata: user } }) => {
                                 touched={touched}
                             />
                         )}
-                        {console.log(values)}
+
                         {step === 2 && (
                             <Step2
                                 handleChange={handleChange}

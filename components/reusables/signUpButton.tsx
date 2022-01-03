@@ -50,7 +50,6 @@ const SignUpButton = () => {
                     )
                     // await supabase.auth.signOut()
                     // const data = await supabase.auth.session()
-                    // console.log(data)
                 }}
             >
                 Signup / Login

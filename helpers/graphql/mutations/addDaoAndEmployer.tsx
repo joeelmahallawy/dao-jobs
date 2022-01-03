@@ -9,6 +9,7 @@ const addDaoAndEmployer = async (user, values, setNavigationPage, toast) => {
             }
         }
     `
+
     const mutationEmployer = gql`
         mutation createEmployer($EMPLOYERDATA: EmployerInput!) {
             addEmployer(employerData: $EMPLOYERDATA) {
@@ -16,10 +17,19 @@ const addDaoAndEmployer = async (user, values, setNavigationPage, toast) => {
             }
         }
     `
+    const { discordPopulation, ...rest }: { discordPopulation: string } = values
+    const newDiscordPopulation = discordPopulation.replaceAll('-', '')
+    const fixedDiscordPopulation = Number(
+        newDiscordPopulation.replaceAll('+', ''),
+    )
 
     const daoMutationVariables = {
         EMPLOYERID: user.sub,
-        DAODATA: { ...values },
+        DAODATA: {
+            ...rest,
+            discordPopulation: fixedDiscordPopulation,
+            employerName: user.fullDiscordUsername,
+        },
     }
     const employerMutationVariables = {
         EMPLOYERDATA: {

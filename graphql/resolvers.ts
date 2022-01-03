@@ -9,10 +9,26 @@ export const resolvers = {
             }),
         getJobsForCurrentDao: async (_, { daoID }) =>
             await prisma.jobPosting.findMany(),
-        // await prisma.jobPosting.findFirst({
+        getEmployerForJob: async (_, { daoId }) =>
+            await prisma.employer.findFirst({
+                where: {
+                    ownsDao: {
+                        id: daoId,
+                    },
+                },
+                select: {
+                    discordUsername: true,
+                    profilePicURL: true,
+                },
+            }),
+        // .employer.findFirst({
         //     where: {
-        //         daoId: +daoID,
+        //         //
         //     },
+        // select:{
+        //     discordUsername:true,
+        //     profilePicURL:true
+        // }
         // }),
     },
     Mutation: {

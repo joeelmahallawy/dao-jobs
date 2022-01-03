@@ -1,4 +1,5 @@
 export type Dao = {
+    id: string
     nameOfDao: string
     discordServerExists: string
     discordPopulation: string
