@@ -14,13 +14,12 @@ import React, { useState, useEffect } from 'react'
 import Fade from 'react-reveal/Fade'
 import EmployerForm from './employerForm'
 
-const Registration = ({ user: { user_metadata: user } }) => {
+const Registration = ({ user }) => {
     const router = useRouter()
     const [selectedUser, setSelectedUser] = useState('')
     const [showForm, setShowForm] = useState(undefined)
     const [discordUserTag, setDiscordUserTag] = useState('')
-    console.log(discordUserTag)
-    //
+
     if (showForm == undefined) {
         return (
             <Center p="2.5%" h="80vh" flexDir="column">
@@ -50,9 +49,6 @@ const Registration = ({ user: { user_metadata: user } }) => {
                                     }}
                                 />
                                 <Button
-                                    onSubmit={(e) => {
-                                        console.log('hi')
-                                    }}
                                     type="submit"
                                     colorScheme="telegram"
                                     ml="auto"

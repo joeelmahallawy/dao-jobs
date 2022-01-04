@@ -12,11 +12,15 @@ import { supabase } from '../lib/supabase'
 const MyApp = ({ Component, pageProps: { session, ...pageProps } }) => {
     const [authenticatedState, setAuthenticatedState] =
         useState('not-authenticated')
-    // const router = useRouter()
     useEffect(() => {
         const { data: authListener } = supabase.auth.onAuthStateChange(
             (event, session) => {
-                handleAuthChange(event, session)
+                const user = supabase.auth.user()
+                if (user) {
+                    handleAuthChange(event, session)
+                }
+                console.log('event and session', event, session)
+
                 if (event === 'SIGNED_IN') {
                     setAuthenticatedState('authenticated')
                 }
@@ -41,7 +45,10 @@ const MyApp = ({ Component, pageProps: { session, ...pageProps } }) => {
     const handleAuthChange = async (event, session) => {
         await fetch('http://localhost:3000/api/auth', {
             method: 'POST',
-            headers: new Headers({ 'Content-Type': 'application/json' }),
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                cookie: session.refresh_token,
+            }),
             credentials: 'same-origin',
             body: JSON.stringify({
                 event,

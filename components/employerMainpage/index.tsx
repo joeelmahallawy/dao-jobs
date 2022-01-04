@@ -12,27 +12,31 @@ import { theme } from '../../utils/theme'
 import React, { useEffect, useState } from 'react'
 import { FaDiscord, FaTwitter } from 'react-icons/fa'
 import AddJobPostingModal from './createJobPostingModal'
-import { Dao, JobPostingValues } from '../../utils/types'
-import request from 'graphql-request'
 import getJobsForDao from '../../helpers/graphql/queries/getJobsForDao'
 import JobPostingModal from './jobPostingModal'
-import getEmployerForCurrentJob from '../../helpers/graphql/queries/getEmployerFromJob'
 
-const EmployerMainPage = ({ user, Dao, daoServerImageURL }) => {
+import { useUpdate } from 'react-use'
+type Employer = {
+    fullName: string
+    profilePic: string
+}
+
+const EmployerMainPage = ({ user, Dao, daoServerImageURL, forceUpdate }) => {
     const [jobs, setJobs] = useState([])
-    const [employer, setEmployer] = useState()
+    const [employer, setEmployer] = useState<Employer>({
+        fullName: Dao.employerName,
+        profilePic: Dao.employerProfilePic,
+    })
     useEffect(() => {
         // get all jobs for current dao
         getJobsForDao(Dao)
             .then((val) => setJobs(val))
             .catch((err) => console.error(err.message))
-
-        // get employer that posted all the jobs
-        getEmployerForCurrentJob(Dao.id, setEmployer)
     }, [])
+    console.log('employa', employer)
 
     return (
-        <Center flexDir="column">
+        <Center flexDir="column" p="3rem">
             <Box
                 w={['90%', '80%', '70%', '70%', '70%', '60%']}
                 borderRadius={10}
@@ -48,6 +52,7 @@ const EmployerMainPage = ({ user, Dao, daoServerImageURL }) => {
                         w="100%"
                         justifyContent="space-between"
                     >
+                        {/* <Button onClick={() => updateMe()}>force update</Button> */}
                         <Center gap="1rem">
                             <Box
                                 bg="gray.500"
@@ -222,11 +227,11 @@ const EmployerMainPage = ({ user, Dao, daoServerImageURL }) => {
                     </Box>
                 </Box>
             </Box>
-            {jobs.map((job, i) => (
-                <JobPostingModal key={i} job={job} employer={employer} />
-            ))}
+            {jobs.map((job, i) => {
+                return <JobPostingModal key={i} job={job} employer={employer} />
+            })}
             here is where the jibs go
-            <AddJobPostingModal dao={Dao} />
+            <AddJobPostingModal dao={Dao} setJobs={setJobs} jobs={jobs} />
         </Center>
     )
 }

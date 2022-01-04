@@ -8,7 +8,11 @@ export const resolvers = {
                 },
             }),
         getJobsForCurrentDao: async (_, { daoID }) =>
-            await prisma.jobPosting.findMany(),
+            await prisma.jobPosting.findMany({
+                where: {
+                    daoId: +daoID,
+                },
+            }),
         getEmployerForJob: async (_, { daoId }) =>
             await prisma.employer.findFirst({
                 where: {

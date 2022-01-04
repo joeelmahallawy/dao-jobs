@@ -1,37 +1,36 @@
-import { Box, Button, Center, Flex, Heading } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import Registration from '../components/registration'
-import DiscordOauth2 from 'discord-oauth2'
 import { supabase } from '../lib/supabase'
-import { useRecoilState } from 'recoil'
-import EmployerMainPage from './employerMain'
-import EmployerForm from '../components/registration/employerForm'
 
 const RegistrationPage = ({ user }) => {
-    const [userData, setUserData] = useState(user)
+    const [userData, setUserData] = useState(user.user_metadata)
 
     useEffect(() => {
         if (!userData) {
-            ;(async function () {
-                const data = await supabase.auth.user()
-                setUserData(data)
-            })()
+            // const newUser=await
+            setUserData(supabase.auth.user().user_metadata)
         }
-    })
+    }, [])
+
     return <Registration user={userData} />
 }
 
 export const getServerSideProps = async ({ req }) => {
     const response = await supabase.auth.api
         .getUserByCookie(req)
-        .then((user) => {
+        .then(async (user) => {
             if (!user) {
-                return { props: { user: null } }
+                return {
+                    redirect: {
+                        destination: '/',
+                    },
+                }
             }
 
             return {
                 props: {
                     user: user.user,
+                    fake: true,
                 },
             }
         })
@@ -45,3 +44,7 @@ export const getServerSideProps = async ({ req }) => {
     return response
 }
 export default RegistrationPage
+
+// export function parseCookies(req) {
+//     return cookie.parse(req ? req.headers.cookie || "" : document.cookie)
+//   }

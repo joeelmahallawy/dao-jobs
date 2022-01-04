@@ -48,16 +48,12 @@ const EmployerForm = ({ user }) => {
         daoGoals: '',
         briefDescription: '',
     }
-    console.log('current user', user)
+
     const [step, setStep] = React.useState<number>(1)
 
     if (navigateToEmployerPage) {
         router.push('/employerMain')
     }
-
-    // yusss
-    // i think it will be an object yuhh lmao
-    const [selectedFile, setSelectedFile] = useState<any>() // so lets keep any for now
 
     const Step1 = ({ handleChange, touched, handleBlur, value }: any) => {
         return (
@@ -97,6 +93,7 @@ const EmployerForm = ({ user }) => {
         handleBlur,
         value,
         setFieldValue,
+        values,
     }: any) => {
         return (
             <Fade bottom big>
@@ -133,6 +130,7 @@ const EmployerForm = ({ user }) => {
                         mt="1rem"
                         colorScheme="linkedin"
                         type="button"
+                        isDisabled={values.discordServerExists == undefined}
                         onClick={() => setStep(3)}
                     >
                         Next
@@ -291,6 +289,7 @@ const EmployerForm = ({ user }) => {
                     >
                         Back
                     </Button>
+                    {console.log(user)}
                     <Button
                         mt="1rem"
                         colorScheme="linkedin"
@@ -466,9 +465,13 @@ const EmployerForm = ({ user }) => {
                 validate={(values) => {
                     const errors = {}
                     Object.entries(values).forEach((val) => {
-                        if (values[val[0]] == '' || values[val[0]] == undefined)
+                        if (
+                            values[val[0]] === '' ||
+                            values[val[0]] === undefined
+                        )
                             errors[val[0]] = 'Required'
                     })
+
                     if (
                         !/^(ftp|http|https):\/\/[^ "]+$/.test(values.twitterUrl)
                     )
@@ -515,6 +518,7 @@ const EmployerForm = ({ user }) => {
 
                         {step === 2 && (
                             <Step2
+                                values={values}
                                 handleChange={handleChange}
                                 handleBlur={handleBlur}
                                 value={values.discordServerExists}

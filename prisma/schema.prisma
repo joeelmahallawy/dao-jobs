@@ -26,11 +26,13 @@ model JobSeeker {
 model Dao {
   id Int @id @default(autoincrement())  
   employerId String
+  employerName String
+  employerProfilePic String
   ownedBy Employer  @relation(fields: [employerId], references: [id])
   nameOfDao String
   discordServerExists Boolean
   discordLink String
-  discordPopulation String
+  discordPopulation Int
   twitterUrl String
   daoGoals String
   briefDescription String
@@ -50,5 +52,4 @@ model JobPosting {
   currencyOfCompensation String
   approximateSalary String
   salaryNegotiable Boolean
-  discordContact String
 }

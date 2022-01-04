@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase'
 import EmployerMainPage from '../components/employerMainpage'
 import { Dao } from '../utils/types'
 import getDaoByUserID from '../helpers/graphql/queries/getDaoByUserID'
+import { useUpdate } from 'react-use'
 
 const EmployerPage = ({
     user,
@@ -12,11 +13,13 @@ const EmployerPage = ({
     user: any
     userDao: { Dao: Dao; daoServerImageURL: string }
 }) => {
+    const updateMe = useUpdate()
     return user && Dao ? (
         <EmployerMainPage
             Dao={Dao}
             user={user}
             daoServerImageURL={daoServerImageURL}
+            forceUpdate={updateMe}
         />
     ) : (
         <Heading>Your not loggged in</Heading>

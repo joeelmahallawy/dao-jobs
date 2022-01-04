@@ -1,14 +1,32 @@
 import { gql } from 'apollo-server-micro'
 import { request } from 'graphql-request'
 
-const addJobPosting = async (inputValues, dao, toast, onClose, setShowBtn) => {
+const addJobPosting = async (
+    inputValues,
+    dao,
+    toast,
+    onClose,
+    setShowBtn,
+    setJobs,
+    jobs,
+) => {
     const jobPostingMutation = gql`
         mutation createJobPosting($jobData: JobPostingInput!) {
             addJobPosting(jobPostData: $jobData) {
                 id
+                jobTitle
+                jobDescription
+                tokenExists
+                tokenSymbol
+                tokenPrice
+                tokenAddress
+                currencyOfCompensation
+                approximateSalary
+                salaryNegotiable
             }
         }
     `
+
     const jobPostingMutationVariables = {
         jobData: { ...inputValues, id: +dao.id },
     }
@@ -20,6 +38,9 @@ const addJobPosting = async (inputValues, dao, toast, onClose, setShowBtn) => {
         .then((val) => {
             setShowBtn(false)
             onClose()
+            // console.log('NEWVAL', val.addJobPosting)
+            setJobs([...jobs, val.addJobPosting])
+            // forceUpdate()
             return toast({
                 containerStyle: { fontFamily: 'Arial' },
                 title: 'Job added!',

@@ -32,7 +32,8 @@ import React, { useState } from 'react'
 import addJobPosting from '../../../helpers/graphql/mutations/addJobPosting'
 import { JobPostingInputValues } from '../../../utils/types'
 
-const AddJobPostingModal = ({ dao }) => {
+const AddJobPostingModal = ({ dao, setJobs, jobs }) => {
+    console.log('JOBSSS:', jobs)
     const { isOpen, onOpen, onClose } = useDisclosure()
     const initialRef = React.useRef()
     const inputInitialValues = {
@@ -45,7 +46,6 @@ const AddJobPostingModal = ({ dao }) => {
         currencyOfCompensation: '',
         approximateSalary: '',
         salaryNegotiable: true,
-        discordContact: '',
     }
     const [inputValues, setInputValues] =
         useState<JobPostingInputValues>(inputInitialValues)
@@ -88,6 +88,8 @@ const AddJobPostingModal = ({ dao }) => {
                                 toast,
                                 onClose,
                                 setShowSubmittingButton,
+                                setJobs,
+                                jobs,
                             )
                         }}
                     >
@@ -251,22 +253,6 @@ const AddJobPostingModal = ({ dao }) => {
                                         <Radio value="no">No</Radio>
                                     </Stack>
                                 </RadioGroup>
-                            </FormControl>
-                            <FormControl isRequired mt={4}>
-                                <FormLabel>
-                                    Your discord username and tag for direct
-                                    contact
-                                </FormLabel>
-                                <Input
-                                    onChange={(e) =>
-                                        setInputValues({
-                                            ...inputValues,
-                                            discordContact:
-                                                e.currentTarget.value,
-                                        })
-                                    }
-                                    placeholder={`e.g. MoreThanYourAverageJoe#3911`}
-                                />
                             </FormControl>
                         </ModalBody>
 

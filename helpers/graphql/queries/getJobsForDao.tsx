@@ -16,7 +16,6 @@ const getJobsForDao = async (Dao) => {
                 currencyOfCompensation
                 approximateSalary
                 salaryNegotiable
-                discordContact
             }
         }
     `

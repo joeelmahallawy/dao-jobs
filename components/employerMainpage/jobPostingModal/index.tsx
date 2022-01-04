@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react'
 import request, { gql } from 'graphql-request'
 import React, { useEffect, useState } from 'react'
-import getEmployerForCurrentJob from '../../../helpers/graphql/queries/getEmployerFromJob'
+
 import { Dao, JobPostingValues } from '../../../utils/types'
 
 const JobPostingModal = ({
@@ -25,7 +25,8 @@ const JobPostingModal = ({
     employer: any
 }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
-
+    console.log('job', job)
+    // console.log('EMPLOYER RIDE IT', employer)
     return (
         <Flex
             onClick={onOpen}
@@ -45,7 +46,7 @@ const JobPostingModal = ({
 
             <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
-                <ModalContent>
+                <ModalContent fontFamily="Arial">
                     <Flex justifyContent="space-between" p={3}>
                         <ModalHeader>{job.jobTitle}</ModalHeader>
                         {/* get employer who posted it */}

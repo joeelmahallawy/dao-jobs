@@ -8,6 +8,8 @@ const getDaoByUserID = async (user) => {
             Dao(employerID: $userID) {
                 id
                 nameOfDao
+                employerName
+                employerProfilePic
                 discordServerExists
                 discordLink
                 discordPopulation

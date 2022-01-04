@@ -20,11 +20,13 @@ export const typeDefs = gql`
         daoGoals: String!
         briefDescription: String!
         employerName: String!
+        employerProfilePic: String!
     }
     type Dao {
         id: ID!
         employerID: String!
         employerName: String!
+        employerProfilePic: String!
         nameOfDao: String!
         discordServerExists: Boolean!
         discordLink: String!
@@ -68,7 +70,6 @@ export const typeDefs = gql`
         currencyOfCompensation: String!
         approximateSalary: String!
         salaryNegotiable: Boolean!
-        discordContact: String!
     }
     input JobPostingInput {
         id: Int
@@ -81,6 +82,5 @@ export const typeDefs = gql`
         currencyOfCompensation: String!
         approximateSalary: String!
         salaryNegotiable: Boolean!
-        discordContact: String!
     }
 `

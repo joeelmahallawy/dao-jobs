@@ -29,6 +29,7 @@ const addDaoAndEmployer = async (user, values, setNavigationPage, toast) => {
             ...rest,
             discordPopulation: fixedDiscordPopulation,
             employerName: user.fullDiscordUsername,
+            employerProfilePic: user.avatar_url,
         },
     }
     const employerMutationVariables = {

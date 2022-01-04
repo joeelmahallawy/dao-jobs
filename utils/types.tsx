@@ -18,7 +18,6 @@ export type JobPostingInputValues = {
     currencyOfCompensation: string
     approximateSalary: string
     salaryNegotiable: boolean
-    discordContact: string
 }
 export type JobPostingValues = {
     id: string
@@ -32,5 +31,4 @@ export type JobPostingValues = {
     currencyOfCompensation: string
     approximateSalary: string
     salaryNegotiable: boolean
-    discordContact: string
 }

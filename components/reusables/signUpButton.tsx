@@ -40,6 +40,7 @@ const SignUpButton = () => {
                 fontSize={['1rem', '1.25rem', '1.5rem', '1.75rem', '2rem']}
                 colorScheme="linkedin"
                 onClick={async () => {
+                    // await supabase.auth.signOut()
                     await supabase.auth.signIn(
                         {
                             provider: 'discord',

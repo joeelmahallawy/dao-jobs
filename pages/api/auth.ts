@@ -1,12 +1,7 @@
-// import { supabase } from '../../lib/supabase'
-
+import { NextApiRequest, NextApiResponse } from 'next'
 import { supabase } from '../../lib/supabase'
 
-const handler = (req, res) => {
-    supabase.auth.api.setAuthCookie(req, res)
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+    await supabase.auth.api.setAuthCookie(req, res)
 }
 export default handler
-// export default async function handler(req, res) {
-//     const user = await supabase.auth.user()
-//     return res.status(200).json({ user })
-// }
