@@ -5,11 +5,14 @@ export const typeDefs = gql`
         Dao(employerID: String!): Dao
         getJobsForCurrentDao(daoID: String!): [JobPosting]
         getEmployerForJob(daoId: Int!): Employer
+        getAllDaos: [Dao]
+        getAllJobs: [JobPosting]
     }
     type Mutation {
         addEmployer(employerData: EmployerInput!): Employer
         addDao(daoData: DaoInput!, employerID: String!): Dao
         addJobPosting(jobPostData: JobPostingInput!): JobPosting
+        deleteJobPosting(jobID: Int!): JobPosting
     }
     input DaoInput {
         nameOfDao: String!
@@ -24,7 +27,7 @@ export const typeDefs = gql`
     }
     type Dao {
         id: ID!
-        employerID: String!
+        employerId: String!
         employerName: String!
         employerProfilePic: String!
         nameOfDao: String!
@@ -70,6 +73,7 @@ export const typeDefs = gql`
         currencyOfCompensation: String!
         approximateSalary: String!
         salaryNegotiable: Boolean!
+        employerID: String!
     }
     input JobPostingInput {
         id: Int
@@ -82,5 +86,6 @@ export const typeDefs = gql`
         currencyOfCompensation: String!
         approximateSalary: String!
         salaryNegotiable: Boolean!
+        employerID: String!
     }
 `

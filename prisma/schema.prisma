@@ -42,6 +42,7 @@ model Dao {
 model JobPosting {
   id Int @id @default(autoincrement())
   daoId Int 
+  employerID String
   workFor Dao @relation(fields: [daoId], references: [id])
   jobTitle String
   jobDescription String

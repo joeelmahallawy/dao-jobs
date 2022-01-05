@@ -1,38 +1,43 @@
-import { Button, Heading } from '@chakra-ui/react'
 import React, { useEffect } from 'react'
-import { request, gql } from 'graphql-request'
-import { useRecoilState } from 'recoil'
-import { userData } from '../lib/recoil'
-import DiscordOauth2 from 'discord-oauth2'
-import ProtectedRoute from '../components/protected-route'
+import { supabase } from '../lib/supabase'
+import { Daos, Jobs } from '../utils/types'
+import JobSeekerMainPage from '../components/seekerMain'
+import getDaos from '../helpers/graphql/queries/getAllDaos'
+import getJobs from '../helpers/getAllJobs'
+import { request } from 'graphql-request'
+import { gql } from 'apollo-server-micro'
 
-const SeekerHomePage = () => {
-    const [user, setUser] = useRecoilState(userData)
+const SeekerHomePage = ({ daos, jobs }) => {
+    return <JobSeekerMainPage daos={daos} jobs={jobs} />
+}
+export const getServerSideProps = async ({ req }) => {
+    const user = await supabase.auth.api.getUserByCookie(req)
+    // if user doesn't exist, redirect to sign in
+    // TODO:
+    if (!user.user)
+        return {
+            redirect: {
+                destination: '/',
+            },
+        }
 
-    return (
-        <ProtectedRoute>
-            <Button
-                onClick={async () => {
-                    //   const query = gql`
-                    //     query {
-                    //       Employers {
-                    //         discordTag
-                    //         id
-                    //         ownsDao
-                    //         profilePic
-                    //       }
-                    //     }
-                    //   `;
-                    //   request("http://localhost:3000/api/graphql", query).then(
-                    //     ({ Employers }) => console.log(Employers)
-                    //   );
-                }}
-            >
-                Click for data
-            </Button>
-            <Heading>This is the job seekers main paige</Heading>
-        </ProtectedRoute>
-    )
+    return Promise.all([getDaos(), getJobs()])
+        .then((values) => {
+            return {
+                props: {
+                    daos: values[0],
+                    jobs: values[1],
+                },
+            }
+        })
+        .catch((err) => {
+            return {
+                redirect: {
+                    // redirect user if there is an error in getting daos and jobs
+                    destination: '/',
+                },
+            }
+        })
 }
 
 export default SeekerHomePage

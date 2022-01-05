@@ -25,15 +25,8 @@ export const resolvers = {
                     profilePicURL: true,
                 },
             }),
-        // .employer.findFirst({
-        //     where: {
-        //         //
-        //     },
-        // select:{
-        //     discordUsername:true,
-        //     profilePicURL:true
-        // }
-        // }),
+        getAllDaos: async () => await prisma.dao.findMany(),
+        getAllJobs: async () => await prisma.jobPosting.findMany(),
     },
     Mutation: {
         addEmployer: async (_, { employerData }) =>
@@ -63,5 +56,11 @@ export const resolvers = {
             })
             return mutation
         },
+        deleteJobPosting: async (_, { jobID }) =>
+            await prisma.jobPosting.delete({
+                where: {
+                    id: jobID,
+                },
+            }),
     },
 }

@@ -7,7 +7,6 @@ const RegistrationPage = ({ user }) => {
 
     useEffect(() => {
         if (!userData) {
-            // const newUser=await
             setUserData(supabase.auth.user().user_metadata)
         }
     }, [])
@@ -44,7 +43,3 @@ export const getServerSideProps = async ({ req }) => {
     return response
 }
 export default RegistrationPage
-
-// export function parseCookies(req) {
-//     return cookie.parse(req ? req.headers.cookie || "" : document.cookie)
-//   }

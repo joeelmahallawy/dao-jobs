@@ -54,9 +54,8 @@ const addDaoAndEmployer = async (user, values, setNavigationPage, toast) => {
             if (!addDao) throw new Error('Could not post DAO data')
         })
         .then(() => {
-            setTimeout(() => {
-                setNavigationPage(true)
-            }, 2000)
+            setNavigationPage(true)
+
             return toast({
                 containerStyle: {
                     fontFamily: 'Arial',

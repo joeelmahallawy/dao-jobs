@@ -1,13 +1,10 @@
 import { gql } from 'apollo-server-micro'
 import { request } from 'graphql-request'
 
-const getJobsForDao = async (Dao) => {
-    const query = gql`
-        query getJobs($dao: String!) {
-            getJobsForCurrentDao(daoID: $dao) {
-                id
-                employerID
-                daoId
+const getJobs = async () => {
+    const jobsQuery = gql`
+        query {
+            getAllJobs {
                 jobTitle
                 jobDescription
                 tokenExists
@@ -17,19 +14,19 @@ const getJobsForDao = async (Dao) => {
                 currencyOfCompensation
                 approximateSalary
                 salaryNegotiable
+                employerID
             }
         }
     `
-    const variables = { dao: Dao.id }
-    const { getJobsForCurrentDao } = await request(
+
+    const { getAllJobs } = await request(
         'http://localhost:3000/api/graphql',
-        query,
-        variables,
+        jobsQuery,
     )
         .then((val) => val)
         .catch((err) => {
-            console.error(err.message)
+            return { props: { err: err.message } }
         })
-    return getJobsForCurrentDao
+    return getAllJobs
 }
-export default getJobsForDao
+export default getJobs

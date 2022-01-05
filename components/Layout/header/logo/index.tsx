@@ -20,11 +20,11 @@ const Logo = () => {
                     <Heading
                         fontWeight="500"
                         fontSize={[
-                            '0.75rem',
+                            '1rem',
                             '1.75rem',
+                            '2.25rem',
                             '2.75rem',
-                            '3.5rem',
-                            '4.25rem',
+                            '3rem',
                         ]}
                     >
                         Dao
@@ -32,11 +32,11 @@ const Logo = () => {
                     <Heading
                         fontWeight="800"
                         fontSize={[
-                            '0.75rem',
+                            '1rem',
                             '1.75rem',
+                            '2.25rem',
                             '2.75rem',
-                            '3.5rem',
-                            '4.25rem',
+                            '3rem',
                         ]}
                         fontFamily="Poppins"
                         color={theme.colors.PrimaryBlue}

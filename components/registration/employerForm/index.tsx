@@ -18,8 +18,7 @@ import {
     NumberInputField,
 } from '@chakra-ui/react'
 import { Field, Formik, Form } from 'formik'
-import React, { useState } from 'react'
-import { request, gql } from 'graphql-request'
+import React, { useEffect, useState } from 'react'
 import Fade from 'react-reveal/Fade'
 import { theme } from '../../../utils/theme'
 import { useRouter } from 'next/router'
@@ -49,407 +48,36 @@ const EmployerForm = ({ user }) => {
         briefDescription: '',
     }
 
-    const [step, setStep] = React.useState<number>(1)
-
     if (navigateToEmployerPage) {
         router.push('/employerMain')
     }
-
-    const Step1 = ({ handleChange, touched, handleBlur, value }: any) => {
-        return (
-            <Fade bottom big>
-                <FormControl isRequired>
-                    <FormLabel>Enter the name of your dao</FormLabel>
-                    <Input
-                        placeholder="Ex. Olympus DAO"
-                        outline="1px solid gray"
-                        _focus={{ bg: 'white' }}
-                        name="nameOfDao" //aight cool yup ok
-                        type="text"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={value}
-                    />
-                </FormControl>
-
-                <Flex mt="1rem" justifyContent="flex-end">
-                    <Button
-                        // isDisabled={!touched.nameOfDao}
-                        mt="1rem"
-                        colorScheme="linkedin"
-                        type="button"
-                        onClick={() => setStep(2)}
-                    >
-                        Next
-                    </Button>
-                </Flex>
-            </Fade>
-        )
-    }
-
-    const Step2 = ({
-        handleChange,
-        touched,
-        handleBlur,
-        value,
-        setFieldValue,
-        values,
-    }: any) => {
-        return (
-            <Fade bottom big>
-                <FormControl isRequired>
-                    <FormLabel mt="1.5rem">
-                        Does your DAO have a discord server yet?
-                    </FormLabel>
-                    <RadioGroup
-                        value={value}
-                        onChange={(event) => {
-                            if (event == 'true')
-                                setFieldValue('discordServerExists', true)
-                            else setFieldValue('discordServerExists', false)
-                        }}
-                    >
-                        <Stack spacing={5} direction="row">
-                            {/* @ts-expect-error */}
-                            <Radio value={true}>Yes</Radio>
-                            {/* @ts-expect-error */}
-                            <Radio value={false}>No</Radio>
-                        </Stack>
-                    </RadioGroup>
-                </FormControl>
-                <Flex mt="1rem" justifyContent="space-between">
-                    <Button
-                        mt="1rem"
-                        colorScheme="gray"
-                        type="button"
-                        onClick={() => setStep(1)}
-                    >
-                        Back
-                    </Button>
-                    <Button
-                        mt="1rem"
-                        colorScheme="linkedin"
-                        type="button"
-                        isDisabled={values.discordServerExists == undefined}
-                        onClick={() => setStep(3)}
-                    >
-                        Next
-                    </Button>
-                </Flex>
-            </Fade>
-        )
-    }
-
-    const Step3 = ({ handleChange, touched, handleBlur, value }: any) => {
-        return (
-            <Fade bottom big>
-                <FormControl isRequired>
-                    <FormLabel mt="1.5rem">
-                        If answered yes above, please enter the discord link.
-                        Otherwise, write 'N/A'
-                    </FormLabel>
-                    <Input
-                        outline="1px solid gray"
-                        _focus={{ bg: 'white' }}
-                        placeholder="Ex. https://discord.gg/12345"
-                        type="text"
-                        name="discordLink"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={value}
-                    />
-                </FormControl>
-                <Flex mt="1rem" justifyContent="space-between">
-                    <Button
-                        mt="1rem"
-                        colorScheme="gray"
-                        type="button"
-                        onClick={() => setStep(2)}
-                    >
-                        Back
-                    </Button>
-                    <Button
-                        mt="1rem"
-                        // isDisabled={!touched.discordLink}
-                        colorScheme="linkedin"
-                        type="button"
-                        onClick={() => setStep(4)}
-                    >
-                        Next
-                    </Button>
-                </Flex>
-            </Fade>
-        )
-    }
-
-    const Step4 = ({ handleChange, touched, handleBlur, value }: any) => {
-        return (
-            <Fade bottom big>
-                <FormControl isRequired>
-                    <FormLabel mt="1.5rem">
-                        Please enter approximate number of members in the
-                        discord server and 'N/A' otherwise
-                    </FormLabel>
-                    <NumberInput
-                        min={0}
-                        keepWithinRange={false}
-                        clampValueOnBlur={false}
-                    >
-                        <NumberInputField
-                            outline="1px solid gray"
-                            _focus={{ bg: 'white' }}
-                            placeholder="Ex. 1000"
-                            name="discordPopulation"
-                            onChange={(e) => {
-                                handleChange(e)
-                            }}
-                            onBlur={handleBlur}
-                            value={value}
-                        />
-                    </NumberInput>
-                    {/* <Input
-                    /> */}
-                </FormControl>
-                <Flex mt="1rem" justifyContent="space-between">
-                    <Button
-                        mt="1rem"
-                        colorScheme="gray"
-                        type="button"
-                        onClick={() => setStep(3)}
-                    >
-                        Back
-                    </Button>
-                    <Button
-                        mt="1rem"
-                        // isDisabled={!touched.discordPopulation}
-                        colorScheme="linkedin"
-                        type="button"
-                        onClick={() => setStep(5)}
-                    >
-                        Next
-                    </Button>
-                </Flex>
-            </Fade>
-        )
-    }
-    const Step5 = ({ handleChange, touched, handleBlur, value }: any) => {
-        const [dp, setdp] = useState({
-            file: '',
-            imagePreviewUrl:
-                'https://github.com/OlgaKoplik/CodePen/blob/master/profile.jpg?raw=true',
-            active: 'edit',
-        })
-        function photoUpload(event, setProfilePic) {
-            event.preventDefault()
-            const reader = new FileReader()
-            const file = event.target.files[0]
-            reader.onloadend = () => {
-                setProfilePic({
-                    file,
-                    imagePreviewUrl: reader.result,
-                })
-            }
-            reader.readAsDataURL(file)
+    const [dp, setdp] = useState({
+        file: '',
+        imagePreviewUrl:
+            'https://github.com/OlgaKoplik/CodePen/blob/master/profile.jpg?raw=true',
+        active: 'edit',
+    })
+    function photoUpload(event, setProfilePic) {
+        event.preventDefault()
+        const reader = new FileReader()
+        const file = event.target.files[0]
+        reader.onloadend = () => {
+            setProfilePic({
+                file,
+                imagePreviewUrl: reader.result,
+            })
         }
-
-        return (
-            <Fade bottom big>
-                <FormControl isRequired>
-                    <Flex flexDir="column" mt={10} textAlign="center">
-                        <label>
-                            <FormLabel textAlign="left">
-                                Discord server picture
-                            </FormLabel>
-                            <Image
-                                _hover={{ cursor: 'pointer', opacity: '0.85' }}
-                                fit="cover"
-                                borderRadius="50%"
-                                w="10rem"
-                                h="10rem"
-                                m="0 auto"
-                                src={dp.imagePreviewUrl}
-                            />
-                            <input
-                                style={{ display: 'none' }}
-                                type="file"
-                                onChange={(e) => {
-                                    handleChange(e)
-                                    photoUpload(e, setdp)
-                                }}
-                            />
-                        </label>
-                    </Flex>
-                </FormControl>
-                <Flex mt="1rem" justifyContent="space-between">
-                    <Button
-                        mt="1rem"
-                        colorScheme="gray"
-                        type="button"
-                        onClick={() => setStep(4)}
-                    >
-                        Back
-                    </Button>
-                    {console.log(user)}
-                    <Button
-                        mt="1rem"
-                        colorScheme="linkedin"
-                        type="button"
-                        onClick={async () => {
-                            await supabase.storage
-                                .from('dao-images')
-                                .upload(`daos/${user.sub}.png`, dp.file, {
-                                    cacheControl: '3600',
-                                    upsert: false,
-                                    contentType: 'image/png',
-                                })
-                            setStep(6)
-                        }}
-                    >
-                        Next
-                    </Button>
-                </Flex>
-            </Fade>
-        )
-    }
-
-    const Step6 = ({
-        handleChange,
-        touched,
-        handleBlur,
-        value,
-        errors,
-    }: any) => {
-        return (
-            <Fade bottom big>
-                <FormControl isRequired>
-                    <FormLabel mt="1.5rem">
-                        Please enter Twitter URL and 'N/A' otherwise
-                    </FormLabel>
-                    <Input
-                        outline="1px solid gray"
-                        _focus={{ bg: 'white' }}
-                        placeholder="Ex. https://twitter.com/OlympusDAO"
-                        type="text"
-                        name="twitterUrl" // lmaooo dww
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={value}
-                    />
-
-                    {touched.twitterUrl && (
-                        <Text color="red">{errors.twitterUrl}</Text>
-                    )}
-                </FormControl>
-                <Flex mt="1rem" justifyContent="space-between">
-                    <Button
-                        mt="1rem"
-                        colorScheme="gray"
-                        type="button"
-                        onClick={() => setStep(5)}
-                    >
-                        Back
-                    </Button>
-
-                    <Button
-                        mt="1rem"
-                        colorScheme="linkedin"
-                        type="button"
-                        onClick={() => setStep(7)}
-                    >
-                        Next
-                    </Button>
-                </Flex>
-            </Fade>
-        )
-    }
-    const Step7 = ({ handleChange, handleBlur, value, errors }: any) => {
-        return (
-            <Fade bottom big>
-                <FormControl isRequired>
-                    <FormLabel mt="1.5rem">
-                        What is the goal of your DAO?
-                    </FormLabel>
-
-                    <Textarea
-                        outline="1px solid gray"
-                        _focus={{ bg: 'white' }}
-                        type="text"
-                        name="daoGoals"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={value}
-                    />
-                </FormControl>
-                <Flex mt="1rem" justifyContent="space-between">
-                    <Button
-                        mt="1rem"
-                        colorScheme="gray"
-                        type="button"
-                        onClick={() => setStep(6)}
-                    >
-                        Back
-                    </Button>
-                    <Button
-                        mt="1rem"
-                        colorScheme="linkedin"
-                        type="button"
-                        onClick={() => setStep(8)}
-                    >
-                        Next
-                    </Button>
-                </Flex>
-            </Fade>
-        )
-    }
-
-    const Step8 = ({
-        touched,
-        handleChange,
-        handleBlur,
-        value,
-        errors,
-    }: any) => {
-        return (
-            <Fade bottom big>
-                <FormControl isRequired>
-                    <FormLabel mt="1.5rem">
-                        Give a brief general description of your DAO for job
-                        seekers to read{' '}
-                    </FormLabel>
-                    <Textarea
-                        outline="1px solid gray"
-                        _focus={{ bg: 'white' }}
-                        type="text"
-                        name="briefDescription"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={value}
-                    />
-                </FormControl>
-                <Flex justifyContent="space-between" mt="1rem">
-                    <Button
-                        mt="1rem"
-                        colorScheme="gray"
-                        type="button"
-                        onClick={() => setStep(7)}
-                    >
-                        Back
-                    </Button>
-                    <Button
-                        mt="1rem"
-                        // isDisabled={!touched.briefDescription}
-                        colorScheme="linkedin"
-                        type="submit"
-                    >
-                        Submit
-                    </Button>
-                </Flex>
-            </Fade>
-        )
+        reader.readAsDataURL(file)
     }
 
     return (
-        <Box p={3} fontFamily="Arial">
+        <Box
+            overflow="scroll"
+            p={7}
+            fontFamily="Arial"
+            outline="1px solid black"
+            borderRadius={10}
+        >
             <Heading
                 mb="1rem"
                 fontSize="3rem"
@@ -476,9 +104,17 @@ const EmployerForm = ({ user }) => {
                         !/^(ftp|http|https):\/\/[^ "]+$/.test(values.twitterUrl)
                     )
                         errors['twitterUrl'] = 'Invalid URL'
+                    console.log(errors)
                     return errors
                 }}
                 onSubmit={async (values, { setSubmitting }) => {
+                    await supabase.storage
+                        .from('dao-images')
+                        .upload(`daos/${user.sub}.png`, dp.file, {
+                            cacheControl: '3600',
+                            upsert: false,
+                            contentType: 'image/png',
+                        })
                     addDaoAndEmployer(
                         user,
                         values,
@@ -507,80 +143,182 @@ const EmployerForm = ({ user }) => {
                         }}
                         encType="multipart/form-data"
                     >
-                        {step === 1 && (
-                            <Step1
-                                handleChange={handleChange}
-                                handleBlur={handleBlur}
+                        <FormControl isRequired>
+                            <FormLabel>Enter the name of your dao</FormLabel>
+                            <Input
+                                placeholder="Ex. Olympus DAO"
+                                outline="1px solid gray"
+                                _focus={{ bg: 'white' }}
+                                name="nameOfDao" //aight cool yup ok
+                                type="text"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
                                 value={values.nameOfDao}
-                                touched={touched}
                             />
-                        )}
-
-                        {step === 2 && (
-                            <Step2
-                                values={values}
-                                handleChange={handleChange}
-                                handleBlur={handleBlur}
+                        </FormControl>
+                        <Flex mt="1rem" justifyContent="flex-end"></Flex>
+                        <FormControl isRequired>
+                            <FormLabel mt="1.5rem">
+                                Does your DAO have a discord server yet?
+                            </FormLabel>
+                            <RadioGroup
+                                // @ts-expect-error
                                 value={values.discordServerExists}
-                                setFieldValue={setFieldValue}
-                                touched={touched}
-                            />
-                        )}
-
-                        {step === 3 && (
-                            <Step3
-                                handleChange={handleChange}
-                                handleBlur={handleBlur}
+                                onChange={(event) => {
+                                    if (event == 'true')
+                                        setFieldValue(
+                                            'discordServerExists',
+                                            true,
+                                        )
+                                    else
+                                        setFieldValue(
+                                            'discordServerExists',
+                                            false,
+                                        )
+                                }}
+                            >
+                                <Stack spacing={5} direction="row">
+                                    {/* @ts-expect-error */}
+                                    <Radio value={true}>Yes</Radio>
+                                    {/* @ts-expect-error */}
+                                    <Radio value={false}>No</Radio>
+                                </Stack>
+                            </RadioGroup>
+                        </FormControl>
+                        <Flex mt="1rem" justifyContent="space-between"></Flex>
+                        <FormControl isRequired>
+                            <FormLabel mt="1.5rem">
+                                If answered yes above, please enter the discord
+                                link. Otherwise, write 'N/A'
+                            </FormLabel>
+                            <Input
+                                outline="1px solid gray"
+                                _focus={{ bg: 'white' }}
+                                placeholder="Ex. https://discord.gg/12345"
+                                type="text"
+                                name="discordLink"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
                                 value={values.discordLink}
-                                touched={touched}
                             />
-                        )}
+                        </FormControl>
+                        <Flex mt="1rem" justifyContent="space-between"></Flex>
+                        <FormControl isRequired>
+                            <FormLabel mt="1.5rem">
+                                Please enter approximate number of members in
+                                the discord server and 0 otherwise
+                            </FormLabel>
+                            <NumberInput
+                                min={0}
+                                keepWithinRange={false}
+                                clampValueOnBlur={false}
+                            >
+                                <NumberInputField
+                                    outline="1px solid gray"
+                                    _focus={{ bg: 'white' }}
+                                    placeholder="Ex. 1000"
+                                    name="discordPopulation"
+                                    onChange={(e) => {
+                                        handleChange(e)
+                                    }}
+                                    onBlur={handleBlur}
+                                    value={values.discordPopulation}
+                                />
+                            </NumberInput>
+                            {/* <Input
+                    /> */}
+                        </FormControl>
 
-                        {step === 4 && (
-                            <Step4
-                                handleChange={handleChange}
-                                handleBlur={handleBlur}
-                                value={values.discordPopulation}
-                                touched={touched}
-                            />
-                        )}
+                        <FormControl isRequired>
+                            <Flex flexDir="column" mt={10} textAlign="center">
+                                <label>
+                                    <FormLabel textAlign="left">
+                                        Discord server picture
+                                    </FormLabel>
+                                    <Image
+                                        _hover={{
+                                            cursor: 'pointer',
+                                            opacity: '0.85',
+                                        }}
+                                        fit="cover"
+                                        borderRadius="50%"
+                                        w="10rem"
+                                        h="10rem"
+                                        m="0 auto"
+                                        src={dp.imagePreviewUrl}
+                                    />
+                                    <input
+                                        style={{ display: 'none' }}
+                                        type="file"
+                                        onChange={(e) => {
+                                            handleChange(e)
+                                            photoUpload(e, setdp)
+                                        }}
+                                    />
+                                </label>
+                            </Flex>
+                        </FormControl>
 
-                        {step === 5 && (
-                            <Step5
-                                handleChange={handleChange}
-                                // handleBlur={handleBlur}
-                                // value={values.twitterUrl}
-                                // touched={touched}
-                                // errors={errors}
-                            />
-                        )}
-
-                        {step === 6 && (
-                            <Step6
-                                handleChange={handleChange}
-                                handleBlur={handleBlur}
+                        <FormControl isRequired>
+                            <FormLabel mt="1.5rem">
+                                Please enter Twitter URL and 'N/A' otherwise
+                            </FormLabel>
+                            <Input
+                                outline="1px solid gray"
+                                _focus={{ bg: 'white' }}
+                                placeholder="Ex. https://twitter.com/OlympusDAO"
+                                type="text"
+                                name="twitterUrl" // lmaooo dww
+                                onChange={handleChange}
+                                onBlur={handleBlur}
                                 value={values.twitterUrl}
-                                errors={errors}
-                                touched={touched}
                             />
-                        )}
 
-                        {step === 7 && (
-                            <Step7
-                                handleChange={handleChange}
-                                handleBlur={handleBlur}
+                            {touched.twitterUrl && (
+                                <Text color="red">{errors.twitterUrl}</Text>
+                            )}
+                        </FormControl>
+                        <Flex mt="1rem" justifyContent="space-between"></Flex>
+                        <FormControl isRequired>
+                            <FormLabel mt="1.5rem">
+                                What is the goal of your DAO?
+                            </FormLabel>
+
+                            <Textarea
+                                outline="1px solid gray"
+                                _focus={{ bg: 'white' }}
+                                type="text"
+                                name="daoGoals"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
                                 value={values.daoGoals}
-                                touched={touched}
                             />
-                        )}
-                        {step === 8 && (
-                            <Step8
-                                handleChange={handleChange}
-                                handleBlur={handleBlur}
+                        </FormControl>
+                        <FormControl isRequired>
+                            <FormLabel mt="1.5rem">
+                                Give a brief general description of your DAO for
+                                job seekers to read{' '}
+                            </FormLabel>
+                            <Textarea
+                                outline="1px solid gray"
+                                _focus={{ bg: 'white' }}
+                                type="text"
+                                name="briefDescription"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
                                 value={values.briefDescription}
-                                touched={touched}
                             />
-                        )}
+                        </FormControl>
+
+                        <Flex justifyContent="flex-end">
+                            <Button
+                                mt="1rem"
+                                colorScheme="linkedin"
+                                type="submit"
+                            >
+                                Submit
+                            </Button>
+                        </Flex>
                     </Form>
                 )}
             </Formik>

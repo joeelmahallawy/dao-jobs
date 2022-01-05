@@ -9,65 +9,381 @@ import {
     ModalOverlay,
     useDisclosure,
     Text,
+    Image,
     Flex,
     Heading,
+    Center,
+    Box,
+    AlertIcon,
+    Link,
+    Alert,
 } from '@chakra-ui/react'
 import request, { gql } from 'graphql-request'
 import React, { useEffect, useState } from 'react'
-
+import { Employer } from '..'
+import capitalize from '../../../helpers/capitalize'
+import { AiFillCheckCircle, AiFillCloseCircle } from 'react-icons/ai'
 import { Dao, JobPostingValues } from '../../../utils/types'
+import DeleteJobPosting from '../deleteJobPosting'
 
 const JobPostingModal = ({
+    jobs,
+    setJobs,
     job,
     employer,
 }: {
+    jobs: any
+    setJobs: any
     job: JobPostingValues
-    employer: any
+    employer: Employer
 }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     console.log('job', job)
     // console.log('EMPLOYER RIDE IT', employer)
     return (
-        <Flex
+        <Center
             onClick={onOpen}
             borderRadius={5}
-            _hover={{ outline: '1px solid gray', cursor: 'pointer' }}
+            _hover={{ outline: '3px solid gray', cursor: 'pointer' }}
             fontFamily="Arial"
-            w={['90%', '80%', '70%', '70%', '70%', '60%']}
-            p={5}
-            bg="gray.200"
-            mt={10}
+            w={['100%', '100%', '80%', '70%', '70%', '60%']}
+            // p={5}
+            // bg="gray.200"
+            outline="2px solid gray"
+            mt="1.5rem"
+            p={[5, 6, 7]}
             justifyContent="space-between"
         >
-            <Heading fontFamily="Arial" fontSize="2rem">
-                {job.jobTitle}
+            <Heading
+                fontFamily="Arial"
+                fontWeight="500"
+                fontSize={['1rem', '1.25rem', '1.5rem', '1.75rem', '2rem']}
+            >
+                {capitalize(job.jobTitle)}
             </Heading>
-            <Button>Check out job</Button>
+            <Button colorScheme="teal">Check out job</Button>
 
-            <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
+            <Modal
+                // size={['lg', 'xl', 'xl', '2xl', '3xl']}
+                size="3xl"
+                blockScrollOnMount={false}
+                isOpen={isOpen}
+                onClose={onClose}
+            >
                 <ModalOverlay />
                 <ModalContent fontFamily="Arial">
-                    <Flex justifyContent="space-between" p={3}>
-                        <ModalHeader>{job.jobTitle}</ModalHeader>
+                    <Center justifyContent="space-between" p={5}>
+                        <Heading
+                            fontFamily="Poppins"
+                            fontWeight="500"
+                            // w="50%"
+                            fontSize={[
+                                '1.25rem',
+                                '1.5rem',
+                                '1.75rem',
+                                '2rem',
+                                '2rem',
+                            ]}
+                        >
+                            {capitalize(job.jobTitle)}
+                        </Heading>
+                        <Link
+                            _focus={{}}
+                            _hover={{}}
+                            isExternal
+                            href={`https://discord.com/users/${job.employerID}`}
+                        >
+                            <Center
+                                _hover={{ cursor: 'pointer' }}
+                                display={[
+                                    'block',
+                                    'block',
+                                    'flex',
+                                    'flex',
+                                    'flex',
+                                ]}
+                                justifyContent="flex-end"
+                            >
+                                <Text
+                                    fontSize={[
+                                        '0.75rem',
+                                        '0.75rem',
+                                        '1rem',
+                                        '1rem',
+                                        '1.25rem',
+                                    ]}
+                                >
+                                    Posted by:{' '}
+                                    <span style={{ fontWeight: '600' }}>
+                                        {employer.fullName[0].toUpperCase() +
+                                            employer.fullName.slice(1)}
+                                    </span>
+                                </Text>
+                                <Box
+                                    // ml="auto"
+                                    // ml={1}
+                                    w={['30px', '40px', '40px', '50px', '60px']}
+                                    h={['30px', '40px', '40px', '50px', '60px']}
+                                    borderRadius="50%"
+                                    border="2px solid gray"
+                                >
+                                    <Image
+                                        h="100%"
+                                        w="100%"
+                                        borderRadius="50%"
+                                        src={employer.profilePic}
+                                    />
+                                </Box>
+                            </Center>
+                        </Link>
                         {/* get employer who posted it */}
-                    </Flex>
-                    <ModalCloseButton />
+                    </Center>
+
                     <ModalBody>
-                        <Text fontWeight="bold" mb="1rem">
-                            You can scroll the content behind the modal
-                        </Text>
-                        HERE"S SOME MORE TEXT
+                        <Box
+                            fontSize={[
+                                '0.75rem',
+                                '0.75rem',
+                                '1rem',
+                                '1rem',
+                                '1rem',
+                            ]}
+                        >
+                            <Text
+                                fontSize={[
+                                    '0.75rem',
+                                    '1rem',
+                                    '1.1rem',
+                                    '1.3rem',
+                                    '1.4rem',
+                                ]}
+                                fontWeight="bold"
+                                mb="1rem"
+                            >
+                                Description
+                            </Text>
+                            {job.jobDescription}
+                        </Box>
+                        <Box
+                            mt={3}
+                            fontSize={[
+                                '0.75rem',
+                                '0.75rem',
+                                '1rem',
+                                '1rem',
+                                '1rem',
+                            ]}
+                        >
+                            <Text
+                                fontSize={[
+                                    '0.75rem',
+                                    '1rem',
+                                    '1.1rem',
+                                    '1.3rem',
+                                    '1.4rem',
+                                ]}
+                                fontWeight="bold"
+                                mb="1rem"
+                            >
+                                Method of compensation
+                            </Text>
+                            {job.currencyOfCompensation}
+                        </Box>
+                        <Box mt={3}>
+                            <Text
+                                fontSize={[
+                                    '0.75rem',
+                                    '1rem',
+                                    '1.1rem',
+                                    '1.3rem',
+                                    '1.4rem',
+                                ]}
+                                fontWeight="bold"
+                                mb="1rem"
+                            >
+                                Token exists
+                            </Text>
+                        </Box>
+                        {job.tokenExists ? (
+                            <>
+                                <Flex
+                                    fontSize={[
+                                        '0.75rem',
+                                        '0.75rem',
+                                        '1rem',
+                                        '1rem',
+                                        '1rem',
+                                    ]}
+                                    gap={3}
+                                >
+                                    Yes
+                                    <AiFillCheckCircle
+                                        color="green"
+                                        size={20}
+                                    />
+                                </Flex>
+                                <Box
+                                    mt={3}
+                                    fontSize={[
+                                        '0.75rem',
+                                        '0.75rem',
+                                        '1rem',
+                                        '1rem',
+                                        '1rem',
+                                    ]}
+                                >
+                                    <Text
+                                        fontSize={[
+                                            '0.75rem',
+                                            '1rem',
+                                            '1.1rem',
+                                            '1.3rem',
+                                            '1.4rem',
+                                        ]}
+                                        fontWeight="bold"
+                                        mb="1rem"
+                                    >
+                                        Token symbol
+                                    </Text>
+                                    {job.tokenSymbol}
+                                </Box>
+                                <Box
+                                    mt={3}
+                                    fontSize={[
+                                        '0.75rem',
+                                        '0.75rem',
+                                        '1rem',
+                                        '1rem',
+                                        '1rem',
+                                    ]}
+                                >
+                                    <Text
+                                        fontSize={[
+                                            '0.75rem',
+                                            '1rem',
+                                            '1.1rem',
+                                            '1.3rem',
+                                            '1.4rem',
+                                        ]}
+                                        fontWeight="bold"
+                                        mb="1rem"
+                                    >
+                                        Token price
+                                    </Text>
+                                    {`$${job.tokenPrice} USD`}
+                                </Box>
+                                <Box mt={3}>
+                                    <Text
+                                        fontSize={[
+                                            '0.75rem',
+                                            '1rem',
+                                            '1.1rem',
+                                            '1.3rem',
+                                            '1.4rem',
+                                        ]}
+                                        fontWeight="bold"
+                                        mb="1rem"
+                                    >
+                                        Token address
+                                    </Text>
+                                    {job.tokenAddress}
+                                </Box>
+                            </>
+                        ) : (
+                            <Flex
+                                fontSize={[
+                                    '0.75rem',
+                                    '0.75rem',
+                                    '1rem',
+                                    '1rem',
+                                    '1rem',
+                                ]}
+                                gap={3}
+                            >
+                                No
+                                <AiFillCloseCircle color="red" size={20} />
+                            </Flex>
+                        )}
+                        <Box mt={3}>
+                            <Text
+                                fontSize={[
+                                    '0.75rem',
+                                    '1rem',
+                                    '1.1rem',
+                                    '1.3rem',
+                                    '1.4rem',
+                                ]}
+                                fontWeight="bold"
+                                mb="1rem"
+                            >
+                                Salary
+                            </Text>
+                            {job.approximateSalary}
+                        </Box>
+                        <Box mt={3}>
+                            <Text
+                                fontSize={[
+                                    '0.75rem',
+                                    '1rem',
+                                    '1.1rem',
+                                    '1.3rem',
+                                    '1.4rem',
+                                ]}
+                                fontWeight="bold"
+                                mb="1rem"
+                            >
+                                Salary negotiable
+                            </Text>
+                            {job.salaryNegotiable ? (
+                                <Flex
+                                    fontSize={[
+                                        '0.75rem',
+                                        '0.75rem',
+                                        '1rem',
+                                        '1rem',
+                                        '1rem',
+                                    ]}
+                                    gap={3}
+                                >
+                                    Yes
+                                    <AiFillCheckCircle
+                                        color="green"
+                                        size={20}
+                                    />
+                                </Flex>
+                            ) : (
+                                <Flex
+                                    fontSize={[
+                                        '0.75rem',
+                                        '0.75rem',
+                                        '1rem',
+                                        '1rem',
+                                        '1rem',
+                                    ]}
+                                    gap={3}
+                                >
+                                    No
+                                    <AiFillCloseCircle color="red" size={20} />
+                                </Flex>
+                            )}
+                        </Box>
                     </ModalBody>
 
                     <ModalFooter>
                         <Button colorScheme="blue" mr={3} onClick={onClose}>
                             Close
                         </Button>
-                        <Button variant="ghost">Secondary Action</Button>
+                        {console.log('HERES ALL THE JOBS', jobs)}
+                        <DeleteJobPosting
+                            jobs={jobs}
+                            setJobs={setJobs}
+                            currentPosting={job}
+                            closeModal={onClose}
+                        />
                     </ModalFooter>
                 </ModalContent>
             </Modal>
-        </Flex>
+        </Center>
     )
 }
 export default JobPostingModal

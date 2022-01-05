@@ -35,12 +35,12 @@ const SignUpButton = () => {
                 borderRadius="10"
                 fontFamily="Arial"
                 _focus={{}}
-                size="lg"
-                p={['1rem', '1rem', '1.25rem', '1.5rem', '2rem']}
-                fontSize={['1rem', '1.25rem', '1.5rem', '1.75rem', '2rem']}
+                size="md"
+                p={['0.75rem', '1rem', '1.25rem', '1.5rem', '1.75rem']}
+                fontSize={['0.75rem', '1rem', '1.5rem', '1.75rem', '2rem']}
+                // fontSize={['1rem', '1.75rem', '2.25rem', '2.75rem', '3rem']}
                 colorScheme="linkedin"
                 onClick={async () => {
-                    // await supabase.auth.signOut()
                     await supabase.auth.signIn(
                         {
                             provider: 'discord',
@@ -49,8 +49,6 @@ const SignUpButton = () => {
                             redirectTo: 'http://localhost:3000/registration',
                         },
                     )
-                    // await supabase.auth.signOut()
-                    // const data = await supabase.auth.session()
                 }}
             >
                 Signup / Login

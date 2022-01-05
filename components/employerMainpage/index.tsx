@@ -15,8 +15,7 @@ import AddJobPostingModal from './createJobPostingModal'
 import getJobsForDao from '../../helpers/graphql/queries/getJobsForDao'
 import JobPostingModal from './jobPostingModal'
 
-import { useUpdate } from 'react-use'
-type Employer = {
+export type Employer = {
     fullName: string
     profilePic: string
 }
@@ -27,6 +26,7 @@ const EmployerMainPage = ({ user, Dao, daoServerImageURL, forceUpdate }) => {
         fullName: Dao.employerName,
         profilePic: Dao.employerProfilePic,
     })
+
     useEffect(() => {
         // get all jobs for current dao
         getJobsForDao(Dao)
@@ -34,13 +34,15 @@ const EmployerMainPage = ({ user, Dao, daoServerImageURL, forceUpdate }) => {
             .catch((err) => console.error(err.message))
     }, [])
     console.log('employa', employer)
+    console.log('heres all the jobs ', jobs)
 
     return (
         <Center flexDir="column" p="3rem">
             <Box
-                w={['90%', '80%', '70%', '70%', '70%', '60%']}
+                w={['100%', '100%', '70%', '70%', '70%', '60%']}
                 borderRadius={10}
-                bg="#d6dfe9"
+                // bg="#d6dfe9"
+                outline="2px solid gray"
                 flexDir="column"
             >
                 <Box>
@@ -52,7 +54,6 @@ const EmployerMainPage = ({ user, Dao, daoServerImageURL, forceUpdate }) => {
                         w="100%"
                         justifyContent="space-between"
                     >
-                        {/* <Button onClick={() => updateMe()}>force update</Button> */}
                         <Center gap="1rem">
                             <Box
                                 bg="gray.500"
@@ -60,10 +61,11 @@ const EmployerMainPage = ({ user, Dao, daoServerImageURL, forceUpdate }) => {
                                 border="2px solid black"
                                 h={['2rem', '3rem', '3.5rem', '4rem', '5rem']}
                                 w={['2rem', '3rem', '3.5rem', '4rem', '5rem']}
-                                p="0.5rem"
+                                // p="0.5rem"
                             >
                                 <Image
                                     src={daoServerImageURL}
+                                    borderRadius="100%"
                                     h="100%"
                                     w="100%"
                                 />
@@ -93,7 +95,7 @@ const EmployerMainPage = ({ user, Dao, daoServerImageURL, forceUpdate }) => {
                                 ]}
                                 fontFamily="Poppins"
                             >{`${Dao.discordPopulation} discord members`}</Text>
-                            <Flex gap="2rem">
+                            <Flex gap={['0.75rem', '1rem', '2rem']}>
                                 {!Dao.discordLink ||
                                 Dao.discordLink.toLowerCase() != 'n/a' ? (
                                     <Link
@@ -228,10 +230,23 @@ const EmployerMainPage = ({ user, Dao, daoServerImageURL, forceUpdate }) => {
                 </Box>
             </Box>
             {jobs.map((job, i) => {
-                return <JobPostingModal key={i} job={job} employer={employer} />
+                return (
+                    <JobPostingModal
+                        jobs={jobs}
+                        setJobs={setJobs}
+                        key={i}
+                        job={job}
+                        employer={employer}
+                    />
+                )
             })}
-            here is where the jibs go
-            <AddJobPostingModal dao={Dao} setJobs={setJobs} jobs={jobs} />
+
+            <AddJobPostingModal
+                user={user}
+                dao={Dao}
+                setJobs={setJobs}
+                jobs={jobs}
+            />
         </Center>
     )
 }

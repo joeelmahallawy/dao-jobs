@@ -9,11 +9,13 @@ const addJobPosting = async (
     setShowBtn,
     setJobs,
     jobs,
+    user,
 ) => {
     const jobPostingMutation = gql`
         mutation createJobPosting($jobData: JobPostingInput!) {
             addJobPosting(jobPostData: $jobData) {
                 id
+                employerID
                 jobTitle
                 jobDescription
                 tokenExists
@@ -28,7 +30,7 @@ const addJobPosting = async (
     `
 
     const jobPostingMutationVariables = {
-        jobData: { ...inputValues, id: +dao.id },
+        jobData: { ...inputValues, id: +dao.id, employerID: user.sub },
     }
     return await request(
         'http://localhost:3000/api/graphql',

@@ -37,7 +37,7 @@ const Registration = ({ user }) => {
                                 flexDir="column"
                                 gap={5}
                             >
-                                <FormLabel fontSize="2rem" fontWeight="bold">
+                                <FormLabel fontSize="1.25rem" fontWeight="bold">
                                     Enter full discord username
                                 </FormLabel>
                                 <Input
@@ -52,8 +52,8 @@ const Registration = ({ user }) => {
                                     type="submit"
                                     colorScheme="telegram"
                                     ml="auto"
-                                    fontSize="1.5rem"
-                                    p="1.5rem"
+                                    fontSize="1.25rem"
+                                    p="1rem"
                                 >
                                     Next
                                 </Button>
@@ -66,7 +66,7 @@ const Registration = ({ user }) => {
     }
     if (showForm == true) {
         return (
-            <Center p="2.5%" h="80vh" flexDir="column">
+            <Center p="2.5%" flexDir="column">
                 <EmployerForm
                     user={{ ...user, fullDiscordUsername: discordUserTag }}
                 />

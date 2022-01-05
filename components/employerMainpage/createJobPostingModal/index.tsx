@@ -32,8 +32,7 @@ import React, { useState } from 'react'
 import addJobPosting from '../../../helpers/graphql/mutations/addJobPosting'
 import { JobPostingInputValues } from '../../../utils/types'
 
-const AddJobPostingModal = ({ dao, setJobs, jobs }) => {
-    console.log('JOBSSS:', jobs)
+const AddJobPostingModal = ({ dao, setJobs, jobs, user }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const initialRef = React.useRef()
     const inputInitialValues = {
@@ -55,18 +54,27 @@ const AddJobPostingModal = ({ dao, setJobs, jobs }) => {
     return (
         <>
             <Center
+                justifyContent="space-between"
                 onClick={() => {
                     setInputValues({ ...inputInitialValues })
                     onOpen()
                 }}
-                bg="gray.300"
-                borderRadius={10}
-                mt="2rem"
-                _hover={{ bg: 'gray.400', cursor: 'pointer' }}
-                p={10}
-                w={['90%', '80%', '70%', '70%', '70%', '60%']}
+                // bg="gray.300"
+                outline="2px solid gray"
+                borderRadius={5}
+                mt="1.5rem"
+                _hover={{ outline: '3px solid gray', cursor: 'pointer' }}
+                p={[5, 7, 9]}
+                w={['100%', '100%', '80%', '70%', '70%', '60%']}
+                fontFamily="Arial"
             >
-                <Heading fontFamily="Arial ">Add new position</Heading>
+                <Heading
+                    fontFamily="Arial"
+                    fontSize={['1rem', '1.25rem', '1.5rem', '1.75rem', '2rem']}
+                >
+                    Add new position
+                </Heading>
+                <Button colorScheme="linkedin">Add job</Button>
             </Center>
             <Modal
                 initialFocusRef={initialRef}
@@ -81,6 +89,7 @@ const AddJobPostingModal = ({ dao, setJobs, jobs }) => {
                     <form
                         onSubmit={async (e) => {
                             e.preventDefault()
+                            // console.log('DAOOOOO', dao)
                             setShowSubmittingButton(true)
                             return addJobPosting(
                                 inputValues,
@@ -90,6 +99,7 @@ const AddJobPostingModal = ({ dao, setJobs, jobs }) => {
                                 setShowSubmittingButton,
                                 setJobs,
                                 jobs,
+                                user,
                             )
                         }}
                     >
