@@ -25,15 +25,12 @@ import React, { useState } from 'react'
 import { AiFillCheckCircle, AiFillCloseCircle } from 'react-icons/ai'
 import capitalize from '../../helpers/capitalize'
 import getEmployerForJob from '../../helpers/graphql/queries/getEmployerForJob'
+import { supabase } from '../../lib/supabase'
 import { Daos, Jobs } from '../../utils/types'
-import DeleteJobPosting from '../employerMainpage/deleteJobPosting'
 import RenderDaos from './renderDaos'
 import RenderJobs from './renderJobs'
 
 const JobSeekerMainPage = ({ daos, jobs }: { daos: Daos[]; jobs: Jobs[] }) => {
-    console.log('DAOS', daos)
-    console.log(jobs)
-
     return (
         <Box h="80vh">
             <Tabs m={5} fontFamily="Arial" isFitted variant="enclosed-colored">

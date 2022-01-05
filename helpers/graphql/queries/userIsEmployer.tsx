@@ -13,7 +13,7 @@ const userIsEmployer = async (user) => {
         userId: user.user.user_metadata.sub,
     }
     const data = await request(
-        'http://localhost:3000/api/graphql',
+        process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
         query,
         variables,
     )

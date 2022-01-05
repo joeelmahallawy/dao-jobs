@@ -18,7 +18,11 @@ const RegistrationPage = ({ user }) => {
                 if (!data) {
                     await supabase.auth.signIn(
                         { provider: 'discord' },
-                        { redirectTo: 'http://localhost:3000/registration' },
+                        {
+                            redirectTo:
+                                process.env.NEXT_PUBLIC_BASE_URL +
+                                '/registration',
+                        },
                     )
                 } else setUserData(data.user_metadata)
             }

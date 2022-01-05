@@ -41,12 +41,14 @@ const SignUpButton = () => {
                 // fontSize={['1rem', '1.75rem', '2.25rem', '2.75rem', '3rem']}
                 colorScheme="linkedin"
                 onClick={async () => {
-                    await supabase.auth.signIn(
+                    const signIn = await supabase.auth.signIn(
                         {
                             provider: 'discord',
                         },
                         {
-                            redirectTo: 'http://localhost:3000/registration',
+                            redirectTo:
+                                process.env.NEXT_PUBLIC_BASE_URL +
+                                '/registration',
                         },
                     )
                 }}

@@ -15,7 +15,7 @@ const getDaoNameById = async (job, setDaoName, setServerPic, setDaoLink) => {
         daoID: job.daoId.toString(),
     }
     const data = await request(
-        'http://localhost:3000/api/graphql',
+        process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
         query,
         variables,
     )

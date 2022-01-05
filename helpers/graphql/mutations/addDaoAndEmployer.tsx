@@ -49,13 +49,13 @@ const addDaoAndEmployer = async (
     }
 
     const addEmployer = await request(
-        'http://localhost:3000/api/graphql',
+        process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
         mutationEmployer,
         employerMutationVariables,
     )
         .then(async () => {
             const addDao = await request(
-                'http://localhost:3000/api/graphql',
+                process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
                 mutationDao,
                 daoMutationVariables,
             )

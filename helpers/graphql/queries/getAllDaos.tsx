@@ -22,7 +22,7 @@ const getDaos = async () => {
         }
     `
     const { getAllDaos } = await request(
-        'http://localhost:3000/api/graphql',
+        process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
         query,
     )
         .then(async (val) => {

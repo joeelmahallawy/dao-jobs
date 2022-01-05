@@ -14,7 +14,7 @@ const deleteJobPosting = async (jobID, toast) => {
         jobId: jobID,
     }
     const { deleteJobPosting } = await request(
-        'http://localhost:3000/api/graphql',
+        process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
         mutation,
         variables,
     )

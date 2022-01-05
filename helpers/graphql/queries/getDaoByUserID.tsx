@@ -24,7 +24,7 @@ const getDaoByUserID = async (user) => {
     }
     // get employer's DAO
     const userDao = await request(
-        'http://localhost:3000/api/graphql',
+        process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
         daoQuery,
         daoQueryVariables,
     )

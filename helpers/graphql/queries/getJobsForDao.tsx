@@ -22,7 +22,7 @@ const getJobsForDao = async (Dao) => {
     `
     const variables = { dao: Dao.id }
     const { getJobsForCurrentDao } = await request(
-        'http://localhost:3000/api/graphql',
+        process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
         query,
         variables,
     )

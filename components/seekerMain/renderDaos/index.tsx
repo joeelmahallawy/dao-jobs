@@ -92,7 +92,6 @@ const RenderDaos = ({ daos }: { daos: Daos[] }) => {
                                             >
                                                 <Center gap="1rem">
                                                     <Box
-                                                        bg="gray.500"
                                                         borderRadius="50%"
                                                         border="2px solid black"
                                                         h={[
