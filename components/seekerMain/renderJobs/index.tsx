@@ -85,89 +85,66 @@ const RenderJobs = ({ jobs }: { jobs: Jobs[] }) => {
                     >
                         <ModalOverlay />
                         <ModalContent fontFamily="Arial">
-                            <Center justifyContent="space-between" p={5}>
-                                <Box w="100%">
-                                    <Center
-                                        justifyContent="space-between"
-                                        fontSize="1.5rem"
-                                        gap={3}
-                                        mb={7}
-                                    >
+                            <ModalBody p={7}>
+                                <Center justifyContent="space-between">
+                                    <Flex w="100%" flexDir="column">
+                                        <Heading
+                                            fontWeight="600"
+                                            fontFamily="Arial"
+                                            // w="50%"
+                                            fontSize={[
+                                                '1.25rem',
+                                                '1.5rem',
+                                                '1.75rem',
+                                                '2rem',
+                                                '2rem',
+                                            ]}
+                                        >
+                                            <span style={{ fontWeight: '400' }}>
+                                                Job title:{' '}
+                                            </span>
+                                            {job && capitalize(job.jobTitle)}
+                                        </Heading>
+
                                         <Link
+                                            mt={5}
+                                            _hover={{}}
                                             _focus={{}}
-                                            p={2}
-                                            borderRadius={5}
-                                            _hover={{ bg: 'gray.200' }}
                                             isExternal
                                             href={daoLink}
                                         >
-                                            <Flex gap={3}>
-                                                <Box
-                                                    w="40px"
-                                                    h="40px"
-                                                    borderRadius="50%"
-                                                    outline="2.5px solid gray"
-                                                    p={1}
-                                                >
-                                                    <Image
-                                                        h="100%"
-                                                        w="100%"
-                                                        borderRadius="50%"
-                                                        src={serverPic}
-                                                    />
-                                                </Box>
-                                                <span
-                                                    style={{
-                                                        fontWeight: '600',
-                                                        fontSize: '2rem',
-                                                    }}
-                                                >
-                                                    {daoName}
-                                                </span>
-                                            </Flex>
-                                        </Link>
-                                        <Link
-                                            _focus={{}}
-                                            _hover={{}}
-                                            isExternal
-                                            href={`https://discord.com/users/${job.employerID}`}
-                                        >
-                                            <Box>
-                                                <Center
-                                                    _hover={{
-                                                        cursor: 'pointer',
-                                                    }}
-                                                    display={[
-                                                        'block',
-                                                        'block',
-                                                        'flex',
-                                                        'flex',
-                                                        'flex',
+                                            <Box
+                                                fontSize={[
+                                                    '0.75rem',
+                                                    '0.75rem',
+                                                    '1rem',
+                                                    '1rem',
+                                                    '1rem',
+                                                ]}
+                                            >
+                                                <Text
+                                                    fontSize={[
+                                                        '0.75rem',
+                                                        '1rem',
+                                                        '1.1rem',
+                                                        '1.3rem',
+                                                        '1.4rem',
                                                     ]}
-                                                    justifyContent="flex-end"
+                                                    fontWeight="bold"
                                                 >
-                                                    <Text
-                                                        fontSize={[
-                                                            '0.75rem',
-                                                            '0.75rem',
-                                                            '1rem',
-                                                            '1rem',
-                                                            '1.25rem',
-                                                        ]}
-                                                    >
-                                                        Posted by:{' '}
-                                                        <span
-                                                            style={{
-                                                                fontWeight:
-                                                                    '600',
-                                                            }}
-                                                        >
-                                                            {employer &&
-                                                                capitalize(
-                                                                    employer?.discordUsername,
-                                                                )}
-                                                        </span>
-                                                    </Text>
+                                                    Dao:
+                                                </Text>
+                                                <Center
+                                                    p={2}
+                                                    bg="gray.200"
+                                                    _hover={{ bg: 'gray.300' }}
+                                                    display="inline-flex"
+                                                    borderRadius={5}
+                                                    justifyContent="flex-start"
+                                                    gap={3}
+                                                >
+                                                    {/*  */}
+                                                    {daoName}
                                                     <Box
                                                         // ml="auto"
                                                         // ml={1}
@@ -176,14 +153,14 @@ const RenderJobs = ({ jobs }: { jobs: Jobs[] }) => {
                                                             '40px',
                                                             '40px',
                                                             '50px',
-                                                            '60px',
+                                                            '50px',
                                                         ]}
                                                         h={[
                                                             '30px',
                                                             '40px',
                                                             '40px',
                                                             '50px',
-                                                            '60px',
+                                                            '50px',
                                                         ]}
                                                         borderRadius="50%"
                                                         border="2px solid gray"
@@ -192,41 +169,113 @@ const RenderJobs = ({ jobs }: { jobs: Jobs[] }) => {
                                                             h="100%"
                                                             w="100%"
                                                             borderRadius="50%"
-                                                            src={
-                                                                employer?.profilePicURL
-                                                            }
+                                                            src={serverPic}
                                                         />
                                                     </Box>
                                                 </Center>
                                             </Box>
-                                            {/* <Text fontSize="1.5rem">
-                                        Dao:{' '}
-                                        <span style={{ fontWeight: '600' }}>
-                                            {daoName}
-                                        </span>
-                                    </Text> */}
+                                            {/* <Center
+                                            mt={3}
+                                            justifyContent="flex-start"
+                                            gap={2}
+                                            fontWeight="500"
+                                            fontFamily="Arial"
+                                            fontSize={[
+                                                '0.75rem',
+                                                '0.75rem',
+                                                '1rem',
+                                                '1rem',
+                                                '1.25rem',
+                                            ]}
+                                        >
+                                            DAO:
+                                            <span
+                                                style={{
+                                                    fontWeight: '600',
+                                                }}
+                                            >
+                                                {daoName}
+                                            </span>
+                                            <Box
+                                                w="40px"
+                                                h="40px"
+                                                borderRadius="50%"
+                                                outline="2.5px solid gray"
+                                                p={1}
+                                            >
+                                                <Image
+                                                    h="100%"
+                                                    w="100%"
+                                                    borderRadius="50%"
+                                                    src={serverPic}
+                                                />
+                                            </Box>
+                                        </Center> */}
                                         </Link>
-                                    </Center>
-                                    <Heading
-                                        fontFamily="Poppins"
-                                        fontWeight="500"
-                                        // w="50%"
-                                        fontSize={[
-                                            '1.25rem',
-                                            '1.5rem',
-                                            '1.75rem',
-                                            '2rem',
-                                            '2rem',
-                                        ]}
-                                    >
-                                        {job && capitalize(job.jobTitle)}
-                                    </Heading>
-                                </Box>
 
-                                {/* get employer who posted it */}
-                            </Center>
+                                        <Box
+                                            fontSize={[
+                                                '0.75rem',
+                                                '0.75rem',
+                                                '1rem',
+                                                '1rem',
+                                                '1rem',
+                                            ]}
+                                        >
+                                            <Text
+                                                fontSize={[
+                                                    '0.75rem',
+                                                    '1rem',
+                                                    '1.1rem',
+                                                    '1.3rem',
+                                                    '1.4rem',
+                                                ]}
+                                                fontWeight="bold"
+                                            >
+                                                Posted by:
+                                            </Text>
+                                            <Center
+                                                justifyContent="flex-start"
+                                                gap={3}
+                                            >
+                                                {employer &&
+                                                    capitalize(
+                                                        employer?.discordUsername,
+                                                    )}
+                                                <Box
+                                                    // ml="auto"
+                                                    // ml={1}
+                                                    w={[
+                                                        '30px',
+                                                        '40px',
+                                                        '40px',
+                                                        '50px',
+                                                        '50px',
+                                                    ]}
+                                                    h={[
+                                                        '30px',
+                                                        '40px',
+                                                        '40px',
+                                                        '50px',
+                                                        '50px',
+                                                    ]}
+                                                    borderRadius="50%"
+                                                    border="2px solid gray"
+                                                >
+                                                    <Image
+                                                        h="100%"
+                                                        w="100%"
+                                                        borderRadius="50%"
+                                                        src={
+                                                            employer?.profilePicURL
+                                                        }
+                                                    />
+                                                </Box>
+                                            </Center>
+                                        </Box>
+                                    </Flex>
+                                </Center>
 
-                            <ModalBody>
                                 <Box
                                     fontSize={[
                                         '0.75rem',
