@@ -1,6 +1,18 @@
 import prisma from '../lib/prisma'
 export const resolvers = {
     Query: {
+        getJobSeeker: async (_, { userID }) =>
+            await prisma.jobSeeker.findFirst({
+                where: {
+                    id: userID,
+                },
+            }),
+        getEmployer: async (_, { userID }) =>
+            await prisma.employer.findFirst({
+                where: {
+                    id: userID,
+                },
+            }),
         Dao: async (_, { employerID }) =>
             await prisma.dao.findFirst({
                 where: {
@@ -29,6 +41,12 @@ export const resolvers = {
             }),
     },
     Mutation: {
+        addJobSeeker: async (_, { jobSeekerData }) =>
+            await prisma.jobSeeker.create({
+                data: {
+                    ...jobSeekerData,
+                },
+            }),
         addEmployer: async (_, { employerData }) =>
             await prisma.employer.create({ data: { ...employerData } }),
         addDao: async (_, { daoData, employerID }) =>

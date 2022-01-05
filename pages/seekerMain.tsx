@@ -7,6 +7,7 @@ import getJobs from '../helpers/getAllJobs'
 import { request } from 'graphql-request'
 import { gql } from 'apollo-server-micro'
 import { Button, Image } from '@chakra-ui/react'
+import userIsJobSeeker from '../helpers/graphql/queries/userIsJobSeeker'
 
 const SeekerHomePage = ({ daos, jobs }) => {
     return <JobSeekerMainPage daos={daos} jobs={jobs} />
@@ -18,29 +19,37 @@ export const getServerSideProps = async ({ req }) => {
     if (!user.user)
         return {
             redirect: {
-                destination: '/',
+                destination: process.env.NEXT_PUBLIC_DISCORD_AUTH_LINK,
             },
         }
 
-    return Promise.all([getDaos(), getJobs()])
-        .then((values) => {
-            return {
-                props: {
-                    // daos array
-                    daos: values[0],
-                    //jobs array
-                    jobs: values[1],
-                },
-            }
-        })
-        .catch((err) => {
-            return {
-                redirect: {
-                    // redirect user if there is an error in getting daos and jobs
-                    destination: '/',
-                },
-            }
-        })
+    const isJobSeeker: boolean = await userIsJobSeeker(user)
+    if (isJobSeeker)
+        return Promise.all([getDaos(), getJobs()])
+            .then((values) => {
+                return {
+                    props: {
+                        // daos array
+                        daos: values[0],
+                        //jobs array
+                        jobs: values[1],
+                    },
+                }
+            })
+            .catch((err) => {
+                return {
+                    redirect: {
+                        // redirect user if there is an error in getting daos and jobs
+                        destination: '/',
+                    },
+                }
+            })
+    else
+        return {
+            redirect: {
+                destination: '/registration',
+            },
+        }
 }
 
 export default SeekerHomePage

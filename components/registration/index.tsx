@@ -13,6 +13,9 @@ import { useRouter } from 'next/router'
 import React, { useState, useEffect } from 'react'
 import Fade from 'react-reveal/Fade'
 import EmployerForm from './employerForm'
+import request from 'graphql-request'
+import { gql } from 'apollo-server-micro'
+import addJobSeeker from '../../helpers/graphql/mutations/addJobSeeker'
 
 const Registration = ({ user }) => {
     const router = useRouter()
@@ -123,8 +126,10 @@ const Registration = ({ user }) => {
                     </Button>
                 </Flex>
                 <Button
-                    onClick={() => {
-                        if (selectedUser == 'seeker') router.push('/seekerMain')
+                    onClick={async () => {
+                        if (selectedUser == 'seeker') {
+                            addJobSeeker(user, discordUserTag, router)
+                        }
                         if (selectedUser == 'employer') setShowForm(true)
                     }}
                     ml="auto"

@@ -1,6 +1,8 @@
 import { gql } from 'apollo-server-micro'
 export const typeDefs = gql`
     type Query {
+        getJobSeeker(userID: String!): JobSeeker
+        getEmployer(userID: String!): Employer
         Employer: Employer
         Dao(employerID: String!): Dao
         getJobsForCurrentDao(daoID: String!): [JobPosting]
@@ -10,6 +12,7 @@ export const typeDefs = gql`
         getDaoNameByID(daoId: String!): Dao
     }
     type Mutation {
+        addJobSeeker(jobSeekerData: JobSeekerInput!): JobSeeker
         addEmployer(employerData: EmployerInput!): Employer
         addDao(daoData: DaoInput!, employerID: String!): Dao
         addJobPosting(jobPostData: JobPostingInput!): JobPosting
@@ -55,12 +58,13 @@ export const typeDefs = gql`
 
     type JobSeeker {
         id: ID!
-        discordTag: String!
+        discordUsername: String!
         profilePicURL: String!
     }
 
     input JobSeekerInput {
-        discordTag: String!
+        id: ID!
+        discordUsername: String!
         profilePicURL: String!
     }
 

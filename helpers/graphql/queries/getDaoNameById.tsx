@@ -1,12 +1,13 @@
 import { gql } from 'apollo-server-micro'
 import request from 'graphql-request'
 
-const getDaoNameById = async (job, setDaoName, setServerPic) => {
+const getDaoNameById = async (job, setDaoName, setServerPic, setDaoLink) => {
     const query = gql`
         query getDaoName($daoID: String!) {
             getDaoNameByID(daoId: $daoID) {
                 nameOfDao
                 discordServerPicURL
+                discordLink
             }
         }
     `
@@ -21,6 +22,7 @@ const getDaoNameById = async (job, setDaoName, setServerPic) => {
         .then((val) => {
             setDaoName(val.getDaoNameByID.nameOfDao)
             setServerPic(val.getDaoNameByID.discordServerPicURL)
+            setDaoLink(val.getDaoNameByID.discordLink)
         })
         .catch((err) => {
             console.error(err.message)

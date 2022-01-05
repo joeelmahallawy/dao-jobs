@@ -30,8 +30,10 @@ const RenderJobs = ({ jobs }: { jobs: Jobs[] }) => {
     const [employer, setEmployer] = useState<Employer>()
     const [daoName, setDaoName] = useState('')
     const [serverPic, setServerPic] = useState('')
+    const [daoLink, setDaoLink] = useState('')
     const { isOpen, onOpen, onClose } = useDisclosure()
     console.log('daoname', daoName)
+
     return (
         <>
             {jobs.map((job, i) => (
@@ -40,7 +42,12 @@ const RenderJobs = ({ jobs }: { jobs: Jobs[] }) => {
                     key={i}
                     onClick={async () => {
                         getEmployerForJob(job, setEmployer)
-                        getDaoNameById(job, setDaoName, setServerPic)
+                        getDaoNameById(
+                            job,
+                            setDaoName,
+                            setServerPic,
+                            setDaoLink,
+                        )
                         onOpen()
                     }}
                     borderRadius={5}
@@ -71,7 +78,6 @@ const RenderJobs = ({ jobs }: { jobs: Jobs[] }) => {
                     <Button colorScheme="teal">Check out job</Button>
 
                     <Modal
-                        // size={['lg', 'xl', 'xl', '2xl', '3xl']}
                         size="3xl"
                         blockScrollOnMount={false}
                         isOpen={isOpen}
@@ -86,33 +92,40 @@ const RenderJobs = ({ jobs }: { jobs: Jobs[] }) => {
                                         fontSize="1.5rem"
                                         gap={3}
                                         mb={7}
-                                        // bg="red"
                                     >
-                                        {/* Dao:{' '} */}
-                                        <Flex gap={3}>
-                                            <Box
-                                                w="40px"
-                                                h="40px"
-                                                borderRadius="50%"
-                                                outline="2.5px solid gray"
-                                                p={1}
-                                            >
-                                                <Image
-                                                    h="100%"
-                                                    w="100%"
+                                        <Link
+                                            _focus={{}}
+                                            p={2}
+                                            borderRadius={5}
+                                            _hover={{ bg: 'gray.200' }}
+                                            isExternal
+                                            href={daoLink}
+                                        >
+                                            <Flex gap={3}>
+                                                <Box
+                                                    w="40px"
+                                                    h="40px"
                                                     borderRadius="50%"
-                                                    src={serverPic}
-                                                />
-                                            </Box>
-                                            <span
-                                                style={{
-                                                    fontWeight: '600',
-                                                    fontSize: '2rem',
-                                                }}
-                                            >
-                                                {daoName}
-                                            </span>
-                                        </Flex>
+                                                    outline="2.5px solid gray"
+                                                    p={1}
+                                                >
+                                                    <Image
+                                                        h="100%"
+                                                        w="100%"
+                                                        borderRadius="50%"
+                                                        src={serverPic}
+                                                    />
+                                                </Box>
+                                                <span
+                                                    style={{
+                                                        fontWeight: '600',
+                                                        fontSize: '2rem',
+                                                    }}
+                                                >
+                                                    {daoName}
+                                                </span>
+                                            </Flex>
+                                        </Link>
                                         <Link
                                             _focus={{}}
                                             _hover={{}}
