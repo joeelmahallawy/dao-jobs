@@ -35,6 +35,7 @@ type InitialValues = {
     briefDescription: string
 }
 const EmployerForm = ({ user }) => {
+    const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
     const [navigateToEmployerPage, setNavigateToEmployerPage] = useState(false)
     const toast = useToast()
@@ -108,6 +109,7 @@ const EmployerForm = ({ user }) => {
                     return errors
                 }}
                 onSubmit={async (values, { setSubmitting }) => {
+                    setIsLoading(true)
                     await supabase.storage
                         .from('dao-images')
                         .upload(`daos/${user.sub}.png`, dp.file, {
@@ -120,6 +122,7 @@ const EmployerForm = ({ user }) => {
                         values,
                         setNavigateToEmployerPage,
                         toast,
+                        setIsLoading,
                     )
                 }}
             >
@@ -312,6 +315,7 @@ const EmployerForm = ({ user }) => {
 
                         <Flex justifyContent="flex-end">
                             <Button
+                                isLoading={isLoading}
                                 mt="1rem"
                                 colorScheme="linkedin"
                                 type="submit"

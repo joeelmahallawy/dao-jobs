@@ -4,9 +4,10 @@ export const typeDefs = gql`
         Employer: Employer
         Dao(employerID: String!): Dao
         getJobsForCurrentDao(daoID: String!): [JobPosting]
-        getEmployerForJob(daoId: Int!): Employer
+        getEmployerForJob(daoId: String!): Employer
         getAllDaos: [Dao]
         getAllJobs: [JobPosting]
+        getDaoNameByID(daoId: String!): Dao
     }
     type Mutation {
         addEmployer(employerData: EmployerInput!): Employer
@@ -19,6 +20,7 @@ export const typeDefs = gql`
         discordServerExists: Boolean!
         discordLink: String!
         discordPopulation: Int!
+        discordServerPicURL: String!
         twitterUrl: String!
         daoGoals: String!
         briefDescription: String!
@@ -34,6 +36,7 @@ export const typeDefs = gql`
         discordServerExists: Boolean!
         discordLink: String!
         discordPopulation: Int!
+        discordServerPicURL: String!
         twitterUrl: String!
         daoGoals: String!
         briefDescription: String!

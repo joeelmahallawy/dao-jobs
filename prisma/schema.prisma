@@ -33,6 +33,7 @@ model Dao {
   discordServerExists Boolean
   discordLink String
   discordPopulation Int
+  discordServerPicURL String
   twitterUrl String
   daoGoals String
   briefDescription String

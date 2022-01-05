@@ -1,7 +1,13 @@
 import { gql } from 'apollo-server-micro'
 import { request } from 'graphql-request'
 
-const addDaoAndEmployer = async (user, values, setNavigationPage, toast) => {
+const addDaoAndEmployer = async (
+    user,
+    values,
+    setNavigationPage,
+    toast,
+    setIsLoading,
+) => {
     const mutationDao = gql`
         mutation createDao($DAODATA: DaoInput!, $EMPLOYERID: String!) {
             addDao(daoData: $DAODATA, employerID: $EMPLOYERID) {
@@ -22,6 +28,7 @@ const addDaoAndEmployer = async (user, values, setNavigationPage, toast) => {
     const fixedDiscordPopulation = Number(
         newDiscordPopulation.replaceAll('+', ''),
     )
+    // https://hhuzrwzphweoxbywzhhv.supabase.co/storage/v1/object/public/dao-images/daos/646417780576616458.png
 
     const daoMutationVariables = {
         EMPLOYERID: user.sub,
@@ -30,6 +37,7 @@ const addDaoAndEmployer = async (user, values, setNavigationPage, toast) => {
             discordPopulation: fixedDiscordPopulation,
             employerName: user.fullDiscordUsername,
             employerProfilePic: user.avatar_url,
+            discordServerPicURL: `https://hhuzrwzphweoxbywzhhv.supabase.co/storage/v1/object/public/dao-images/daos/${user.sub}.png`,
         },
     }
     const employerMutationVariables = {
@@ -55,7 +63,7 @@ const addDaoAndEmployer = async (user, values, setNavigationPage, toast) => {
         })
         .then(() => {
             setNavigationPage(true)
-
+            setIsLoading(false)
             return toast({
                 containerStyle: {
                     fontFamily: 'Arial',

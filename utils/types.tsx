@@ -44,8 +44,10 @@ export type Daos = {
     twitterUrl: string
     daoGoals: string
     briefDescription: string
+    discordServerPicURL: string
 }
 export type Jobs = {
+    daoId: string
     jobTitle: string
     jobDescription: string
     tokenExists: boolean

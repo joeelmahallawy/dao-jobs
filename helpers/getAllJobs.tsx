@@ -5,6 +5,7 @@ const getJobs = async () => {
     const jobsQuery = gql`
         query {
             getAllJobs {
+                daoId
                 jobTitle
                 jobDescription
                 tokenExists

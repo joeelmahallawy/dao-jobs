@@ -1,10 +1,12 @@
 import { gql } from 'apollo-server-micro'
 import { request } from 'graphql-request'
+import { supabase } from '../../../lib/supabase'
 
 const getDaos = async () => {
     const query = gql`
         query {
             getAllDaos {
+                id
                 employerId
                 employerName
                 employerProfilePic
@@ -12,6 +14,7 @@ const getDaos = async () => {
                 discordServerExists
                 discordLink
                 discordPopulation
+                discordServerPicURL
                 twitterUrl
                 daoGoals
                 briefDescription
@@ -22,7 +25,16 @@ const getDaos = async () => {
         'http://localhost:3000/api/graphql',
         query,
     )
-        .then((val) => val)
+        .then(async (val) => {
+            // const serverPic = await supabase.storage
+            //     .from('dao-images')
+            //     .getPublicUrl(`daos/${val.getAllDaos.employerId}.png`)
+            return val
+            // return [
+            //     { ...val.getAllDaos, discordServerPic: serverPic.publicURL },
+            // ]
+            // return val.getAllDaos
+        })
         .catch((err) => {
             return { props: { err: err.message } }
         })
