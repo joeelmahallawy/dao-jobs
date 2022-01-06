@@ -20,18 +20,18 @@ const MyApp = ({ Component, pageProps: { session, ...pageProps } }) => {
     const logPageView = () => {
         const router = useRouter()
 
-        if (process.env.NODE_ENV === 'production') {
-            ReactGA.pageview(router.asPath)
-        }
+        // if (process.env.NODE_ENV === 'production') {
+        //     ReactGA.pageview(router.asPath)
+        // }
     }
 
     const [authenticatedState, setAuthenticatedState] =
         useState('not-authenticated')
     useEffect(() => {
-        if (process.env.NODE_ENV === 'production') {
-            ReactGA.initialize('UA-216449673-1')
-            logPageView()
-        }
+        // if (process.env.NODE_ENV === 'production') {
+        //     ReactGA.initialize('UA-216449673-1')
+        //     logPageView()
+        // }
 
         const { data: authListener } = supabase.auth.onAuthStateChange(
             (event, session) => {
