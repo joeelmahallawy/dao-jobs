@@ -29,7 +29,13 @@ const Description = () => {
                 <Heading
                     textAlign={['center', 'center', 'center', 'left', 'left']}
                     mb={3}
-                    fontSize={['1.5rem', '1.75rem', '2.5rem', '3.5rem', '4rem']}
+                    fontSize={[
+                        '1.5rem',
+                        '1.75rem',
+                        '2.5rem',
+                        '3.5rem',
+                        '3.5rem',
+                    ]}
                 >
                     <span
                         style={{

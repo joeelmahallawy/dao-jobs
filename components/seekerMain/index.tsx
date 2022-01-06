@@ -32,7 +32,7 @@ import RenderJobs from './renderJobs'
 
 const JobSeekerMainPage = ({ daos, jobs }: { daos: Daos[]; jobs: Jobs[] }) => {
     return (
-        <Box h="80vh">
+        <Box h="80vh" pr={7} pl={3}>
             <Tabs m={5} fontFamily="Arial" isFitted variant="enclosed-colored">
                 <TabList mb="1em">
                     <Tab _focus={{}} _selected={{ bg: 'gray.300' }}>

@@ -23,7 +23,7 @@ const Header = () => {
         >
             <Logo />
             <Center w="33%">
-                <Flex bg="white" p={[0, 1, 1, 2, 3]} gap="1rem">
+                {/* <Flex bg="white" p={[0, 1, 1, 2, 3]} gap="1rem">
                     <Heading
                         fontSize={[
                             '0.75rem',
@@ -49,7 +49,7 @@ const Header = () => {
                     >
                         12
                     </Heading>
-                </Flex>
+                </Flex> */}
             </Center>
             <Flex w="33%" justifyContent="flex-end" pr={5}>
                 {router.pathname == '/registration' ||

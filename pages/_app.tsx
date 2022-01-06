@@ -9,11 +9,31 @@ import '@fontsource/poppins/900.css'
 import React, { useEffect, useState } from 'react'
 import { RecoilRoot } from 'recoil'
 import { supabase } from '../lib/supabase'
+import { DefaultSeo } from 'next-seo'
+import { createSEOConfig } from '../utils/seoMeta'
+import Head from 'next/head'
+import icon from '../attachments/daojobs-icon.ico'
+import ReactGA from 'react-ga'
+import App from 'next/app'
+import { useRouter } from 'next/router'
 
 const MyApp = ({ Component, pageProps: { session, ...pageProps } }) => {
     const [authenticatedState, setAuthenticatedState] =
         useState('not-authenticated')
     useEffect(() => {
+        if (process.env.NODE_ENV === 'production') {
+            ReactGA.initialize('UA-216449673-1')
+            logPageView()
+        }
+
+        function logPageView() {
+            const router = useRouter()
+
+            if (process.env.NODE_ENV === 'production') {
+                ReactGA.pageview(router.asPath)
+            }
+        }
+
         const { data: authListener } = supabase.auth.onAuthStateChange(
             (event, session) => {
                 const user = supabase.auth.user()
@@ -62,6 +82,15 @@ const MyApp = ({ Component, pageProps: { session, ...pageProps } }) => {
     return (
         <RecoilRoot>
             <ChakraProvider theme={Chakratheme}>
+                <DefaultSeo {...createSEOConfig()} />
+                <Head>
+                    <link rel="icon" href={icon.src} />
+                    <title>Anura DAO</title>
+                    <meta
+                        name="viewport"
+                        content="initial-scale=1, width=device-width"
+                    />
+                </Head>
                 <Layout>
                     <Component {...pageProps} />
                 </Layout>
