@@ -46,22 +46,6 @@ const EmployerMainPage = ({ user, Dao, daoServerImageURL, forceUpdate }) => {
                 outline="2px solid gray"
                 flexDir="column"
             >
-                <Button
-                    onClick={async () => {
-                        const { url } = await supabase.auth.signIn(
-                            {
-                                provider: 'discord',
-                            },
-                            {
-                                redirectTo:
-                                    'https://www.daojobz.xyz/registration',
-                            },
-                        )
-                        console.log(url)
-                    }}
-                >
-                    hi
-                </Button>
                 <Box>
                     <Flex
                         pt={3}

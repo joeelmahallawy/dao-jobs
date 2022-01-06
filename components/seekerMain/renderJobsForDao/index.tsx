@@ -187,11 +187,11 @@ const RenderJobs = ({ jobs, dao }: { jobs: Jobs[]; dao?: Daos }) => {
                                             ]}
                                             gap={3}
                                         >
-                                            Yes
                                             <AiFillCheckCircle
                                                 color="green"
                                                 size={20}
                                             />
+                                            Yes
                                         </Flex>
                                         <Box
                                             mt={3}
@@ -265,11 +265,11 @@ const RenderJobs = ({ jobs, dao }: { jobs: Jobs[]; dao?: Daos }) => {
                                         ]}
                                         gap={3}
                                     >
-                                        No
                                         <AiFillCloseCircle
                                             color="red"
                                             size={20}
                                         />
+                                        No
                                     </Flex>
                                 )}
                                 <Box mt={3}>
@@ -309,11 +309,11 @@ const RenderJobs = ({ jobs, dao }: { jobs: Jobs[]; dao?: Daos }) => {
                                             ]}
                                             gap={3}
                                         >
-                                            Yes
                                             <AiFillCheckCircle
                                                 color="green"
                                                 size={20}
                                             />
+                                            Yes
                                         </Flex>
                                     ) : (
                                         <Flex
@@ -326,11 +326,11 @@ const RenderJobs = ({ jobs, dao }: { jobs: Jobs[]; dao?: Daos }) => {
                                             ]}
                                             gap={3}
                                         >
-                                            No
                                             <AiFillCloseCircle
                                                 color="red"
                                                 size={20}
                                             />
+                                            No
                                         </Flex>
                                     )}
                                 </Box>
