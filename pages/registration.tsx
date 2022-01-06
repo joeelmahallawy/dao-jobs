@@ -68,16 +68,17 @@ export const getServerSideProps = async ({ req }) => {
                             user: user.user,
                         },
                     }
-            } else {
-                return {
-                    // props: {
-                    //     user: user.user,
-                    // },
-                    redirect: {
-                        destination: process.env.NEXT_PUBLIC_DISCORD_AUTH_LINK,
-                    },
-                }
             }
+            // } else {
+            //     return {
+            //         // props: {
+            //         //     user: user.user,
+            //         // },
+            //         redirect: {
+            //             destination: process.env.NEXT_PUBLIC_DISCORD_AUTH_LINK,
+            //         },
+            //     }
+            // }
         })
         .catch((err) => {
             return {
