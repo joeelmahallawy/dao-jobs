@@ -7,26 +7,32 @@ import getDaoByUserID from '../helpers/graphql/queries/getDaoByUserID'
 import { useUpdate } from 'react-use'
 import userIsEmployer from '../helpers/graphql/queries/userIsEmployer'
 
-const EmployerPage = ({
-    user,
-    userDao: { Dao, daoServerImageURL },
-}: {
-    user: any
-    userDao: { Dao: Dao; daoServerImageURL: string }
-}) => {
+const EmployerPage = (
+    props,
+    //     {
+    //     user,
+    //     userDao: { Dao, daoServerImageURL },
+    // }: {
+    //     user: any
+    //     userDao: { Dao: Dao; daoServerImageURL: string }
+    // }
+) => {
     const updateMe = useUpdate()
-    return user && Dao ? (
-        <EmployerMainPage
-            Dao={Dao}
-            user={user}
-            daoServerImageURL={daoServerImageURL}
-            forceUpdate={updateMe}
-        />
-    ) : (
-        <Center h="80vh">
-            <Heading>Your not loggged in or you don't have a dao</Heading>
-        </Center>
-    )
+    console.log('hers the error broski', props)
+    return null
+
+    // return user && Dao ? (
+    //     <EmployerMainPage
+    //         Dao={Dao}
+    //         user={user}
+    //         daoServerImageURL={daoServerImageURL}
+    //         forceUpdate={updateMe}
+    //     />
+    // ) : (
+    //     <Center h="80vh">
+    //         <Heading>Your not loggged in or you don't have a dao</Heading>
+    //     </Center>
+    // )
 }
 export const getServerSideProps = async ({ req }) => {
     // get user
@@ -62,8 +68,11 @@ export const getServerSideProps = async ({ req }) => {
                 .catch((err) => {
                     // if there's an error in getting the dao from our user data, then redirect and register a new dao
                     return {
-                        redirect: {
-                            destination: '/',
+                        // redirect: {
+                        //     destination: '/',
+                        // },
+                        props: {
+                            errorMessage: err.message,
                         },
                     }
                 })
