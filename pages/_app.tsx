@@ -15,24 +15,19 @@ import Head from 'next/head'
 import icon from '../attachments/daojobs-icon.ico'
 import { useRouter } from 'next/router'
 import ReactGA from 'react-ga'
+import * as ga from '../lib/ga'
 
 const MyApp = ({ Component, pageProps: { session, ...pageProps } }) => {
-    const logPageView = () => {
-        const router = useRouter()
-
-        // if (process.env.NODE_ENV === 'production') {
-        //     ReactGA.pageview(router.asPath)
-        // }
-    }
-
     const [authenticatedState, setAuthenticatedState] =
         useState('not-authenticated')
+    const router = useRouter()
     useEffect(() => {
-        // if (process.env.NODE_ENV === 'production') {
-        //     ReactGA.initialize('UA-216449673-1')
-        //     logPageView()
-        // }
+        const handleRouteChange = (url) => {
+            ga.pageview(url)
+        }
+        router.events.on('routeChangeComplete', handleRouteChange)
 
+        //
         const { data: authListener } = supabase.auth.onAuthStateChange(
             (event, session) => {
                 const user = supabase.auth.user()
@@ -52,9 +47,11 @@ const MyApp = ({ Component, pageProps: { session, ...pageProps } }) => {
         )
         checkUser()
         return () => {
+            router.events.off('routeChangeComplete', handleRouteChange)
+
             authListener.unsubscribe()
         }
-    }, [])
+    }, [router.events])
 
     const checkUser = async () => {
         const user = await supabase.auth.user()
