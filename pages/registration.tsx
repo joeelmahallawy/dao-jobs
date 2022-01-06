@@ -37,13 +37,6 @@ export const getServerSideProps = async ({ req }) => {
     const response = await supabase.auth.api
         .getUserByCookie(req)
         .then(async (user) => {
-            if (!user) {
-                return {
-                    redirect: {
-                        destination: process.env.NEXT_PUBLIC_DISCORD_AUTH_LINK,
-                    },
-                }
-            }
             if (user.user) {
                 // check if user already exists in DB
                 // check type of user
@@ -68,17 +61,16 @@ export const getServerSideProps = async ({ req }) => {
                             user: user.user,
                         },
                     }
+            } else {
+                return {
+                    props: {
+                        user: user.user,
+                    },
+                    // redirect: {
+                    //     destination: process.env.NEXT_PUBLIC_DISCORD_AUTH_LINK,
+                    // },
+                }
             }
-            // } else {
-            //     return {
-            //         // props: {
-            //         //     user: user.user,
-            //         // },
-            //         redirect: {
-            //             destination: process.env.NEXT_PUBLIC_DISCORD_AUTH_LINK,
-            //         },
-            //     }
-            // }
         })
         .catch((err) => {
             return {
