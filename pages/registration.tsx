@@ -37,11 +37,18 @@ export const getServerSideProps = async ({ req }) => {
     const response = await supabase.auth.api
         .getUserByCookie(req)
         .then(async (user) => {
+            if (!user.user) {
+                return {
+                    props: {
+                        user: user.user,
+                    },
+                }
+            }
+
             if (user.user) {
                 // check if user already exists in DB
                 // check type of user
                 const isEmployer: boolean = await userIsEmployer(user)
-                const isJobSeeker: boolean = await userIsJobSeeker(user)
 
                 if (isEmployer)
                     return {
@@ -49,26 +56,20 @@ export const getServerSideProps = async ({ req }) => {
                             destination: '/employerMain',
                         },
                     }
-                else if (isJobSeeker) {
-                    return {
-                        redirect: {
-                            destination: '/seekerMain',
-                        },
+                else {
+                    const isJobSeeker: boolean = await userIsJobSeeker(user)
+                    if (isJobSeeker) {
+                        return {
+                            redirect: {
+                                destination: '/seekerMain',
+                            },
+                        }
                     }
-                } else
                     return {
                         props: {
                             user: user.user,
                         },
                     }
-            } else {
-                return {
-                    props: {
-                        user: user.user,
-                    },
-                    // redirect: {
-                    //     destination: process.env.NEXT_PUBLIC_DISCORD_AUTH_LINK,
-                    // },
                 }
             }
         })
