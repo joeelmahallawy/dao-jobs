@@ -65,7 +65,7 @@ const MyApp = ({ Component, pageProps: { session, ...pageProps } }) => {
     process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT
 
     const handleAuthChange = async (event, session) => {
-        await fetch(process.env.NEXT_PUBLIC_BASE_URL + '/api/auth', {
+        await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth`, {
             method: 'POST',
             headers: new Headers({
                 'Content-Type': 'application/json',

@@ -22,35 +22,7 @@ const Header = () => {
             bg="#F1F4FF"
         >
             <Logo />
-            <Center w="33%">
-                {/* <Flex bg="white" p={[0, 1, 1, 2, 3]} gap="1rem">
-                    <Heading
-                        fontSize={[
-                            '0.75rem',
-                            '1rem',
-                            '1.25rem',
-                            '1.5rem',
-                            '2rem',
-                        ]}
-                        fontWeight="500"
-                    >
-                        Job Seekers:{' '}
-                    </Heading>
-                    <Heading
-                        fontSize={[
-                            '0.75rem',
-                            '1rem',
-                            '1.25rem',
-                            '1.5rem',
-                            '2rem',
-                        ]}
-                        color={theme.colors.PrimaryBlue}
-                        fontWeight="bold"
-                    >
-                        12
-                    </Heading>
-                </Flex> */}
-            </Center>
+            <Center w="33%"></Center>
             <Flex w="33%" justifyContent="flex-end" pr={5}>
                 {router.pathname == '/registration' ||
                 router.pathname == '/seekerMain' ||
