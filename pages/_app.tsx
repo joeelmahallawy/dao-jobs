@@ -30,7 +30,7 @@ const MyApp = ({ Component, pageProps: { session, ...pageProps } }) => {
             const router = useRouter()
 
             if (process.env.NODE_ENV === 'production') {
-                ReactGA.pageview(router.asPath)
+                ReactGA.pageview(router.pathname)
             }
         }
 
