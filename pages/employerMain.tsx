@@ -72,7 +72,7 @@ export const getServerSideProps = async ({ req }) => {
                         //     destination: '/',
                         // },
                         props: {
-                            errorMessage: err.message,
+                            err: err.message,
                         },
                     }
                 })
