@@ -1,12 +1,7 @@
 import { Button, Heading } from '@chakra-ui/react'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { theme } from '../../utils/theme'
-import DiscordOauth2 from 'discord-oauth2'
-
-import { createClient } from '@supabase/supabase-js'
-import { NextPageContext } from 'next'
 import { supabase } from '../../lib/supabase'
 
 const SignUpButton = () => {
@@ -32,6 +27,7 @@ const SignUpButton = () => {
     ) : (
         <>
             <Button
+                // bg="red"
                 borderRadius="10"
                 fontFamily="Arial"
                 _focus={{}}

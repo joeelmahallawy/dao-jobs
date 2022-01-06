@@ -34,8 +34,6 @@ const EmployerMainPage = ({ user, Dao, daoServerImageURL, forceUpdate }) => {
             .then((val) => setJobs(val))
             .catch((err) => console.error(err.message))
     }, [])
-    console.log('employa', employer)
-    console.log('heres all the jobs ', jobs)
 
     return (
         <Center flexDir="column" p="3rem">

@@ -36,7 +36,7 @@ export const getServerSideProps = async ({ req }) => {
     // If user doesn't exist, redirect to registration page to sign up
     if (!user.user)
         return {
-            props: {},
+            // props: {},
             redirect: { destination: '/registration' },
         }
     else {

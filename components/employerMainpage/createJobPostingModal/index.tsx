@@ -89,7 +89,7 @@ const AddJobPostingModal = ({ dao, setJobs, jobs, user }) => {
                     <form
                         onSubmit={async (e) => {
                             e.preventDefault()
-                            // console.log('DAOOOOO', dao)
+
                             setShowSubmittingButton(true)
                             return addJobPosting(
                                 inputValues,

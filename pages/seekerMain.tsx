@@ -40,7 +40,7 @@ export const getServerSideProps = async ({ req }) => {
                 return {
                     redirect: {
                         // redirect user if there is an error in getting daos and jobs
-                        destination: '/',
+                        destination: '/registration',
                     },
                 }
             })

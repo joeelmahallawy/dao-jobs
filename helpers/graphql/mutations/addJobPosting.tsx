@@ -40,7 +40,7 @@ const addJobPosting = async (
         .then((val) => {
             setShowBtn(false)
             onClose()
-            // console.log('NEWVAL', val.addJobPosting)
+
             setJobs([...jobs, val.addJobPosting])
             // forceUpdate()
             return toast({

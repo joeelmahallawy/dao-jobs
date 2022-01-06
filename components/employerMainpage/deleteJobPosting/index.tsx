@@ -44,8 +44,6 @@ const DeleteJobPosting = ({ closeModal, currentPosting, jobs, setJobs }) => {
                             onClick={() => {
                                 jobs.forEach((el, i) => {
                                     if (el.id == currentPosting.id) {
-                                        console.log('hers the elemtn', el)
-                                        console.log('and heres the index', i)
                                         jobs.splice(i, 1)
                                         setJobs([...jobs])
                                     }

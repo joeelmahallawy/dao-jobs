@@ -14,7 +14,7 @@ const RegistrationPage = ({ user }) => {
         if (!userData) {
             const initializeUser = async function () {
                 const data = await supabase.auth.user()
-                console.log('dataa', data)
+                // FIXME: BUG HERE
                 if (!data) {
                     await supabase.auth.signIn(
                         { provider: 'discord' },

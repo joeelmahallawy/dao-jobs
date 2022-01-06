@@ -32,7 +32,6 @@ const RenderJobs = ({ jobs }: { jobs: Jobs[] }) => {
     const [serverPic, setServerPic] = useState('')
     const [daoLink, setDaoLink] = useState('')
     const { isOpen, onOpen, onClose } = useDisclosure()
-    console.log('daoname', daoName)
 
     return (
         <>

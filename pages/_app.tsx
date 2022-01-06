@@ -28,8 +28,7 @@ const MyApp = ({ Component, pageProps: { session, ...pageProps } }) => {
                 if (user) {
                     handleAuthChange(event, session)
                 }
-                console.log('event and session', event, session)
-
+                console.log(event)
                 if (event === 'SIGNED_IN') {
                     setAuthenticatedState('authenticated')
                 }
@@ -51,21 +50,26 @@ const MyApp = ({ Component, pageProps: { session, ...pageProps } }) => {
             setAuthenticatedState('authenticated')
         }
     }
-    process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT
+    // process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT
 
     const handleAuthChange = async (event, session) => {
-        await fetch(process.env.NEXT_PUBLIC_BASE_URL + '/api/auth', {
-            method: 'POST',
-            headers: new Headers({
-                'Content-Type': 'application/json',
-                cookie: session.refresh_token,
-            }),
-            credentials: 'same-origin',
-            body: JSON.stringify({
-                event,
-                session,
-            }),
-        })
+        await fetch(
+            `${process.env.NEXT_PUBLIC_BASE_URL}api/auth`,
+            // 'http://localhost:3000/api/auth',
+
+            {
+                method: 'POST',
+                headers: new Headers({
+                    'Content-Type': 'application/json',
+                    cookie: session.refresh_token,
+                }),
+                credentials: 'same-origin',
+                body: JSON.stringify({
+                    event,
+                    session,
+                }),
+            },
+        )
     }
 
     return (

@@ -38,8 +38,7 @@ const JobPostingModal = ({
     employer: Employer
 }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
-    console.log('job', job)
-    // console.log('EMPLOYER RIDE IT', employer)
+
     return (
         <Center
             onClick={onOpen}
@@ -87,41 +86,36 @@ const JobPostingModal = ({
                         >
                             {capitalize(job.jobTitle)}
                         </Heading>
-                        <Link
-                            _focus={{}}
-                            _hover={{}}
-                            isExternal
-                            href={`https://discord.com/users/${job.employerID}`}
+                    </Center>
+
+                    <ModalBody>
+                        <Box
+                            fontSize={[
+                                '0.75rem',
+                                '0.75rem',
+                                '1rem',
+                                '1rem',
+                                '1rem',
+                            ]}
                         >
-                            <Center
-                                _hover={{ cursor: 'pointer' }}
-                                display={[
-                                    'block',
-                                    'block',
-                                    'flex',
-                                    'flex',
-                                    'flex',
+                            <Text
+                                fontSize={[
+                                    '0.75rem',
+                                    '1rem',
+                                    '1.1rem',
+                                    '1.3rem',
+                                    '1.4rem',
                                 ]}
-                                justifyContent="flex-end"
+                                fontWeight="bold"
                             >
-                                <Text
-                                    fontSize={[
-                                        '0.75rem',
-                                        '0.75rem',
-                                        '1rem',
-                                        '1rem',
-                                        '1.25rem',
-                                    ]}
-                                >
-                                    Posted by:{' '}
-                                    <span style={{ fontWeight: '600' }}>
-                                        {employer.fullName[0].toUpperCase() +
-                                            employer.fullName.slice(1)}
-                                    </span>
-                                </Text>
+                                Posted by:
+                            </Text>
+                            <Center justifyContent="flex-start" gap={3}>
+                                <span style={{ fontWeight: '500' }}>
+                                    {employer.fullName[0].toUpperCase() +
+                                        employer.fullName.slice(1)}
+                                </span>
                                 <Box
-                                    // ml="auto"
-                                    // ml={1}
                                     w={['30px', '40px', '40px', '50px', '60px']}
                                     h={['30px', '40px', '40px', '50px', '60px']}
                                     borderRadius="50%"
@@ -135,11 +129,8 @@ const JobPostingModal = ({
                                     />
                                 </Box>
                             </Center>
-                        </Link>
-                        {/* get employer who posted it */}
-                    </Center>
+                        </Box>
 
-                    <ModalBody>
                         <Box
                             fontSize={[
                                 '0.75rem',
@@ -373,7 +364,7 @@ const JobPostingModal = ({
                         <Button colorScheme="blue" mr={3} onClick={onClose}>
                             Close
                         </Button>
-                        {console.log('HERES ALL THE JOBS', jobs)}
+
                         <DeleteJobPosting
                             jobs={jobs}
                             setJobs={setJobs}

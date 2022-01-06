@@ -105,7 +105,7 @@ const EmployerForm = ({ user }) => {
                         !/^(ftp|http|https):\/\/[^ "]+$/.test(values.twitterUrl)
                     )
                         errors['twitterUrl'] = 'Invalid URL'
-                    console.log(errors)
+
                     return errors
                 }}
                 onSubmit={async (values, { setSubmitting }) => {

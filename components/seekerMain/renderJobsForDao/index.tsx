@@ -23,8 +23,6 @@ import capitalize from '../../../helpers/capitalize'
 import { Daos, Jobs } from '../../../utils/types'
 
 const RenderJobs = ({ jobs, dao }: { jobs: Jobs[]; dao?: Daos }) => {
-    console.log(jobs)
-
     return (
         <>
             <Divider mb={5} />
