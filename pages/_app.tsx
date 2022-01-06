@@ -15,24 +15,13 @@ import Head from 'next/head'
 import icon from '../attachments/daojobs-icon.ico'
 import { useRouter } from 'next/router'
 import ReactGA from 'react-ga'
+import Script from 'next/script'
 
 const MyApp = ({ Component, pageProps: { session, ...pageProps } }) => {
-    const logPageView = () => {
-        const router = useRouter()
-
-        if (process.env.NODE_ENV === 'production') {
-            ReactGA.pageview(router.asPath)
-        }
-    }
     const [authenticatedState, setAuthenticatedState] =
         useState('not-authenticated')
-    const router = useRouter()
-    useEffect(() => {
-        if (process.env.NODE_ENV === 'production') {
-            ReactGA.initialize('UA-212930034-1')
-            logPageView()
-        }
 
+    useEffect(() => {
         const { data: authListener } = supabase.auth.onAuthStateChange(
             (event, session) => {
                 const user = supabase.auth.user()
@@ -92,6 +81,17 @@ const MyApp = ({ Component, pageProps: { session, ...pageProps } }) => {
                     />
                 </Head>
                 <Layout>
+                    <Script
+                        strategy="lazyOnload"
+                        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
+                    />
+                    <Script id="ga-analytics">
+                        {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}');`}
+                    </Script>
                     <Component {...pageProps} />
                 </Layout>
             </ChakraProvider>
