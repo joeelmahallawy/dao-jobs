@@ -63,7 +63,7 @@ export const getServerSideProps = async ({ req }) => {
                     // if there's an error in getting the dao from our user data, then redirect and register a new dao
                     return {
                         redirect: {
-                            destination: '/registration',
+                            destination: '/',
                         },
                     }
                 })

@@ -29,25 +29,8 @@ const RegistrationPage = ({ user }) => {
             initializeUser()
         }
     }, [])
-    return (
-        <Button
-            onClick={async () => {
-                const { url } = await supabase.auth.signIn(
-                    {
-                        provider: 'discord',
-                    },
-                    {
-                        redirectTo: 'https://www.daojobz.xyz/registration',
-                    },
-                )
-                console.log('heres the url', url)
-            }}
-        >
-            click for data
-        </Button>
-    )
-    console.log()
-    // return <Registration user={userData} />
+
+    return <Registration user={userData} />
 }
 
 export const getServerSideProps = async ({ req }) => {

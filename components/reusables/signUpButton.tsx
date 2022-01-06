@@ -46,7 +46,7 @@ const SignUpButton = () => {
                             provider: 'discord',
                         },
                         {
-                            redirectTo: `https://www.daojobz.xyz/registration`,
+                            redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/registration`,
                         },
                     )
                 }}
