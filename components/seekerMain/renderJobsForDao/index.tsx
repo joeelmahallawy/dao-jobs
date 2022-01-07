@@ -1,13 +1,4 @@
 import {
-    Button,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay,
-    useDisclosure,
     Text,
     Image,
     Box,
@@ -342,24 +333,3 @@ const RenderJobs = ({ jobs, dao }: { jobs: Jobs[]; dao?: Daos }) => {
     )
 }
 export default RenderJobs
-
-// <Modal size="xl" isOpen={isOpen} onClose={onClose}>
-//     <ModalOverlay />
-//     <ModalContent fontFamily="Arial">
-//         <ModalHeader>Current jobs</ModalHeader>
-//         <ModalCloseButton />
-//         <ModalBody>
-//             {/* {currentJobs.forEach(el=>{
-//                 el.
-//             })} */}
-//             {/* <Lorem count={2} /> */}
-//         </ModalBody>
-
-//         <ModalFooter>
-//             <Button colorScheme="blue" mr={3} onClick={onClose}>
-//                 Close
-//             </Button>
-//             <Button variant="ghost">Secondary Action</Button>
-//         </ModalFooter>
-//     </ModalContent>
-// </Modal>
