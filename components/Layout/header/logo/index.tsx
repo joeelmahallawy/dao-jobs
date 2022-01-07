@@ -41,7 +41,7 @@ const Logo = () => {
                         fontFamily="Poppins"
                         color={theme.colors.PrimaryBlue}
                     >
-                        Jobs
+                        Jobz
                     </Heading>
                 </Flex>
             </Link>

@@ -52,13 +52,16 @@ const Description = () => {
                     fontSize={['1rem', '1.25rem', '1.5rem', '1.5rem', '1.5rem']}
                     fontWeight="hairline"
                 >
-                    Are you a solidity developer? Do you enjoy working in DeFi?
-                    Then you are at the right place!
+                    Are you a solidity developer or someone who wants to work in
+                    DeFi? Do you enjoy working in a decentralized environment
+                    where true democracy takes place? Then you are at the right
+                    place!
                     <br />
                     <br />
-                    DaoJobs makes it easy for you to find your great next job in
-                    the dao space which has a huge demand as of now and is still
-                    growing!
+                    DaoJobz makes it easy for you to find your next job in DeFi
+                    and contribute to a decentralized organization. Not only are
+                    you able to stay anonymous by logging in with your discord,
+                    but also, you can get paid in crypto!
                 </Text>
             </Box>
         </Center>
