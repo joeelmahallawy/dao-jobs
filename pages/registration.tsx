@@ -13,9 +13,9 @@ const RegistrationPage = ({ user }) => {
     useEffect(() => {
         if (!userData) {
             const initializeUser = async function () {
-                const data = await supabase.auth.user()
-                // FIXME: BUG HERE
-                if (!data) {
+                const { user_metadata } = await supabase.auth.user()
+
+                if (!user_metadata) {
                     await supabase.auth.signIn(
                         { provider: 'discord' },
                         {
@@ -24,7 +24,7 @@ const RegistrationPage = ({ user }) => {
                                 '/registration',
                         },
                     )
-                } else setUserData(data.user_metadata)
+                } else setUserData(user_metadata)
             }
             initializeUser()
         }
