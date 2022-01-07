@@ -37,7 +37,7 @@ const RenderDaos = ({ daos }: { daos: Daos[] }) => {
                         const jobs = await getJobsForDao(dao)
                         setCurrentJobs([...jobs])
                     }}
-                    key={i}
+                    key={Math.random() * 9999}
                     m="auto"
                     borderRadius={5}
                     _hover={{
