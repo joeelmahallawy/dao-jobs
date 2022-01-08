@@ -78,7 +78,7 @@ const MyApp = ({ Component, pageProps: { session, ...pageProps } }) => {
                 <DefaultSeo {...createSEOConfig()} />
                 <Head>
                     <link rel="icon" href={icon.src} />
-                    <title>Anura DAO</title>
+                    <title>DaoJobz</title>
                     <meta
                         name="viewport"
                         content="initial-scale=1, width=device-width"
