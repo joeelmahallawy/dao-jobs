@@ -26,7 +26,11 @@ const Registration = ({ user }) => {
     if (showForm == undefined) {
         return (
             <Center p="2.5%" h="80vh" flexDir="column">
-                <Flex w="30%" fontFamily="Arial">
+                <Flex
+                    w={['95%', '85%', '70%', '50%', '40%', '30%']}
+                    // bg="red"
+                    fontFamily="Arial"
+                >
                     <Flex w="100%" gap={10} flexDir="column" fontSize="3rem">
                         <form
                             onSubmit={(e) => {
