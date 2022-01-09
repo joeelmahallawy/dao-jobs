@@ -19,6 +19,7 @@ import addJobSeeker from '../../helpers/graphql/mutations/addJobSeeker'
 
 const Registration = ({ user }) => {
     // console.log('heres user from registration/index.tsx pgae', user)
+    const [buttonIsLoading, setButtonIsLoading] = useState(false)
     const router = useRouter()
     const [selectedUser, setSelectedUser] = useState('')
     const [showForm, setShowForm] = useState(undefined)
@@ -131,9 +132,16 @@ const Registration = ({ user }) => {
                     </Button>
                 </Flex>
                 <Button
+                    isLoading={buttonIsLoading}
                     onClick={async () => {
                         if (selectedUser == 'seeker') {
-                            addJobSeeker(user, discordUserTag, router)
+                            setButtonIsLoading(true)
+                            addJobSeeker(
+                                user,
+                                discordUserTag,
+                                router,
+                                setButtonIsLoading,
+                            )
                         }
                         if (selectedUser == 'employer') setShowForm(true)
                     }}
