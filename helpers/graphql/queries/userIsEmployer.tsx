@@ -27,12 +27,8 @@ const userIsEmployer = async (user) => {
             }
         })
 
-    // if (data) {
-    //     return true
-    // } else return false
-    return data
-    // if (data) return true
-    // else return false
+    if (data) return true
+    else return false
 }
 
 export default userIsEmployer
