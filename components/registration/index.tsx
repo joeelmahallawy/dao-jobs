@@ -134,8 +134,8 @@ const Registration = ({ user }) => {
                 <Button
                     isLoading={buttonIsLoading}
                     onClick={async () => {
-                        setButtonIsLoading(true)
                         if (selectedUser == 'seeker') {
+                            setButtonIsLoading(true)
                             addJobSeeker(
                                 user,
                                 discordUserTag,

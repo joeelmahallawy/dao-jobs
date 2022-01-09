@@ -27,7 +27,6 @@ const addJobSeeker = async (
         variables,
     )
         .then(({ getJobSeeker }) => {
-            setButtonIsLoading(false)
             router.push('/seekerMain')
             return getJobSeeker
         })
