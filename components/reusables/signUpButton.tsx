@@ -2,7 +2,7 @@ import { Button, Heading } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { theme } from '../../utils/theme'
-import { supabase } from '../../lib/supabase'
+import Link from 'next/link'
 
 const SignUpButton = () => {
     const router = useRouter()
@@ -25,31 +25,19 @@ const SignUpButton = () => {
             </Heading>
         </>
     ) : (
-        <>
+        <Link href="/api/auth/login">
             <Button
-                // bg="red"
                 borderRadius="10"
                 fontFamily="Arial"
                 _focus={{}}
                 size="md"
                 p={['0.75rem', '1rem', '1.25rem', '1.5rem', '1.75rem']}
                 fontSize={['0.75rem', '1rem', '1.5rem', '1.75rem', '2rem']}
-                // fontSize={['1rem', '1.75rem', '2.25rem', '2.75rem', '3rem']}
                 colorScheme="linkedin"
-                onClick={async () => {
-                    const signIn = await supabase.auth.signIn(
-                        {
-                            provider: 'discord',
-                        },
-                        {
-                            redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}registration`,
-                        },
-                    )
-                }}
             >
                 Signup / Login
             </Button>
-        </>
+        </Link>
     )
 }
 

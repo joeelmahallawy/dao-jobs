@@ -80,5 +80,11 @@ export const resolvers = {
                     id: jobID,
                 },
             }),
+        deleteUser: async (_, { seekerID }) =>
+            await prisma.jobSeeker.delete({
+                where: {
+                    id: seekerID,
+                },
+            }),
     },
 }

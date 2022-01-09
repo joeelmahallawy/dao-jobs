@@ -1,5 +1,6 @@
 import { gql } from 'apollo-server-micro'
 import request from 'graphql-request'
+import getUserId from '../../getUserID'
 
 const userIsJobSeeker = async (user) => {
     const query = gql`
@@ -10,7 +11,7 @@ const userIsJobSeeker = async (user) => {
         }
     `
     const variables = {
-        userId: user.user.user_metadata.sub,
+        userId: getUserId(user),
     }
     const data = await request(
         process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
@@ -19,13 +20,9 @@ const userIsJobSeeker = async (user) => {
     )
         .then(({ getJobSeeker }) => getJobSeeker)
         .catch((err) => {
-            return {
-                props: {
-                    user: user.user,
-                    data: err.message,
-                },
-            }
+            return null
         })
+
     if (data) return true
     else return false
 }

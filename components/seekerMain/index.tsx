@@ -1,31 +1,5 @@
-import {
-    Box,
-    Button,
-    Center,
-    Flex,
-    Heading,
-    Link,
-    Modal,
-    ModalBody,
-    ModalContent,
-    ModalFooter,
-    ModalOverlay,
-    Tab,
-    TabList,
-    TabPanel,
-    TabPanels,
-    Tabs,
-    Text,
-    Image,
-    useDisclosure,
-} from '@chakra-ui/react'
-import { gql } from 'apollo-server-micro'
-import request from 'graphql-request'
+import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react'
 import React, { useState } from 'react'
-import { AiFillCheckCircle, AiFillCloseCircle } from 'react-icons/ai'
-import capitalize from '../../helpers/capitalize'
-import getEmployerForJob from '../../helpers/graphql/queries/getEmployerForJob'
-import { supabase } from '../../lib/supabase'
 import { Daos, Jobs } from '../../utils/types'
 import RenderDaos from './renderDaos'
 import RenderJobs from './renderJobs'

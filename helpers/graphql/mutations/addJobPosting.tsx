@@ -1,5 +1,6 @@
 import { gql } from 'apollo-server-micro'
 import { request } from 'graphql-request'
+import getUserId from '../../getUserID'
 
 const addJobPosting = async (
     inputValues,
@@ -30,7 +31,7 @@ const addJobPosting = async (
     `
 
     const jobPostingMutationVariables = {
-        jobData: { ...inputValues, id: +dao.id, employerID: user.sub },
+        jobData: { ...inputValues, id: +dao.id, employerID: getUserId(user) },
     }
     return await request(
         process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,

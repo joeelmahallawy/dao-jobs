@@ -7,7 +7,10 @@ export type Dao = {
     twitterUrl: string
     daoGoals: string
     briefDescription: string
+    employerName?: string
+    employerProfilePic?: string
 }
+
 export type JobPostingInputValues = {
     jobTitle: string
     jobDescription: string

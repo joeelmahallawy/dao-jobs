@@ -1,8 +1,10 @@
 import { gql } from 'apollo-server-micro'
 import { request } from 'graphql-request'
+import { EmployerAuthUser } from '../../../interfaces'
+import getUserId from '../../getUserID'
 
 const addDaoAndEmployer = async (
-    user,
+    user: EmployerAuthUser,
     values,
     setNavigationPage,
     toast,
@@ -28,23 +30,24 @@ const addDaoAndEmployer = async (
     const fixedDiscordPopulation = Number(
         newDiscordPopulation.replaceAll('+', ''),
     )
-    // https://hhuzrwzphweoxbywzhhv.supabase.co/storage/v1/object/public/dao-images/daos/646417780576616458.png
 
     const daoMutationVariables = {
-        EMPLOYERID: user.sub,
+        EMPLOYERID: getUserId(user),
         DAODATA: {
             ...rest,
             discordPopulation: fixedDiscordPopulation,
-            employerName: user.fullDiscordUsername,
-            employerProfilePic: user.avatar_url,
-            discordServerPicURL: `https://hhuzrwzphweoxbywzhhv.supabase.co/storage/v1/object/public/dao-images/daos/${user.sub}.png`,
+            employerName: user.name,
+            employerProfilePic: user.picture,
+            discordServerPicURL: `https://hhuzrwzphweoxbywzhhv.supabase.co/storage/v1/object/public/dao-images/daos/${getUserId(
+                user,
+            )}.png`,
         },
     }
     const employerMutationVariables = {
         EMPLOYERDATA: {
-            profilePicURL: user.avatar_url,
-            discordUsername: user.full_name,
-            id: user.sub,
+            profilePicURL: user.picture,
+            discordUsername: user.name,
+            id: getUserId(user),
         },
     }
 
@@ -78,7 +81,6 @@ const addDaoAndEmployer = async (
         })
         .catch((err) => {
             console.error(err.message)
-            // alert('There was an error registering your DAO')
         })
 }
 export default addDaoAndEmployer

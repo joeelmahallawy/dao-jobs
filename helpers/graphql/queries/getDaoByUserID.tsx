@@ -1,5 +1,6 @@
 import { gql } from 'apollo-server-micro'
 import { request } from 'graphql-request'
+import getUserId from '../../getUserID'
 
 const getDaoByUserID = async (user) => {
     // setup query to get employer's DAO
@@ -20,7 +21,7 @@ const getDaoByUserID = async (user) => {
         }
     `
     const daoQueryVariables = {
-        userID: user.user.user_metadata.sub,
+        userID: getUserId(user),
     }
     // get employer's DAO
     const userDao = await request(

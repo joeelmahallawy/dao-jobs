@@ -19,11 +19,13 @@ import {
 } from '@chakra-ui/react'
 import { Field, Formik, Form } from 'formik'
 import React, { useEffect, useState } from 'react'
-import Fade from 'react-reveal/Fade'
+
 import { theme } from '../../../utils/theme'
 import { useRouter } from 'next/router'
 import { supabase } from '../../../lib/supabase'
 import addDaoAndEmployer from '../../../helpers/graphql/mutations/addDaoAndEmployer'
+import getUserId from '../../../helpers/getUserID'
+import { AuthUser, EmployerAuthUser } from '../../../interfaces'
 
 type InitialValues = {
     nameOfDao: string
@@ -34,7 +36,8 @@ type InitialValues = {
     daoGoals: string
     briefDescription: string
 }
-const EmployerForm = ({ user }) => {
+
+const EmployerForm = ({ user }: { user: EmployerAuthUser }) => {
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
     const [navigateToEmployerPage, setNavigateToEmployerPage] = useState(false)
@@ -112,7 +115,7 @@ const EmployerForm = ({ user }) => {
                     setIsLoading(true)
                     await supabase.storage
                         .from('dao-images')
-                        .upload(`daos/${user.sub}.png`, dp.file, {
+                        .upload(`daos/${getUserId(user)}.png`, dp.file, {
                             cacheControl: '3600',
                             upsert: false,
                             contentType: 'image/png',

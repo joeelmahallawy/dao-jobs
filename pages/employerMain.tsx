@@ -6,53 +6,52 @@ import { Dao } from '../utils/types'
 import getDaoByUserID from '../helpers/graphql/queries/getDaoByUserID'
 import { useUpdate } from 'react-use'
 import userIsEmployer from '../helpers/graphql/queries/userIsEmployer'
+import getUserId from '../helpers/getUserID'
+import { AuthUser } from '../interfaces'
 
 const EmployerPage = ({
     user,
     userDao: { Dao, daoServerImageURL },
 }: {
-    user: any
+    user: AuthUser
     userDao: { Dao: Dao; daoServerImageURL: string }
 }) => {
     const updateMe = useUpdate()
 
-    return user && Dao ? (
+    return (
         <EmployerMainPage
             Dao={Dao}
             user={user}
             daoServerImageURL={daoServerImageURL}
             forceUpdate={updateMe}
         />
-    ) : (
-        <Center h="80vh">
-            <Heading>Your not loggged in or you don't have a dao</Heading>
-        </Center>
     )
 }
-export const getServerSideProps = async ({ req }) => {
-    // get user
-    const user = await supabase.auth.api.getUserByCookie(req)
 
-    // If user doesn't exist, redirect to registration page to sign up
-    if (!user.user)
-        return {
-            // props: {},
-            redirect: { destination: '/registration' },
-        }
-    else {
+export const getServerSideProps = async (ctx) => {
+    const res = await fetch(`http://localhost:3000/api/stats`, {
+        headers: { Cookie: ctx.req.headers.cookie },
+    })
+    const userData = await res.text()
+    if (!userData) {
+        // if user isn't logged in, redirect to auth0 login page
+        return { redirect: { destination: '/' } }
+    } else {
+        const user: AuthUser = JSON.parse(userData)
+        // confirm that user is employer
         const isEmployer: boolean = await userIsEmployer(user)
-
-        if (isEmployer) {
-            // get DAO from user data
+        if (isEmployer)
+            // if user is employer, get DAO associated with user and return it to front end
             return getDaoByUserID(user)
                 .then(async (userDao) => {
                     // get dao server image
                     const { publicURL } = await supabase.storage
                         .from('dao-images')
-                        .getPublicUrl(`daos/${user.user.user_metadata.sub}.png`)
+                        .getPublicUrl(`daos/${getUserId(user)}.png`)
                     return {
+                        // return data to client
                         props: {
-                            user: user.user.user_metadata,
+                            user: user,
                             userDao: {
                                 ...userDao,
                                 daoServerImageURL: publicURL,
@@ -61,23 +60,8 @@ export const getServerSideProps = async ({ req }) => {
                     }
                 })
                 .catch((err) => {
-                    // if there's an error in getting the dao from our user data, then redirect and register a new dao
-                    return {
-                        redirect: {
-                            destination: '/',
-                        },
-                        // props: {
-                        //     err: err.message,
-                        // },
-                    }
+                    return { redirect: { destination: '/' } }
                 })
-        } else {
-            return {
-                redirect: {
-                    destination: '/registration',
-                },
-            }
-        }
     }
 }
 

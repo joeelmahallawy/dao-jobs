@@ -1,8 +1,10 @@
 import { gql } from 'apollo-server-micro'
 import request from 'graphql-request'
+import { AuthUser } from '../../../interfaces'
+import getUserId from '../../getUserID'
 
 const addJobSeeker = async (
-    user,
+    user: AuthUser,
     discordUserTag,
     router,
     setButtonIsLoading,
@@ -16,9 +18,9 @@ const addJobSeeker = async (
     `
     const variables = {
         userData: {
-            id: user.sub,
+            id: getUserId(user),
             discordUsername: discordUserTag,
-            profilePicURL: user.avatar_url,
+            profilePicURL: user.picture,
         },
     }
     const res = await request(

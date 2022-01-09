@@ -17,6 +17,7 @@ export const typeDefs = gql`
         addDao(daoData: DaoInput!, employerID: String!): Dao
         addJobPosting(jobPostData: JobPostingInput!): JobPosting
         deleteJobPosting(jobID: Int!): JobPosting
+        deleteUser(seekerID: String!): JobSeeker
     }
     input DaoInput {
         nameOfDao: String!

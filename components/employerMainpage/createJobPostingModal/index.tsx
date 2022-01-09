@@ -30,9 +30,20 @@ import {
 } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import addJobPosting from '../../../helpers/graphql/mutations/addJobPosting'
-import { JobPostingInputValues } from '../../../utils/types'
+import { AuthUser } from '../../../interfaces'
+import { Dao, JobPostingInputValues } from '../../../utils/types'
 
-const AddJobPostingModal = ({ dao, setJobs, jobs, user }) => {
+const AddJobPostingModal = ({
+    dao,
+    setJobs,
+    jobs,
+    user,
+}: {
+    dao: Dao
+    setJobs: Function
+    jobs: any[]
+    user: AuthUser
+}) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const initialRef = React.useRef()
     const inputInitialValues = {

@@ -15,13 +15,25 @@ import AddJobPostingModal from './createJobPostingModal'
 import getJobsForDao from '../../helpers/graphql/queries/getJobsForDao'
 import JobPostingModal from './jobPostingModal'
 import { supabase } from '../../lib/supabase'
+import { AuthUser } from '../../interfaces'
+import { Dao } from '../../utils/types'
 
 export type Employer = {
     fullName: string
     profilePic: string
 }
 
-const EmployerMainPage = ({ user, Dao, daoServerImageURL, forceUpdate }) => {
+const EmployerMainPage = ({
+    user,
+    Dao,
+    daoServerImageURL,
+    forceUpdate,
+}: {
+    user: AuthUser
+    Dao: Dao
+    daoServerImageURL: string
+    forceUpdate: Function
+}) => {
     const [jobs, setJobs] = useState([])
     const [employer, setEmployer] = useState<Employer>({
         fullName: Dao.employerName,

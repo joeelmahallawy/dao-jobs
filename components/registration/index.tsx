@@ -1,5 +1,4 @@
 import {
-    Box,
     Button,
     Center,
     Flex,
@@ -11,14 +10,11 @@ import {
 import { theme } from '../../utils/theme'
 import { useRouter } from 'next/router'
 import React, { useState, useEffect } from 'react'
-import Fade from 'react-reveal/Fade'
 import EmployerForm from './employerForm'
-import request from 'graphql-request'
-import { gql } from 'apollo-server-micro'
 import addJobSeeker from '../../helpers/graphql/mutations/addJobSeeker'
+import { AuthUser } from '../../interfaces'
 
-const Registration = ({ user }) => {
-    // console.log('heres user from registration/index.tsx pgae', user)
+const Registration = ({ user }: { user: AuthUser }) => {
     const [buttonIsLoading, setButtonIsLoading] = useState(false)
     const router = useRouter()
     const [selectedUser, setSelectedUser] = useState('')

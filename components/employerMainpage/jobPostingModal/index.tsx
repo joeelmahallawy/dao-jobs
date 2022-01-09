@@ -32,8 +32,8 @@ const JobPostingModal = ({
     job,
     employer,
 }: {
-    jobs: any
-    setJobs: any
+    jobs: JobPostingValues[]
+    setJobs: Function
     job: JobPostingValues
     employer: Employer
 }) => {
