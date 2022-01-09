@@ -15,7 +15,8 @@ const RegistrationPage = ({ user }: { user: object | null }) => {
     }, [supabase.auth.user()])
 
     return userData ? (
-        <Registration user={userData} />
+        // @ts-ignore
+        <Registration user={userData?.user_metadata} />
     ) : (
         <Center gap={5} w="100vw" h="80vh" flexDir="column">
             <Heading fontFamily="Arial" fontSize="3rem">

@@ -18,6 +18,7 @@ import { gql } from 'apollo-server-micro'
 import addJobSeeker from '../../helpers/graphql/mutations/addJobSeeker'
 
 const Registration = ({ user }) => {
+    // console.log('heres user from registration/index.tsx pgae', user)
     const router = useRouter()
     const [selectedUser, setSelectedUser] = useState('')
     const [showForm, setShowForm] = useState(undefined)

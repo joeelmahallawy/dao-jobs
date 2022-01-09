@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
-import { Daos, Jobs } from '../utils/types'
 import JobSeekerMainPage from '../components/seekerMain'
 import getDaos from '../helpers/graphql/queries/getAllDaos'
 import getJobs from '../helpers/getAllJobs'
-import { request } from 'graphql-request'
-import { gql } from 'apollo-server-micro'
-import { Button, Image } from '@chakra-ui/react'
 import userIsJobSeeker from '../helpers/graphql/queries/userIsJobSeeker'
 
 const SeekerHomePage = ({ daos, jobs }) => {
