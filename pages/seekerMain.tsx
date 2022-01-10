@@ -12,7 +12,7 @@ const SeekerHomePage = ({ daos, jobs }) => {
 }
 
 export const getServerSideProps = async (ctx) => {
-    const res = await fetch(`http://localhost:3000/api/stats`, {
+    const res = await fetch(`https://www.daojobz.xyz/api/stats`, {
         headers: { Cookie: ctx.req.headers.cookie },
     })
     const userData = await res.text()
