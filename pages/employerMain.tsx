@@ -8,6 +8,7 @@ import { useUpdate } from 'react-use'
 import userIsEmployer from '../helpers/graphql/queries/userIsEmployer'
 import getUserId from '../helpers/getUserID'
 import { AuthUser } from '../interfaces'
+import userIsJobSeeker from '../helpers/graphql/queries/userIsJobSeeker'
 
 const EmployerPage = ({
     user,
@@ -35,9 +36,14 @@ export const getServerSideProps = async (ctx) => {
     const userData = await res.text()
     if (!userData) {
         // if user isn't logged in, redirect to auth0 login page
-        return { redirect: { destination: '/' } }
+        return { redirect: { destination: '/api/auth/login' } }
     } else {
         const user: AuthUser = JSON.parse(userData)
+
+        const isSeeker: boolean = await userIsJobSeeker(user)
+        // if user is job seeker, redirect to job seekers main page
+        if (isSeeker) return { redirect: { destination: '/seekerMain' } }
+
         // confirm that user is employer
         const isEmployer: boolean = await userIsEmployer(user)
         if (isEmployer)
@@ -62,6 +68,12 @@ export const getServerSideProps = async (ctx) => {
                 .catch((err) => {
                     return { redirect: { destination: '/' } }
                 })
+        else
+            return {
+                redirect: {
+                    destination: '/registration',
+                },
+            }
     }
 }
 

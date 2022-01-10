@@ -8,14 +8,7 @@ const Logo = () => {
     const router = useRouter()
     return (
         <Box w="33%" _hover={{ cursor: 'pointer' }}>
-            <Link
-                href={
-                    // router.pathname == "/registration"
-                    //   ? router.pathname
-                    // :
-                    process.env.NEXT_PUBLIC_BASE_URL
-                }
-            >
+            <Link href={process.env.NEXT_PUBLIC_BASE_URL}>
                 <Flex>
                     <Heading
                         fontWeight="500"

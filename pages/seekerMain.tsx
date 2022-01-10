@@ -5,6 +5,7 @@ import getDaos from '../helpers/graphql/queries/getAllDaos'
 import getJobs from '../helpers/getAllJobs'
 import userIsJobSeeker from '../helpers/graphql/queries/userIsJobSeeker'
 import { AuthUser } from '../interfaces'
+import userIsEmployer from '../helpers/graphql/queries/userIsEmployer'
 
 const SeekerHomePage = ({ daos, jobs }) => {
     return <JobSeekerMainPage daos={daos} jobs={jobs} />
@@ -17,38 +18,47 @@ export const getServerSideProps = async (ctx) => {
     const userData = await res.text()
     if (!userData) {
         // if user isn't logged in, redirect to auth0 login page
-        return { redirect: { destination: '/' } }
-    } else {
-        const user: AuthUser = JSON.parse(userData)
-        // confirm that user is employer
-        const isJobSeeker: boolean = await userIsJobSeeker(user)
-        if (isJobSeeker) {
-            return Promise.all([getDaos(), getJobs()])
-                .then((values) => {
-                    return {
-                        props: {
-                            // daos array
-                            daos: values[0],
-                            //jobs array
-                            jobs: values[1],
-                        },
-                    }
-                })
-                .catch((err) => {
-                    return {
-                        redirect: {
-                            // redirect user if there is an error in getting daos and jobs
-                            destination: '/',
-                        },
-                    }
-                })
-        } else
-            return {
-                redirect: {
-                    destination: '/registration',
-                },
-            }
+        return { redirect: { destination: '/api/auth/login' } }
     }
+    const user: AuthUser = JSON.parse(userData)
+
+    const isEmployer: boolean = await userIsEmployer(user)
+    // if user is employer, redirect user
+    if (isEmployer)
+        return {
+            redirect: {
+                destination: '/employerMain',
+            },
+        }
+
+    // confirm that user is job seeker
+    const isJobSeeker: boolean = await userIsJobSeeker(user)
+    if (isJobSeeker) {
+        return Promise.all([getDaos(), getJobs()])
+            .then((values) => {
+                return {
+                    props: {
+                        // daos array
+                        daos: values[0],
+                        //jobs array
+                        jobs: values[1],
+                    },
+                }
+            })
+            .catch((err) => {
+                return {
+                    redirect: {
+                        // redirect user if there is an error in getting daos and jobs
+                        destination: '/',
+                    },
+                }
+            })
+    } else
+        return {
+            redirect: {
+                destination: '/registration',
+            },
+        }
 }
 
 export default SeekerHomePage

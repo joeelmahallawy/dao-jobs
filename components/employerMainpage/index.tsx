@@ -17,6 +17,8 @@ import JobPostingModal from './jobPostingModal'
 import { supabase } from '../../lib/supabase'
 import { AuthUser } from '../../interfaces'
 import { Dao } from '../../utils/types'
+import img from '../../attachments/daojobs-bg.png'
+import getUserId from '../../helpers/getUserID'
 
 export type Employer = {
     fullName: string
@@ -52,7 +54,6 @@ const EmployerMainPage = ({
             <Box
                 w={['100%', '100%', '70%', '70%', '70%', '60%']}
                 borderRadius={10}
-                // bg="#d6dfe9"
                 outline="2px solid gray"
                 flexDir="column"
             >
@@ -67,12 +68,11 @@ const EmployerMainPage = ({
                     >
                         <Center gap="1rem">
                             <Box
-                                bg="gray.500"
+                                bg="gray.200"
                                 borderRadius="50%"
                                 border="2px solid black"
                                 h={['2rem', '3rem', '3.5rem', '4rem', '5rem']}
                                 w={['2rem', '3rem', '3.5rem', '4rem', '5rem']}
-                                // p="0.5rem"
                             >
                                 <Image
                                     src={daoServerImageURL}

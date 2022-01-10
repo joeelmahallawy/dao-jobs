@@ -2,17 +2,11 @@ import React, { useEffect, useState } from 'react'
 import Registration from '../components/registration'
 import { supabase } from '../lib/supabase'
 import userIsEmployer from '../helpers/graphql/queries/userIsEmployer'
-import { Button } from '@chakra-ui/button'
 import userIsJobSeeker from '../helpers/graphql/queries/userIsJobSeeker'
-import { withPageAuthRequired } from '@auth0/nextjs-auth0/dist/frontend'
+import { AuthUser } from '../interfaces'
 
-const RegistrationPage = (
-    // { user }: { user: AuthUser }
-    props,
-) => {
-    console.log(props)
-    return null
-    // return <Registration user={user} />
+const RegistrationPage = ({ user }: { user: AuthUser }) => {
+    return <Registration user={user} />
 }
 
 export const getServerSideProps = async (ctx) => {
@@ -22,7 +16,7 @@ export const getServerSideProps = async (ctx) => {
     const userData = await res.text()
     if (!userData) {
         // if user isn't logged in, redirect to auth0 login page
-        return { redirect: { destination: '/' } }
+        return { redirect: { destination: '/api/auth/login' } }
     } else {
         const user = JSON.parse(userData)
         // check if user is employer
