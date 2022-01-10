@@ -1,4 +1,4 @@
-<img width="800px" src="https://i.ibb.co/Wcg90gv/daojobs-img.png" alt="daojobs-img" border="0"></a><br /><a target='_blank' href='https://500pxdownload.com/'><br />
+<img width="800px" src="https://i.ibb.co/Wcg90gv/daojobs-img.png" alt="daojobs-img" border="0"></a><br /><br />
 
 # DaoJobz [demo](https://www.daojobz.xyz/)
 
