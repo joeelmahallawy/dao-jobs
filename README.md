@@ -1,51 +1,41 @@
-# TypeScript Next.js example
+<img width="800px" src="https://i.ibb.co/Wcg90gv/daojobs-img.png" alt="daojobs-img" border="0"></a><br /><br />
 
-This is a really simple project that shows the usage of Next.js with TypeScript.
+# DaoJobz [demo](https://www.daojobz.xyz/)
 
-## Preview
+## Problem
 
-Preview the example live on [StackBlitz](http://stackblitz.com/):
+As the rise of DeFi continues, we find ourselves moving further away from traditional centralized businesses, and closer to *decentralized* businesses which are driven by autonomy and democracy. An organization that is focused on decentralized governance and power to the people– where everyone under the organization has *right to vote.* These self-governed structures are called DAOs (Decentralized autonomous organization).
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-typescript)
+DAOs are the first appearance of *crypto salaries*, people work full-time jobs for DAOs and get compensated in crypto, whether it be Bitcoin or the DAOs community token. We’re moving at a velocity that we can’t even measure yet, and it’s just gets bigger from here, especially due to our inflationary dollar. 
 
-## Deploy your own
+Since DAOs are an organization, they still require people to contribute to the DAO, and essentially *work at a Dao*. This is where DaoJobz comes into play.
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
+## Solution
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-typescript&project-name=with-typescript&repository-name=with-typescript)
+DaoJobz is a job board for people to work at a DAO while also remaining anonymous by authenticating the user through Discord. Discord authentication was used since most DAO communities exist on Discord, and because Discord allows full user interaction while remaining anonymous. 
 
-## How to use it?
+There’s two types of users; employers and job seekers. Here’s what both users interaction with DaoJobz would look like.
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
+ **Employers**
 
-```bash
-npx create-next-app --example with-typescript with-typescript-app
-# or
-yarn create next-app --example with-typescript with-typescript-app
-```
+- Log in with Discord
+- Register your DAO by entering in some basic information about your DAO
+- Start adding job postings
+- Hire employees!
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+**Job Seekers**
 
-## Notes
+- Log in with Discord
+- See all available job postings and Daos that are hiring
+- Apply to your favourite DAO
+- Start working for a DAO!
 
-This example shows how to integrate the TypeScript type system into Next.js. Since TypeScript is supported out of the box with Next.js, all we have to do is to install TypeScript.
+## Technologies Used
 
-```
-npm install --save-dev typescript
-```
-
-To enable TypeScript's features, we install the type declarations for React and Node.
-
-```
-npm install --save-dev @types/react @types/react-dom @types/node
-```
-
-When we run `next dev` the next time, Next.js will start looking for any `.ts` or `.tsx` files in our project and builds it. It even automatically creates a `tsconfig.json` file for our project with the recommended settings.
-
-Next.js has built-in TypeScript declarations, so we'll get autocompletion for Next.js' modules straight away.
-
-A `type-check` script is also added to `package.json`, which runs TypeScript's `tsc` CLI in `noEmit` mode to run type-checking separately. You can then include this, for example, in your `test` scripts.
-# dao-board
-# dao-board
-# dao-board
-# dao-jobs
+- Next.js
+- Typescript
+- PostgreSQL
+- Prisma
+- GraphQL
+- Oauth2 (Discord Authentication)
+- Recoil.js (State management)settings.
