@@ -321,7 +321,6 @@ const RenderDaos = ({ daos }: { daos: Daos[] }) => {
                                                 </Box>
                                             </Box>
                                         </Box>
-                                        {/* TODO:RENDER JOBS */}
                                         <RenderJobsForDao
                                             dao={dao}
                                             jobs={currentJobs}

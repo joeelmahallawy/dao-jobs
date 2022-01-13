@@ -17,22 +17,23 @@ const EmployerPage = ({
     user: AuthUser
     userDao: { Dao: Dao; daoServerImageURL: string }
 }) => {
-    const updateMe = useUpdate()
-
     return (
         <EmployerMainPage
             Dao={Dao}
             user={user}
             daoServerImageURL={daoServerImageURL}
-            forceUpdate={updateMe}
         />
     )
 }
 
 export const getServerSideProps = async (ctx) => {
-    const res = await fetch(`https://www.daojobz.xyz/api/stats`, {
-        headers: { Cookie: ctx.req.headers.cookie },
-    })
+    const res = await fetch(
+        `https://www.daojobz.xyz/api/stats`,
+        // 'http://localhost:3000/api/stats',
+        {
+            headers: { Cookie: ctx.req.headers.cookie },
+        },
+    )
     const userData = await res.text()
     if (!userData) {
         // if user isn't logged in, redirect to auth0 login page
@@ -51,6 +52,7 @@ export const getServerSideProps = async (ctx) => {
             return getDaoByUserID(user)
                 .then(async (userDao) => {
                     // get dao server image
+                    // https://hhuzrwzphweoxbywzhhv.supabase.in/storage/v1/object/public/dao-images/daos/821326867436273684.png
                     const { publicURL } = await supabase.storage
                         .from('dao-images')
                         .getPublicUrl(`daos/${getUserId(user)}.png`)
@@ -61,6 +63,10 @@ export const getServerSideProps = async (ctx) => {
                             userDao: {
                                 ...userDao,
                                 daoServerImageURL: publicURL,
+                                // daoServerImageURL: `https://hhuzrwzphweoxbywzhhv.supabase.co/storage/v1/object/public/dao-images/daos/${getUserId(
+                                //     user,
+                                // )}.png`,
+                                //
                             },
                         },
                     }

@@ -6,11 +6,14 @@ import { MdCopyright } from 'react-icons/md'
 
 const Footer = () => {
     return (
-        <Center justifyContent="flex-end" bg="#F1F4FF" p="3.5%">
-            {/* <FontAwesomeIcon icon={faCopyright} color="black" size="1x" /> */}
-            <MdCopyright fontSize="1.25rem" />
-            <Text fontFamily="Arial" fontWeight="500" color="black">
-                Copyright 2021
+        <Center justifyContent="flex-end" p="2.5%">
+            <Text
+                fontFamily="Arial"
+                fontWeight="500"
+                color="black"
+                fontSize="1.5rem"
+            >
+                &copy; Copyright 2021
             </Text>
         </Center>
     )

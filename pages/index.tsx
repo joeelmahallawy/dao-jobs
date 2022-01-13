@@ -6,9 +6,13 @@ const IndexPage = (props) => {
     return <Home />
 }
 export const getServerSideProps = async (ctx) => {
-    const res = await fetch(`https://www.daojobz.xyz/api/stats`, {
-        headers: { Cookie: ctx.req.headers.cookie },
-    })
+    const res = await fetch(
+        `https://www.daojobz.xyz/api/stats`,
+        // `http://localhost:3000/api/stats`,
+        {
+            headers: { Cookie: ctx.req.headers.cookie },
+        },
+    )
     const userData = await res.text()
     if (!userData) {
         // if user isn't logged in, redirect to auth0 login page

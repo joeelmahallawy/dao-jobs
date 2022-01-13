@@ -12,9 +12,13 @@ const SeekerHomePage = ({ daos, jobs }) => {
 }
 
 export const getServerSideProps = async (ctx) => {
-    const res = await fetch(`https://www.daojobz.xyz/api/stats`, {
-        headers: { Cookie: ctx.req.headers.cookie },
-    })
+    const res = await fetch(
+        // `http://localhost:3000/api/stats`,
+        `https://www.daojobz.xyz/api/stats`,
+        {
+            headers: { Cookie: ctx.req.headers.cookie },
+        },
+    )
     const userData = await res.text()
     if (!userData) {
         // if user isn't logged in, redirect to auth0 login page

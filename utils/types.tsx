@@ -49,6 +49,7 @@ export type Daos = {
     briefDescription: string
     discordServerPicURL: string
 }
+
 export type Jobs = {
     daoId: string
     jobTitle: string

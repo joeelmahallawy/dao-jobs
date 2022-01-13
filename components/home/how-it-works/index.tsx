@@ -5,14 +5,7 @@ import List from './list'
 
 const AboutUs = () => {
     return (
-        <Center
-            gap="1rem"
-            p="2rem"
-            pt={10}
-            pb={20}
-            bg="#F1F4FF"
-            flexDir="column"
-        >
+        <Center gap="1rem" p="2rem" pt={10} pb={20} flexDir="column">
             <Heading
                 fontSize={['1.25rem', '2rem', '2.5rem', '3rem', '4rem']}
                 fontWeight="500"

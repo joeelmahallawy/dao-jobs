@@ -7,6 +7,10 @@ import {
     Text,
     Image,
     Button,
+    Textarea,
+    NumberInput,
+    NumberInputField,
+    useToast,
 } from '@chakra-ui/react'
 import { theme } from '../../utils/theme'
 import React, { useEffect, useState } from 'react'
@@ -19,6 +23,8 @@ import { AuthUser } from '../../interfaces'
 import { Dao } from '../../utils/types'
 import img from '../../attachments/daojobs-bg.png'
 import getUserId from '../../helpers/getUserID'
+import { BiEditAlt } from 'react-icons/bi'
+import updateCurrentDao from '../../helpers/graphql/mutations/updateDao'
 
 export type Employer = {
     fullName: string
@@ -29,18 +35,21 @@ const EmployerMainPage = ({
     user,
     Dao,
     daoServerImageURL,
-    forceUpdate,
 }: {
     user: AuthUser
     Dao: Dao
     daoServerImageURL: string
-    forceUpdate: Function
 }) => {
+    const [currentDao, setCurrentDao] = useState(Dao)
     const [jobs, setJobs] = useState([])
     const [employer, setEmployer] = useState<Employer>({
-        fullName: Dao.employerName,
-        profilePic: Dao.employerProfilePic,
+        fullName: currentDao.employerName,
+        profilePic: currentDao.employerProfilePic,
     })
+    const [currentImageUrl, setCurrentImageUrl] = useState(daoServerImageURL)
+    const [requestIsSending, setRequestIsSending] = useState(false)
+    const [isEditing, setIsEditing] = useState(false)
+    const toast = useToast()
 
     useEffect(() => {
         // get all jobs for current dao
@@ -49,8 +58,28 @@ const EmployerMainPage = ({
             .catch((err) => console.error(err.message))
     }, [])
 
+    function photoUpload(event, setProfilePic) {
+        event.preventDefault()
+        const reader = new FileReader()
+        const file = event.target.files[0]
+        reader.onloadend = () => {
+            setProfilePic({
+                file,
+                imagePreviewUrl: reader.result,
+            })
+        }
+        reader.readAsDataURL(file)
+    }
+
+    const [dp, setdp] = useState({
+        file: '',
+        imagePreviewUrl: currentImageUrl,
+        active: 'edit',
+    })
+    // console.log(currentImageUrl)
+
     return (
-        <Center flexDir="column" p="3rem">
+        <Center fontFamily="Arial" flexDir="column" p="3rem">
             <Box
                 w={['100%', '100%', '70%', '70%', '70%', '60%']}
                 borderRadius={10}
@@ -74,14 +103,37 @@ const EmployerMainPage = ({
                                 h={['2rem', '3rem', '3.5rem', '4rem', '5rem']}
                                 w={['2rem', '3rem', '3.5rem', '4rem', '5rem']}
                             >
+                                {/* {isEditing ? (
+                                    <>
+                                        <label>
+                                            <Image
+                                                h="100%"
+                                                w="100%"
+                                                _hover={{
+                                                    cursor: 'pointer',
+                                                    opacity: '0.7',
+                                                }}
+                                                borderRadius="50%"
+                                                src={dp.imagePreviewUrl}
+                                            />
+                                            <input
+                                                style={{ display: 'none' }}
+                                                type="file"
+                                                onChange={(e) => {
+                                                    photoUpload(e, setdp)
+                                                }}
+                                            />
+                                        </label>
+                                    </>
+                                ) : (
+                                    )} */}
                                 <Image
-                                    src={daoServerImageURL}
+                                    src={currentImageUrl}
                                     borderRadius="100%"
                                     h="100%"
                                     w="100%"
                                 />
                             </Box>
-
                             <Heading
                                 fontSize={[
                                     '1rem',
@@ -91,29 +143,53 @@ const EmployerMainPage = ({
                                     '2rem',
                                 ]}
                             >
-                                {Dao.nameOfDao}
+                                {currentDao.nameOfDao}
                             </Heading>
                         </Center>
 
                         <Center flexDir="column" p={3} fontFamily="Arial">
-                            <Text
-                                fontSize={[
-                                    '1rem',
-                                    '1rem',
-                                    '1.25rem',
-                                    '1.25rem',
-                                    '1.5rem',
-                                ]}
-                                fontFamily="Poppins"
-                            >{`${Dao.discordPopulation} discord members`}</Text>
+                            {isEditing ? (
+                                <Box fontSize="1.15rem">
+                                    Number of discord members
+                                    <NumberInput
+                                        mt={3}
+                                        mb={3}
+                                        defaultValue={
+                                            currentDao.discordPopulation
+                                        }
+                                    >
+                                        <NumberInputField
+                                            onChange={(e) => {
+                                                setCurrentDao({
+                                                    ...currentDao,
+                                                    discordPopulation:
+                                                        e.currentTarget.value,
+                                                })
+                                            }}
+                                        />
+                                    </NumberInput>
+                                </Box>
+                            ) : (
+                                <Text
+                                    fontSize={[
+                                        '1rem',
+                                        '1rem',
+                                        '1.25rem',
+                                        '1.25rem',
+                                        '1.5rem',
+                                    ]}
+                                    fontFamily="Poppins"
+                                >{`${currentDao.discordPopulation} discord members`}</Text>
+                            )}
                             <Flex gap={['0.75rem', '1rem', '2rem']}>
-                                {!Dao.discordLink ||
-                                Dao.discordLink.toLowerCase() != 'n/a' ? (
+                                {!currentDao.discordLink ||
+                                currentDao.discordLink.toLowerCase() !=
+                                    'n/a' ? (
                                     <Link
                                         _focus={{}}
                                         _hover={{ cursor: 'pointer' }}
                                         isExternal
-                                        href={Dao.discordLink}
+                                        href={currentDao.discordLink}
                                     >
                                         <Box
                                             _hover={{
@@ -141,13 +217,13 @@ const EmployerMainPage = ({
                                         </Box>
                                     </Link>
                                 ) : null}
-                                {!Dao.twitterUrl ||
-                                Dao.twitterUrl.toLowerCase() != 'n/a' ? (
+                                {!currentDao.twitterUrl ||
+                                currentDao.twitterUrl.toLowerCase() != 'n/a' ? (
                                     <Link
                                         _focus={{}}
                                         _hover={{ cursor: 'pointer' }}
                                         isExternal
-                                        href={Dao.twitterUrl}
+                                        href={currentDao.twitterUrl}
                                     >
                                         <Box
                                             _hover={{
@@ -194,19 +270,36 @@ const EmployerMainPage = ({
                             </span>
                             description
                         </Heading>
-                        <Text
-                            fontFamily="Arial"
-                            fontSize={[
-                                '1rem',
-                                '1rem',
-                                '1.4rem',
-                                '1.5rem',
-                                '1.5rem',
-                            ]}
-                            mt={[1, 2, 3, 5, 7]}
-                        >
-                            {Dao.briefDescription}
-                        </Text>
+                        <Flex justifyContent="space-between">
+                            {isEditing ? (
+                                <Textarea
+                                    fontSize="1.25rem"
+                                    onChange={(e) => {
+                                        setCurrentDao({
+                                            ...currentDao,
+                                            briefDescription:
+                                                e.currentTarget.value,
+                                        })
+                                    }}
+                                    mt={[1, 2, 3, 5, 7]}
+                                    defaultValue={currentDao.briefDescription}
+                                />
+                            ) : (
+                                <Text
+                                    fontFamily="Arial"
+                                    fontSize={[
+                                        '1rem',
+                                        '1rem',
+                                        '1.4rem',
+                                        '1.5rem',
+                                        '1.5rem',
+                                    ]}
+                                    mt={[1, 2, 3, 5, 7]}
+                                >
+                                    {currentDao.briefDescription}
+                                </Text>
+                            )}
+                        </Flex>
                     </Box>
                     <Box p={[1, 3, 5, 7, 9]}>
                         <Heading
@@ -224,21 +317,81 @@ const EmployerMainPage = ({
                             </span>
                             goals
                         </Heading>
-                        <Text
-                            fontFamily="Arial"
-                            fontSize={[
-                                '1rem',
-                                '1rem',
-                                '1.4rem',
-                                '1.5rem',
-                                '1.5rem',
-                            ]}
-                            mt={[1, 3, 5, 7, 10]}
-                        >
-                            {Dao.daoGoals}
-                        </Text>
+                        {isEditing ? (
+                            <Textarea
+                                fontSize="1.25rem"
+                                onChange={(e) => {
+                                    setCurrentDao({
+                                        ...currentDao,
+                                        daoGoals: e.currentTarget.value,
+                                    })
+                                }}
+                                mt={[1, 2, 3, 5, 7]}
+                                defaultValue={currentDao.daoGoals}
+                            />
+                        ) : (
+                            <Text
+                                fontFamily="Arial"
+                                fontSize={[
+                                    '1rem',
+                                    '1rem',
+                                    '1.4rem',
+                                    '1.5rem',
+                                    '1.5rem',
+                                ]}
+                                mt={[1, 3, 5, 7, 10]}
+                            >
+                                {currentDao.daoGoals}
+                            </Text>
+                        )}
                     </Box>
                 </Box>
+
+                <Flex fontFamily="Arial" justifyContent="flex-end" p={3}>
+                    {isEditing ? (
+                        <Button
+                            isLoading={requestIsSending}
+                            _focus={{}}
+                            onClick={async () => {
+                                // console.log(dp.file)
+                                setRequestIsSending(true)
+                                // await supabase.storage
+                                //     .from('dao-images')
+                                //     .update(
+                                //         `daos/${getUserId(user)}.png`,
+                                //         dp.file,
+                                //         {
+                                //             cacheControl: '3600',
+                                //             upsert: false,
+                                //             contentType: 'image/png',
+                                //         },
+                                //     )
+
+                                await updateCurrentDao(
+                                    currentDao,
+                                    setRequestIsSending,
+                                    toast,
+                                    user,
+                                    dp,
+                                )
+                                setIsEditing(false)
+                            }}
+                            colorScheme="teal"
+                            fontFamily="Arial"
+                        >
+                            Save
+                        </Button>
+                    ) : (
+                        <Button
+                            _focus={{}}
+                            onClick={() => {
+                                setIsEditing(true)
+                            }}
+                        >
+                            <BiEditAlt fontSize="1.5rem" />
+                        </Button>
+                    )}
+                </Flex>
             </Box>
             {jobs.map((job, i) => {
                 return (

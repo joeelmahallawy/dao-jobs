@@ -86,5 +86,16 @@ export const resolvers = {
                     id: seekerID,
                 },
             }),
+        updateDaoData: async (_, { daoData }) =>
+            await prisma.dao.update({
+                where: {
+                    id: daoData.id,
+                },
+                data: {
+                    briefDescription: daoData.briefDescription,
+                    discordPopulation: daoData.discordPopulation,
+                    daoGoals: daoData.daoGoals,
+                },
+            }),
     },
 }

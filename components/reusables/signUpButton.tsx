@@ -30,7 +30,7 @@ const SignUpButton = () => {
                 borderRadius="10"
                 fontFamily="Arial"
                 _focus={{}}
-                size="md"
+                size="lg"
                 p={['0.75rem', '1rem', '1.25rem', '1.5rem', '1.75rem']}
                 fontSize={['0.75rem', '1rem', '1.5rem', '1.75rem', '2rem']}
                 colorScheme="linkedin"

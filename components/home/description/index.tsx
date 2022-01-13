@@ -22,20 +22,14 @@ const Description = () => {
         >
             <Image
                 p={5}
-                w={['100%', '100%', '100%', '50%', '50%']}
+                w={['100%', '100%', '100%', '50%', '45%']}
                 src={HomeBackground.src}
             />
             <Box p={5} w={['100%', '100%', '100%', '40%', '40%']}>
                 <Heading
                     textAlign={['center', 'center', 'center', 'left', 'left']}
                     mb={3}
-                    fontSize={[
-                        '1.5rem',
-                        '1.75rem',
-                        '2.5rem',
-                        '3.5rem',
-                        '3.5rem',
-                    ]}
+                    fontSize={['1.5rem', '1.75rem', '2.25rem', '3rem', '3rem']}
                 >
                     <span
                         style={{
@@ -49,7 +43,13 @@ const Description = () => {
                 </Heading>
                 <Text
                     fontFamily="Arial"
-                    fontSize={['1rem', '1.25rem', '1.5rem', '1.5rem', '1.5rem']}
+                    fontSize={[
+                        '1rem',
+                        '1.25rem',
+                        '1.25rem',
+                        '1.4rem',
+                        '1.4rem',
+                    ]}
                     fontWeight="hairline"
                 >
                     Are you a solidity developer or someone who wants to work in

@@ -18,6 +18,7 @@ export const typeDefs = gql`
         addJobPosting(jobPostData: JobPostingInput!): JobPosting
         deleteJobPosting(jobID: Int!): JobPosting
         deleteUser(seekerID: String!): JobSeeker
+        updateDaoData(daoData: UpdateDao!): Dao
     }
     input DaoInput {
         nameOfDao: String!
@@ -30,6 +31,12 @@ export const typeDefs = gql`
         briefDescription: String!
         employerName: String!
         employerProfilePic: String!
+    }
+    input UpdateDao {
+        id: Int!
+        discordPopulation: Int!
+        daoGoals: String!
+        briefDescription: String!
     }
     type Dao {
         id: ID!
