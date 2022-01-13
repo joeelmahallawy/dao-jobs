@@ -3,10 +3,16 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopyright } from '@fortawesome/free-solid-svg-icons'
 import { MdCopyright } from 'react-icons/md'
+import { useRouter } from 'next/router'
 
 const Footer = () => {
+    const router = useRouter()
     return (
-        <Center justifyContent="flex-end" p="2.5%">
+        <Center
+            justifyContent="flex-end"
+            bg={router.pathname != '/' && '#F1F4FF'}
+            p="2.5%"
+        >
             <Text
                 fontFamily="Arial"
                 fontWeight="500"
