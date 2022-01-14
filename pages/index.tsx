@@ -1,11 +1,26 @@
+import { Spinner } from '@chakra-ui/spinner'
 import Home from '../components/home'
+import RenderJobs from '../components/seekerMain/renderJobs'
+
+import getAllJobs from '../helpers/getAllJobs'
 import userIsEmployer from '../helpers/graphql/queries/userIsEmployer'
 import userIsJobSeeker from '../helpers/graphql/queries/userIsJobSeeker'
 
-const IndexPage = (props) => {
+const IndexPage = ({ jobs }) => {
     return <Home />
+
+    // TODO: MAIN PAGE WHERE ALL JOBS ARE VISIBLE
+    // return jobs ? <RenderJobs jobs={jobs} /> : <Spinner />
 }
 export const getServerSideProps = async (ctx) => {
+    // TODO: TO GET ALL JOBS
+    // try {
+    //     const jobs = await getAllJobs()
+    //     return { props: { jobs } }
+    // } catch (err) {
+    //     return { props: { jobs: null } }
+    // }
+    // TODO:
     const res = await fetch(
         `https://www.daojobz.xyz/api/stats`,
         // `http://localhost:3000/api/stats`,
