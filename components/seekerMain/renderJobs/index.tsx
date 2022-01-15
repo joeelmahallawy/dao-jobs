@@ -19,7 +19,6 @@ import React, { useState } from 'react'
 import { AiFillCheckCircle, AiFillCloseCircle } from 'react-icons/ai'
 import capitalize from '../../../helpers/capitalize'
 import getDaoNameById from '../../../helpers/graphql/queries/getDaoNameById'
-import getEmployerForJob from '../../../helpers/graphql/queries/getEmployerForJob'
 import { Jobs } from '../../../utils/types'
 type Employer = {
     discordUsername: string
@@ -33,6 +32,8 @@ const RenderJobs = ({ jobs }: { jobs: Jobs[] }) => {
     const [daoLink, setDaoLink] = useState('')
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [currentOpenModal, setCurrentOpenModal] = useState<number>(null)
+    console.log('serverpic:', serverPic)
+    console.log('daoname:', daoName)
     return (
         <>
             {jobs.map((job, i) => (
@@ -40,13 +41,14 @@ const RenderJobs = ({ jobs }: { jobs: Jobs[] }) => {
                     m="auto"
                     key={i}
                     onClick={async () => {
-                        getEmployerForJob(job, setEmployer)
                         getDaoNameById(
                             job,
                             setDaoName,
                             setServerPic,
                             setDaoLink,
+                            setEmployer,
                         )
+
                         onOpen()
                         setCurrentOpenModal(i)
                     }}
@@ -143,85 +145,59 @@ const RenderJobs = ({ jobs }: { jobs: Jobs[] }) => {
                                                     >
                                                         Dao:
                                                     </Text>
-                                                    <Center
-                                                        p={2}
-                                                        bg="gray.200"
-                                                        _hover={{
-                                                            bg: 'gray.300',
-                                                        }}
-                                                        display="inline-flex"
-                                                        borderRadius={5}
-                                                        justifyContent="flex-start"
-                                                        gap={3}
-                                                    >
-                                                        {/*  */}
-                                                        {daoName}
-                                                        <Box
-                                                            // ml="auto"
-                                                            // ml={1}
-                                                            w={[
-                                                                '30px',
-                                                                '40px',
-                                                                '40px',
-                                                                '50px',
-                                                                '50px',
-                                                            ]}
-                                                            h={[
-                                                                '30px',
-                                                                '40px',
-                                                                '40px',
-                                                                '50px',
-                                                                '50px',
-                                                            ]}
-                                                            borderRadius="50%"
-                                                            border="2px solid gray"
-                                                        >
-                                                            <Image
-                                                                h="100%"
-                                                                w="100%"
-                                                                borderRadius="50%"
-                                                                src={serverPic}
-                                                            />
-                                                        </Box>
-                                                    </Center>
                                                 </Box>
-                                                {/* <Center
-                                            mt={3}
-                                            justifyContent="flex-start"
-                                            gap={2}
-                                            fontWeight="500"
-                                            fontFamily="Arial"
-                                            fontSize={[
-                                                '0.75rem',
-                                                '0.75rem',
-                                                '1rem',
-                                                '1rem',
-                                                '1.25rem',
-                                            ]}
-                                        >
-                                            DAO:
-                                            <span
-                                                style={{
-                                                    fontWeight: '600',
-                                                }}
-                                            >
-                                                {daoName}
-                                            </span>
-                                            <Box
-                                                w="40px"
-                                                h="40px"
-                                                borderRadius="50%"
-                                                outline="2.5px solid gray"
-                                                p={1}
-                                            >
-                                                <Image
-                                                    h="100%"
-                                                    w="100%"
-                                                    borderRadius="50%"
-                                                    src={serverPic}
-                                                />
-                                            </Box>
-                                        </Center> */}
+                                                <Center
+                                                    justifyContent="flex-start"
+                                                    gap={2}
+                                                    fontWeight="500"
+                                                    fontFamily="Arial"
+                                                    fontSize={[
+                                                        '0.75rem',
+                                                        '0.75rem',
+                                                        '1rem',
+                                                        '1rem',
+                                                        '1.25rem',
+                                                    ]}
+                                                >
+                                                    <span
+                                                        style={{
+                                                            fontWeight: '500',
+                                                        }}
+                                                    >
+                                                        {daoName}
+                                                    </span>
+                                                    <Box
+                                                        w={[
+                                                            '30px',
+                                                            '40px',
+                                                            '40px',
+                                                            '50px',
+                                                            '50px',
+                                                        ]}
+                                                        h={[
+                                                            '30px',
+                                                            '40px',
+                                                            '40px',
+                                                            '50px',
+                                                            '50px',
+                                                        ]}
+                                                        borderRadius="50%"
+                                                        border="2px solid gray"
+                                                    >
+                                                        <Image
+                                                            h="100%"
+                                                            w="100%"
+                                                            borderRadius="50%"
+                                                            src={serverPic}
+                                                        />
+                                                    </Box>
+                                                    <Button
+                                                        colorScheme="teal"
+                                                        size="sm"
+                                                    >
+                                                        Join
+                                                    </Button>
+                                                </Center>
                                             </Link>
 
                                             <Box

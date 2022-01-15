@@ -239,7 +239,9 @@ const AddJobPostingModal = ({
                                 />
                             </FormControl>
                             <FormControl isRequired mt={4}>
-                                <FormLabel>Approximate salary</FormLabel>
+                                <FormLabel>
+                                    Approximate salary (TBD otherwise)
+                                </FormLabel>
                                 <Input
                                     onChange={(e) =>
                                         setInputValues({

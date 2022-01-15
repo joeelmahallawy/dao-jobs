@@ -13,21 +13,23 @@ import Head from 'next/head'
 import icon from '../attachments/daojobs-icon.ico'
 
 import Script from 'next/script'
+import { UserProvider } from '@auth0/nextjs-auth0'
 
 const MyApp = ({ Component, pageProps: { session, ...pageProps } }) => {
     return (
         <RecoilRoot>
-            <ChakraProvider theme={Chakratheme}>
-                <DefaultSeo {...createSEOConfig()} />
-                <Head>
-                    <link rel="icon" href={icon.src} />
-                    <title>DaoJobz</title>
-                    <meta
-                        name="viewport"
-                        content="initial-scale=1, width=device-width"
-                    />
-                </Head>
-                <Layout>
+            <UserProvider>
+                <ChakraProvider theme={Chakratheme}>
+                    <DefaultSeo {...createSEOConfig()} />
+                    <Head>
+                        <link rel="icon" href={icon.src} />
+                        <title>DaoJobz</title>
+                        <meta
+                            name="viewport"
+                            content="initial-scale=1, width=device-width"
+                        />
+                    </Head>
+                    {/* <Layout> */}
                     <Script
                         strategy="lazyOnload"
                         src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
@@ -40,8 +42,9 @@ const MyApp = ({ Component, pageProps: { session, ...pageProps } }) => {
             gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}');`}
                     </Script>
                     <Component {...pageProps} />
-                </Layout>
-            </ChakraProvider>
+                    {/* </Layout> */}
+                </ChakraProvider>
+            </UserProvider>
         </RecoilRoot>
     )
 }

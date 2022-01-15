@@ -1,9 +1,8 @@
-import { createGlobalState } from 'react-use'
-import { atom, selector } from 'recoil'
+import { atom } from 'recoil'
 
-const userData = atom({
-    key: 'userData',
+const globalUser = atom({
+    key: 'globalUser',
     default: null,
 })
 
-export { userData }
+export { globalUser }

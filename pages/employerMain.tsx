@@ -9,6 +9,7 @@ import userIsEmployer from '../helpers/graphql/queries/userIsEmployer'
 import getUserId from '../helpers/getUserID'
 import { AuthUser } from '../interfaces'
 import userIsJobSeeker from '../helpers/graphql/queries/userIsJobSeeker'
+import Layout from '../components/Layout'
 
 const EmployerPage = ({
     user,
@@ -17,33 +18,28 @@ const EmployerPage = ({
     user: AuthUser
     userDao: { Dao: Dao; daoServerImageURL: string }
 }) => {
+    //
     return (
-        <EmployerMainPage
-            Dao={Dao}
-            user={user}
-            daoServerImageURL={daoServerImageURL}
-        />
+        <Layout page="/employerMain">
+            <EmployerMainPage
+                Dao={Dao}
+                user={user}
+                daoServerImageURL={daoServerImageURL}
+            />
+        </Layout>
     )
 }
 
 export const getServerSideProps = async (ctx) => {
-    const res = await fetch(
-        `https://www.daojobz.xyz/api/stats`,
-        // 'http://localhost:3000/api/stats',
-        {
-            headers: { Cookie: ctx.req.headers.cookie },
-        },
-    )
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/stats`, {
+        headers: { Cookie: ctx.req.headers.cookie },
+    })
     const userData = await res.text()
     if (!userData) {
         // if user isn't logged in, redirect to auth0 login page
         return { redirect: { destination: '/api/auth/login' } }
     } else {
         const user: AuthUser = JSON.parse(userData)
-
-        const isSeeker: boolean = await userIsJobSeeker(user)
-        // if user is job seeker, redirect to job seekers main page
-        if (isSeeker) return { redirect: { destination: '/seekerMain' } }
 
         // confirm that user is employer
         const isEmployer: boolean = await userIsEmployer(user)
@@ -52,7 +48,6 @@ export const getServerSideProps = async (ctx) => {
             return getDaoByUserID(user)
                 .then(async (userDao) => {
                     // get dao server image
-                    // https://hhuzrwzphweoxbywzhhv.supabase.in/storage/v1/object/public/dao-images/daos/821326867436273684.png
                     const { publicURL } = await supabase.storage
                         .from('dao-images')
                         .getPublicUrl(`daos/${getUserId(user)}.png`)
@@ -63,10 +58,6 @@ export const getServerSideProps = async (ctx) => {
                             userDao: {
                                 ...userDao,
                                 daoServerImageURL: publicURL,
-                                // daoServerImageURL: `https://hhuzrwzphweoxbywzhhv.supabase.co/storage/v1/object/public/dao-images/daos/${getUserId(
-                                //     user,
-                                // )}.png`,
-                                //
                             },
                         },
                     }

@@ -4,19 +4,20 @@ import { supabase } from '../lib/supabase'
 import userIsEmployer from '../helpers/graphql/queries/userIsEmployer'
 import userIsJobSeeker from '../helpers/graphql/queries/userIsJobSeeker'
 import { AuthUser } from '../interfaces'
+import Layout from '../components/Layout'
 
 const RegistrationPage = ({ user }: { user: AuthUser }) => {
-    return <Registration user={user} />
+    return (
+        <Layout page="/registration">
+            <Registration user={user} />
+        </Layout>
+    )
 }
 
 export const getServerSideProps = async (ctx) => {
-    const res = await fetch(
-        // `http://localhost:3000/api/stats`,
-        `https://www.daojobz.xyz/api/stats`,
-        {
-            headers: { Cookie: ctx.req.headers.cookie },
-        },
-    )
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/stats`, {
+        headers: { Cookie: ctx.req.headers.cookie },
+    })
     const userData = await res.text()
     if (!userData) {
         // if user isn't logged in, redirect to auth0 login page
@@ -26,17 +27,10 @@ export const getServerSideProps = async (ctx) => {
         // check if user is employer
         const isEmployer: boolean = await userIsEmployer(user)
 
-        if (isEmployer) {
-            // if user is employer, redirect to employer's main page
-            return { redirect: { destination: '/employerMain' } }
-        } else {
-            // if not employer, check if user is job seeker
-            const isJobSeeker: boolean = await userIsJobSeeker(user)
-            // if user is job seeker, redirect to job seeker's main page
-            if (isJobSeeker) return { redirect: { destination: '/seekerMain' } }
-            // otherwise, if user isn't job seeker nor employer, return normal discord auth data and have user register
-            else return { props: { user } }
-        }
+        // if user is employer, redirect to employer's main page
+        if (isEmployer) return { redirect: { destination: '/employerMain' } }
+        // else just return user data and have user register
+        else return { props: { user } }
     }
 }
 

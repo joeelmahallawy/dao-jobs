@@ -4,11 +4,9 @@ import React from 'react'
 import { theme } from '../../utils/theme'
 import Link from 'next/link'
 
-const SignUpButton = () => {
-    const router = useRouter()
-
+const RegisterButton = () => {
     return (
-        <Link href="/api/auth/login">
+        <Link href="/registration">
             <Button
                 borderRadius="10"
                 fontFamily="Arial"
@@ -16,12 +14,12 @@ const SignUpButton = () => {
                 size="lg"
                 p={['0.75rem', '1rem', '1.25rem', '1.5rem', '1.75rem']}
                 fontSize={['0.75rem', '1rem', '1.5rem', '1.75rem', '2rem']}
-                colorScheme="linkedin"
+                colorScheme="teal"
             >
-                Signup / Login
+                Register as employer
             </Button>
         </Link>
     )
 }
 
-export default SignUpButton
+export default RegisterButton

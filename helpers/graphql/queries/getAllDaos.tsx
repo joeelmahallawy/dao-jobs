@@ -26,14 +26,7 @@ const getDaos = async () => {
         query,
     )
         .then(async (val) => {
-            // const serverPic = await supabase.storage
-            //     .from('dao-images')
-            //     .getPublicUrl(`daos/${val.getAllDaos.employerId}.png`)
             return val
-            // return [
-            //     { ...val.getAllDaos, discordServerPic: serverPic.publicURL },
-            // ]
-            // return val.getAllDaos
         })
         .catch((err) => {
             return { props: { err: err.message } }

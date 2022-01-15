@@ -1,13 +1,16 @@
+import { Button, useColorMode } from '@chakra-ui/react'
+import React from 'react'
 import Footer from './footer'
 import Header from './header'
 
 type Props = {
     children: React.ReactNode
+    page: string
 }
-const Layout = ({ children }: Props) => {
+const Layout = ({ children, page }: Props) => {
     return (
         <>
-            <Header />
+            <Header page={page} />
             {children}
             <Footer />
         </>
