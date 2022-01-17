@@ -15,7 +15,7 @@ const IndexPage = ({ daos, jobs }) => {
     )
 }
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
     // get all jobs and daos
     return Promise.all([getDaos(), getJobs()])
         .then((values) => {
