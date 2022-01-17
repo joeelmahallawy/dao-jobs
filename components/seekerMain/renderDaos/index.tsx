@@ -56,8 +56,8 @@ const RenderDaos = ({ daos }: { daos: Daos[] }) => {
                     <Center gap={3}>
                         <Box borderRadius="50%" outline="2px solid gray" p={1}>
                             <Image
-                                w="50px"
-                                h="50px"
+                                w={['30px', '35px', '40px', '45px', '50px']}
+                                h={['30px', '35px', '40px', '45px', '50px']}
                                 borderRadius="50%"
                                 src={dao.discordServerPicURL}
                             />
@@ -76,7 +76,18 @@ const RenderDaos = ({ daos }: { daos: Daos[] }) => {
                             {dao.nameOfDao}
                         </Heading>
                     </Center>
-                    <Button colorScheme="linkedin">Check out DAO</Button>
+                    <Button
+                        colorScheme="linkedin"
+                        fontSize={[
+                            '0.75rem',
+                            '1rem',
+                            '1rem',
+                            '1.15rem',
+                            '1.25rem',
+                        ]}
+                    >
+                        Check out DAO
+                    </Button>
                     {currentOpenModal == i && (
                         <Modal
                             size="6xl"

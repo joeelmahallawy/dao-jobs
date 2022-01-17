@@ -61,7 +61,7 @@ const RenderJobs = ({ jobs }: { jobs: Jobs[] }) => {
                     w={['100%', '100%', '85%']}
                     outline="2px solid gray"
                     mt="1.5rem"
-                    p={[5, 6, 7]}
+                    p={[4, 5, 7]}
                     justifyContent="space-between"
                 >
                     <Heading
@@ -76,6 +76,7 @@ const RenderJobs = ({ jobs }: { jobs: Jobs[] }) => {
                         ]}
                     >
                         {capitalize(job.jobTitle)}
+                        {console.log(job)}
                     </Heading>
                     <Button colorScheme="teal">Check out job</Button>
 
