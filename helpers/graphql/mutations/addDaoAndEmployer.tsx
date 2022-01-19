@@ -38,7 +38,7 @@ const addDaoAndEmployer = async (
             discordPopulation: fixedDiscordPopulation,
             employerName: user.name,
             employerProfilePic: user.picture,
-            discordServerPicURL: `https://hhuzrwzphweoxbywzhhv.supabase.co/storage/v1/object/public/dao-images/daos/${getUserId(
+            discordServerPicURL: `https://hhuzrwzphweoxbywzhhv.supabase.in/storage/v1/object/public/dao-images/daos/${getUserId(
                 user,
             )}.png`,
         },

@@ -12,6 +12,7 @@ const getDaoByUserID = async (user) => {
                 employerName
                 employerProfilePic
                 discordServerExists
+                discordServerPicURL
                 discordLink
                 discordPopulation
                 twitterUrl

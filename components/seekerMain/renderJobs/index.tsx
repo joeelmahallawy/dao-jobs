@@ -32,8 +32,7 @@ const RenderJobs = ({ jobs }: { jobs: Jobs[] }) => {
     const [daoLink, setDaoLink] = useState('')
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [currentOpenModal, setCurrentOpenModal] = useState<number>(null)
-    console.log('serverpic:', serverPic)
-    console.log('daoname:', daoName)
+
     return (
         <>
             {jobs.map((job, i) => (
