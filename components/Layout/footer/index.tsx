@@ -13,7 +13,7 @@ const Footer = () => {
                 fontFamily="Arial"
                 fontWeight="500"
                 color="black"
-                fontSize="1.5rem"
+                fontSize={['1rem', '1.15rem', '1.25rem', '1.35rem', '1.5rem']}
             >
                 &copy; Copyright 2021
             </Text>
