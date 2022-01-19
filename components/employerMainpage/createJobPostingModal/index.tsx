@@ -88,6 +88,7 @@ const AddJobPostingModal = ({
                 <Button colorScheme="linkedin">Add job</Button>
             </Center>
             <Modal
+                size="lg"
                 initialFocusRef={initialRef}
                 isOpen={isOpen}
                 onClose={onClose}
