@@ -32,7 +32,7 @@ const RenderJobs = ({ jobs }: { jobs: Jobs[] }) => {
     const [daoLink, setDaoLink] = useState('')
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [currentOpenModal, setCurrentOpenModal] = useState<number>(null)
-    console.log('in job section:', jobs)
+
     return (
         <>
             {jobs.map((job, i) => (

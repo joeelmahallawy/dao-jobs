@@ -17,7 +17,6 @@ const DaosWindow = () => {
             setDaos([...val])
         })
     }, [])
-    console.log('heres some daos', daos)
 
     return (
         <Center

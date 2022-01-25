@@ -374,7 +374,6 @@ const EmployerMainPage = ({
                             isLoading={requestIsSending}
                             _focus={{}}
                             onClick={async () => {
-                                // console.log(dp.file)
                                 setRequestIsSending(true)
                                 // await supabase.storage
                                 //     .from('dao-images')

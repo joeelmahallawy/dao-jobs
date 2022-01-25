@@ -18,7 +18,6 @@ const EmployerPage = ({
     user: AuthUser
     userDao: { Dao: Dao; daoServerImageURL: string }
 }) => {
-    // console.log(daoServerImageURL)
     return (
         <Layout page="/employerMain">
             <EmployerMainPage
