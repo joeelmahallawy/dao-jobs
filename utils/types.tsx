@@ -62,4 +62,7 @@ export type Jobs = {
     approximateSalary: string
     salaryNegotiable: boolean
     employerID: string
+    workFor: {
+        nameOfDao: string
+    }
 }

@@ -8,14 +8,12 @@ import { Button } from '@chakra-ui/button'
 import { useColorMode } from '@chakra-ui/color-mode'
 
 const IndexPage = ({ daos, jobs }) => {
-    // console.log('some daos and ting', global)
     return (
         <Layout page="/">
             <JobSeekerMainPage daos={daos} jobs={jobs} />
         </Layout>
     )
 }
-// export const getServerSideProps=async(ctx)=>{}
 
 export const getServerSideProps = async () => {
     // get all jobs and daos

@@ -16,6 +16,9 @@ const getJobs = async () => {
                 approximateSalary
                 salaryNegotiable
                 employerID
+                workFor {
+                    nameOfDao
+                }
             }
         }
     `

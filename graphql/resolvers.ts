@@ -24,7 +24,16 @@ export const resolvers = {
                 where: { id: daoId },
             }),
         getAllDaos: async () => await prisma.dao.findMany(),
-        getAllJobs: async () => await prisma.jobPosting.findMany(),
+        getAllJobs: async () =>
+            await prisma.jobPosting.findMany({
+                include: {
+                    workFor: {
+                        select: {
+                            nameOfDao: true,
+                        },
+                    },
+                },
+            }),
         getDaoNameByID: async (_, { daoId }) =>
             await prisma.dao.findFirst({
                 where: { id: Number(daoId) },

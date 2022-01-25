@@ -76,6 +76,9 @@ export const typeDefs = gql`
         profilePicURL: String!
     }
 
+    type WorkFor {
+        nameOfDao: String!
+    }
     type JobPosting {
         id: ID!
         daoId: Int
@@ -89,6 +92,7 @@ export const typeDefs = gql`
         approximateSalary: String!
         salaryNegotiable: Boolean!
         employerID: String!
+        workFor: WorkFor
     }
     input JobPostingInput {
         id: Int

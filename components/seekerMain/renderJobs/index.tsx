@@ -32,7 +32,7 @@ const RenderJobs = ({ jobs }: { jobs: Jobs[] }) => {
     const [daoLink, setDaoLink] = useState('')
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [currentOpenModal, setCurrentOpenModal] = useState<number>(null)
-
+    console.log('in job section:', jobs)
     return (
         <>
             {jobs.map((job, i) => (
@@ -63,22 +63,37 @@ const RenderJobs = ({ jobs }: { jobs: Jobs[] }) => {
                     p={[4, 5, 7]}
                     justifyContent="space-between"
                 >
-                    <Heading
-                        fontFamily="Arial"
-                        fontWeight="500"
-                        fontSize={[
-                            '1rem',
-                            '1.25rem',
-                            '1.5rem',
-                            '1.75rem',
-                            '2rem',
-                        ]}
-                    >
-                        {capitalize(job.jobTitle)}
-                        {console.log(job)}
-                    </Heading>
-                    <Button colorScheme="teal">Check out job</Button>
+                    <Center gap={3}>
+                        <Heading
+                            fontFamily="Arial"
+                            fontWeight="500"
+                            fontSize={[
+                                '1rem',
+                                '1.25rem',
+                                '1.5rem',
+                                '1.75rem',
+                                '2rem',
+                            ]}
+                        >
+                            {`${capitalize(job.jobTitle)} @`}
+                        </Heading>
 
+                        <Heading
+                            fontFamily="Arial"
+                            fontWeight="600"
+                            fontSize={[
+                                '1rem',
+                                '1.25rem',
+                                '1.5rem',
+                                '1.75rem',
+                                '2rem',
+                            ]}
+                        >
+                            {job.workFor.nameOfDao}
+                        </Heading>
+                    </Center>
+
+                    <Button colorScheme="teal">Check out job</Button>
                     {currentOpenModal == i && (
                         <Modal
                             size="3xl"
