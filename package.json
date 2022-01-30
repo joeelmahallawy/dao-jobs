@@ -47,6 +47,7 @@
     "react-ga": "^3.3.0",
     "react-icons": "^4.3.1",
     "react-reveal": "^1.2.2",
+    "react-shimmer-effects": "^1.0.2",
     "react-use": "^17.3.1",
     "recoil": "^0.5.2",
     "swr": "^1.1.2"

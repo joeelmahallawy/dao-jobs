@@ -43,7 +43,7 @@ const RenderDaos = ({ daos }: { daos: Daos[] }) => {
                         m="auto"
                         borderRadius={5}
                         _hover={{
-                            outline: '3px solid gray',
+                            outline: '3px solid #606060',
                             cursor: 'pointer',
                         }}
                         fontFamily="Arial"
