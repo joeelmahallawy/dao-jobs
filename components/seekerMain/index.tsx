@@ -6,7 +6,7 @@ import RenderJobs from './renderJobs'
 
 const JobSeekerMainPage = ({ daos, jobs }: { daos: Daos[]; jobs: Jobs[] }) => {
     return (
-        <Box w="100%" h="80vh" pr={7} pl={3}>
+        <Box w="100%" pr={7} pl={3}>
             <Tabs
                 m={[1, 2, 3, 4, 5]}
                 fontFamily="Arial"
