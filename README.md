@@ -38,4 +38,4 @@ There’s two types of users; employers and job seekers. Here’s what both user
 - Prisma
 - GraphQL
 - Oauth2 (Discord Authentication)
-- Recoil.js (State management)settings.
+- Recoil.js (State management)
